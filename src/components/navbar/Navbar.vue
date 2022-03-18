@@ -1,0 +1,180 @@
+<template>
+<div class="main__container">    
+    <div class="nav__container">       
+        <!-- navbar mobile -->
+        <aside  class="nav__mobile"  v-if="navbarMobile">
+            <NavbarMobile @toggleNavbarMobile="toggleNavbarMobile"/>        
+        </aside>
+        <nav class="nav">
+            <section class="nav__title">
+                <div class="nav__title-container">
+                    <h1 class="nav__title">                        
+                        <router-link class="nav__navlink-item nav--title" to="/">My Lesson</router-link>
+                    </h1>
+                </div>
+            </section>
+            <section v-if="!mobileSize" class="nav__items">
+                <ul class="nav__list-item">
+                    <li class="nav__navlink">
+                        <router-link class="nav__navlink-item" :to="utils.apiDataUrl.loginPage">Connexion</router-link>
+                    </li>
+                    <li class="nav__navlink">
+                        <router-link class="nav__navlink-item" :to="utils.apiDataUrl.signupPage">inscription</router-link>
+                    </li>
+                    <li class="nav__navlink">
+                        <router-link class="nav__navlink-item" :to="utils.apiDataUrl.homeAccountPage">Mon compte</router-link>
+                    </li>
+                    <li class="nav__navlink">
+                        <router-link class="nav__navlink-item" :to="utils.apiDataUrl.logoutAction">deconnexion</router-link>
+                    </li>
+                </ul>
+            </section>
+            <section class="nav__burger" v-if="mobileSize && !navbarMobile" @click="toggleNavbarMobile">
+                <div class="burger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </section>
+        </nav>
+    </div>    
+</div>  
+<router-view/>
+</template>
+
+<script>
+import NavbarMobile from './NavbarMobile.vue';
+import breakPointView from '../../helper/vueBreakPoint';
+import utils from '../../helper/utils';
+
+export default {
+    name: 'Navbar',
+    components: {
+        //navbar pour mobile
+        NavbarMobile,        
+    },
+    data() {
+        return {
+            mobileSize: false,
+            navbarMobile: false,
+            utils: utils
+        };
+    },
+    methods: {
+        /**
+         * taille d'affichage
+         */
+        resizeAction() {
+            this.mobileSize = breakPointView.mobileBreakPoint(window.innerWidth);
+
+            //Supprime la navbarMobile
+            if(!this.mobileSize) {
+                this.navbarMobile = false;
+            }
+        },
+
+        /**
+         * Affiche ou masque la navbar mobile
+         */
+        toggleNavbarMobile() {
+            this.navbarMobile = !this.navbarMobile;
+        }
+
+    },
+    mounted() {
+        window.addEventListener('resize', this.resizeAction);
+        this.resizeAction();
+    }
+};
+</script>
+
+<style scoped>
+
+.main__container{
+    top: 0px;
+    box-shadow: 0px 4px 2px -2px rgba(0, 0, 0, 0.16);
+    background: white;
+    position: fixed;
+    width:100%;
+    z-index: 2;
+}
+
+.nav__container{
+    height: var(--navbar_height);
+    max-width: 95%;
+    margin: 0px auto;       
+}
+
+.nav{
+    max-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;   
+}
+
+.nav__title{
+    flex-shrink: 2;
+    font-size: 1.8rem;
+    font-weight: 900; 
+}
+
+.nav--title{
+    color:var(--main_color) !important;
+    font-size: 2rem !important;
+}
+
+.nav__list-item{
+    display: flex;
+}
+
+.nav__navlink{
+    padding: 0px 10px;
+}
+
+.nav__navlink-item{
+
+    color: black ;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+/*#region burger menu*/
+
+.burger{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0px 15px;
+  cursor: pointer;
+}
+
+.line{
+  width: 30px;
+  height: 3px;
+  margin: 2px 0px;
+  background-color:black;
+  border-radius: 5px;
+
+}
+/*#endregion*/
+
+/*#region navbar mobile*/
+    .nav__mobile{
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        right: 0px;
+        z-index: 20;
+    }
+/*#endregion*/
+
+@media screen and (min-width:768px) {
+}
+
+@media screen and (min-width:1024px) {
+}
+</style>

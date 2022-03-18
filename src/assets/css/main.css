@@ -1,0 +1,56 @@
+:root{   
+    
+    --text_s:0.7rem; 
+    --text_button_size:0.9rem;
+    --form_title_size:1.5rem;
+    --navbar_height:70px;
+    --main_background_color:#fbf9ff;
+    --main_color:#6b6bee;
+    --color_hover:#3e3ef0;
+    --main_color_small:#2A2AFE;
+    --secondary_color:#757575;
+    --secondary_color_small:#575757;
+    --color_inactif:#c4c4c4;
+    --transition_time_button:0.2s;
+    --transition_group_animation:0.9s
+
+}
+
+*{
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box; 
+
+}
+
+/*#region button formulaire  */
+    
+.button{
+    border:.5px solid var(--main_color); 
+    border-radius: 10px;
+    color: white;
+    text-transform: uppercase;
+    background: transparent;
+    margin: 20px 0px;
+    padding: 10px 0px;
+    font-weight: 700;
+    font-size: var(--text_button_size);
+    cursor: pointer;
+    transition: all var(--transition_time_button) ease-in-out;
+    width: 100%;
+}
+
+.button:hover{
+    background: var(--color_hover);
+}
+
+.button--primary{
+    background: var(--main_color);    
+}
+
+.button--inactif{
+    color: var(--color_inactif);
+}
+/*#endregion  */
