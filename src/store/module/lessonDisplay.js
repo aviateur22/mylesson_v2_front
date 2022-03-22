@@ -60,7 +60,7 @@ const actions = {
         const slug = payload.data.slug;   
         /**chargement des élements de la lecon */ 
         const lesson = await dispatch('actionHandler', {action: 'loadLessonAction', lessonId: lessonId});
-        console.log(lesson)
+        
         /** Erreur dans la réponse */
         if(!lesson || lesson.error){
             return commit('setFlashMessageMut', { error: true, message: 'erreur lors de la récuperation de la leçon'});

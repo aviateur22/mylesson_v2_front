@@ -129,35 +129,49 @@ const actions = {
     /*
      * Deconnexion
      */
-    async logoutAction({dispatch}, router) {     
+    async logoutAction({dispatch}) {     
         try {
-            const logoutResult = await dispatch('fetchAction', { endPoint: utils.apiDataUrl.logoutAction, fetchMethod: 'get'});
+            const urlData = utils.userApi.logout;
+
+            const logoutResult = await dispatch('fetchAction', { endPoint: urlData.endPoint, fetchMethod: urlData.method});
 
             /**echec de la requête */
             if(!logoutResult){
                 return;
             }
             /**Requete ok - succes de la demande */
-            dispatch('resetUserAuth', { router: router, pathName: utils.apiDataUrl.homePage.pathName, message: 'a bientôt'});            
+            dispatch('resetUserAuth', { pathName: utils.apiDataUrl.homePage.pathName, isError: false, message: 'a bientôt'});            
         } catch (error) {
             console.log(error);  
         }
     },
 
     /**
-     * 
-     * @param {*} param0 
-     * @param {*} dataObject 
+     * Reset des données utilisateur 
+     * @property {Object} param.commit - mutattion
+     * @property {object} param.dispatch - action
+     * @property {String} data.message - message a envoyer a l'utilisateur
+     * @property {String} data.pathName - redirection url
+     * @property {Boolean} data.isError - couleur rouge si true | vert si false
      */
-    resetUserAuth({commit, dispatch}, dataObject){
+    resetUserAuth({commit, dispatch}, data){
         try {
-            const message = dataObject.message;            
-            const pathName = dataObject.pathName;
+            /** message a afficher */
+            const message = data.message;        
+            
+            /** redirection */
+            const pathName = data.pathName;
+
+            /** isError === true -> red -- isError === false -> grreen  */
+            let isError = data.error;
+            if(!isError){
+                isError = false;
+            }
             //Reset de tous les states
             commit('setUserIdentMut', {});           
             commit('setUserLessonsMut', []);
             dispatch('resetLessonAction');
-            commit('setFlashMessageMut', { visibility: true, error: false, message: message});           
+            commit('setFlashMessageMut', { visibility: true, error: isError, message: message});           
             router.push({name: pathName });            
         } catch (error) {
             console.log(error);   

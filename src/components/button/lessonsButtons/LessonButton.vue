@@ -14,8 +14,17 @@
                 </div>                
             </section>            
         </section>
+        <!-- contenue de l'image -->
         <section class="button__img-container">
 
+        </section>
+        <!-- extrait du contenu -->
+        <section class="button__content-container">
+            <div class="lesson__markdown-text">
+                <div class="markdown-body">
+                    <span v-html="this.lessonsHtml" ></span>
+                </div>
+            </div>
         </section>
       </div>
     </div>
@@ -24,12 +33,18 @@
 
 <script>
 import LessonTag from './LessonTag.vue';
+import MarkdownHandler from '../../../helper/markdown/markdownConverter';
 export default {    
     name: 'LessonButton',
     components: {
         LessonTag
     },
     props: ['data', 'actionClickName'],
+    data(){
+        return {
+            markdownHandler: new MarkdownHandler(),
+        };
+    },
     methods: {
         /**
          * action du clic sur un bouton
@@ -38,7 +53,12 @@ export default {
         displayLessonClick(actionClickName){
             this.$store.dispatch('actionHandler', {action: actionClickName, data: this.data});
         }
-    }
+    },
+    computed: {   
+        lessonsHtml(){
+            return this.markdownHandler.getHtml(this.data.content);
+        }     
+    },
 };
 </script>
 

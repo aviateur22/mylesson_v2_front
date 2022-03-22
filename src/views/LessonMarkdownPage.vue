@@ -79,7 +79,7 @@ export default {
                 validateActionName: 'lessonRegisterAction',  
                 cancelActionName: 'leaveEditor',
                 routerTo: routerPathName
-            }
+            };
 
             this.$store.commit('setDataMut', data);           
         },

@@ -51,24 +51,18 @@ const actions = {
         /**fetch */
         const fetchRequest = await fetch(uri, setting);
 
-        console.log(fetchRequest.status);
-
-        /** session JWT terminé */
+        /** JWT invalide  - redirection homePage */
         if(Number(fetchRequest.status) === 401){
-            return dispatch('resetUserAuth', {message: 'session expirée merci de vous reconnecter', pathName: 'home'});
+            return dispatch('resetUserAuth', {message: 'session expirée merci de vous reconnecter', pathName: 'HomePage'});
         }
         
         const result = await fetchRequest.json();
-
-        /** réinitialisation des parametres de l'application */
-        if(result.resetAuth){
-            commit('',);
-        }
 
         /**Erreur requete fetch ou statusCode: error dans le corps de la reponse*/
         if(result.error){
             commit('setFlashMessageMut', { error: true, message: result.message }); 
         }
+        
         /** renvoie de la donnée */
         return result;                 
     }        

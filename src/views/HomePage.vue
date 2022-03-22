@@ -79,6 +79,7 @@ export default {
         display: flex;
         flex-wrap: wrap;
         align-items: flex-start ;
+        justify-content: center;
         background: var(--main_background_color);      
         height:calc(100vh - var(--navbar_height))   ;
     }
@@ -91,7 +92,11 @@ export default {
 
         .main__container{        
             width: 768px;                        
-            box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;           
+        }
+
+        .lesson__container{            
+            justify-content: flex-start;
         }
     }
 
