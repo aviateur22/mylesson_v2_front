@@ -61,7 +61,13 @@ const actions = {
         return router.push({name: 'UserHomeAccount'});           
     },
 
-    async getUserInformation({commit, dispatch, getters}, dataObject){
+    /**
+     * récuperation des donées utilisateurs
+     * @property {Object} param.dispatch - action
+     * @property {Object} param.getters - getter
+     * @returns {object} requestedUser
+     */
+    async getUserInformation({ dispatch, getters}){
         /** données API  */
         const urlData = utils.userApi.getUserById;
 
@@ -84,6 +90,14 @@ const actions = {
         return getUserById;
     },
 
+    /**
+     * mise a jour des donées utilisateurs
+     * @property {Object} param.dispatch - action
+     * @property {Object} param.getters - getter
+     * @property {Object} param.commit - mutation
+     * @param {HTMLElement} data.form - formulaire de modification
+     * @returns {object} updatedUser
+     */
     async updateUserInformation({dispatch, getters, commit}, data){
         /** données API  */
         const urlData = utils.userApi.updateUserById;
