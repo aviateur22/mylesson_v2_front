@@ -68,20 +68,24 @@ export default {
         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
         border-radius: 5px;
         margin: 10px 0px;
-        padding:15px 0px;
+        
         cursor: pointer;      
         width:95%;
         background: rgb(255, 255, 255);
+        height: 400px;
+        
+        overflow: hidden;
     }
 
     .button__title-container{
-        margin: 10px 0px;
+        padding: 15px 5px;
+        background: rgb(107, 107, 107);
 
     }
 
     .button__date{
         font-size: var(--text_s);
-        color: rgb(83, 83, 83);
+        color: white;
         padding: 10px;
         text-transform: uppercase;
     }
@@ -91,6 +95,7 @@ export default {
         text-transform: uppercase;
         font-weight: 800;
         font-size: var(--text_button_size);
+        color:white
     }
 
     .button__tag-container{
@@ -101,6 +106,12 @@ export default {
 
     .button__tag{
         display: flex;
+    }
+
+    .button__content-container{
+        width: 100%;
+        text-align: left;
+       
     }
 
     @media screen and (min-width:560px) {

@@ -33,6 +33,6 @@ export default {
         text-transform: uppercase;
         font-size: var(--text_s);
         font-weight: 700;
-        color: rgb(85, 85, 85);
+        color: white
     }
 </style>

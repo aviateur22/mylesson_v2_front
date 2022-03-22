@@ -64,7 +64,8 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;   
+        align-items: center; 
+        background: red;  
         background: var(--main_background_color);
     }
     
@@ -72,7 +73,6 @@ export default {
         width:100%;
         display: flex;
         flex-direction: column;
-        height: 100%;
     }
 
     .lesson__container{
@@ -80,8 +80,8 @@ export default {
         flex-wrap: wrap;
         align-items: flex-start ;
         justify-content: center;
-        background: var(--main_background_color);      
-        height:calc(100vh - var(--navbar_height))   ;
+        background: transparent;
+        background: var(--main_background_color)
     }
 
     .footer{
