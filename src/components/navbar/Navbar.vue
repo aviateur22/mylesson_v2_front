@@ -15,17 +15,15 @@
             </section>
             <section v-if="!mobileSize" class="nav__items">
                 <ul class="nav__list-item">
-                    <li class="nav__navlink">
+
+                    <li v-if="!authenticated" class="nav__navlink">
                         <router-link class="nav__navlink-item" :to="utils.apiDataUrl.loginPage">Connexion</router-link>
                     </li>
-                    <li class="nav__navlink">
+                    <li v-if="!authenticated" class="nav__navlink">
                         <router-link class="nav__navlink-item" :to="utils.apiDataUrl.signupPage">inscription</router-link>
                     </li>
-                    <li class="nav__navlink">
+                    <li v-if="authenticated" class="nav__navlink">
                         <router-link class="nav__navlink-item" :to="utils.apiDataUrl.homeAccountPage">Mon compte</router-link>
-                    </li>
-                    <li class="nav__navlink">
-                        <router-link class="nav__navlink-item" :to="utils.apiDataUrl.logoutAction">deconnexion</router-link>
                     </li>
                 </ul>
             </section>
@@ -80,6 +78,11 @@ export default {
             this.navbarMobile = !this.navbarMobile;
         }
 
+    },
+    computed: {
+        authenticated() {
+            return this.$store.getters.userIdentGet.userAuthenticated;
+        }
     },
     mounted() {
         window.addEventListener('resize', this.resizeAction);

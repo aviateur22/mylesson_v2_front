@@ -16,15 +16,15 @@ const actions = {
      * @returns 
      */    
     async getLessons({dispatch, commit}){
-       /**requete pour la récupération des leçons*/
-       const endPoint = utils.apiDataUrl.userGetAllLessonAction;
-       const lessons = await dispatch('actionHandler', {action: 'fetchAction', endPoint: endPoint, fetchMethod: 'get'});
-       
-       /**Requete ok - succes de la demande */
-       if(!lessons.error){     
-           commit('setlessonsStateMut', lessons);
-       }
-       return lessons;
+        /**requete pour la récupération des leçons*/
+        const urlData = utils.lessonApi.getAllLesson;
+        const lessons = await dispatch('actionHandler', {action: 'fetchAction', endPoint: urlData.endPoint, fetchMethod: urlData.method});
+        
+        /**Requete ok - succes de la demande */
+        if(!lessons.error){     
+            commit('setlessonsStateMut', lessons);
+        }
+        return lessons;
     }
 };
 

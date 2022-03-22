@@ -1,4 +1,4 @@
-/**list des leçons d'un utilisateur*/
+/**données API et url des pages*/
 import utils from '../../helper/utils';
 
 const state = {   
@@ -22,9 +22,10 @@ const actions = {
      * @property {string} dataObject.fetchMethod - méthode de la requête    
      * @returns {Object} [null|commit]
      */
-    async getLessonsAction({commit, dispatch}){
+    async getLessonsAction({commit, dispatch, getters}){
         /**récuperation des lessons d'un utilisateur */
-        const lessons = await dispatch('actionHandler', { action: 'fetchAction', endPoint: utils.apiDataUrl.userGetLessonAction, fetchMethod: 'get'});        
+        const urlData = utils.lessonApi.getLessonByUser;
+        const lessons = await dispatch('actionHandler', { action: 'fetchAction', endPoint: urlData.endPoint.replace(':id', getters.userIdentGet.id), fetchMethod: urlData.method});        
         if(!lessons || lessons?.error){            
             return;
         }                       

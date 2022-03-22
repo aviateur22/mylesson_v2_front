@@ -23,10 +23,14 @@ const actions = {
      */
     async lessonTagAction({commit, dispatch}, dataObject){        
         const inputTagText = dataObject.inputTagText;
+
+        /** données url API */
+        const urlData = utils.tagApi.findTagByName;
+
         if(inputTagText.length === 0){
             return commit('lessonTagMut', []);
         } else if(inputTagText?.length < 11){
-            const tags = await dispatch('actionHandler', { action: 'fetchAction', endPoint: utils.apiDataUrl.findTag, data: {tag: inputTagText}});
+            const tags = await dispatch('actionHandler', { action: 'fetchAction', endPoint: urlData.endPoint.replace(':name', inputTagText), fetchMethod: urlData.method});
             if(!tags){
                 return;
             }
@@ -43,7 +47,7 @@ const actions = {
      */
     addTagToSelection({commit, getters}, tagSelected){
         //tag a ajouter
-        const tag = tagSelected.tag
+        const tag = tagSelected.tag;
         //Vérification presence de Tag
         const selectionTags = getters.lessonSelectionTagGet;
         if(selectionTags.length < 5){
@@ -65,7 +69,7 @@ const actions = {
      */
     removeTagFromSelection({commit, getters}, tagSelected){
         //ta a supprimer
-        const tag = tagSelected.tag
+        const tag = tagSelected.tag;
         const selectionTags = getters.lessonSelectionTagGet;
         selectionTags.forEach((selectionTag, i) => {  
             if(selectionTag.id === tag.id){

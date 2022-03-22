@@ -61,7 +61,7 @@ const actions = {
      */
     async lessonRegisterAction({commit, dispatch, getters}, payload){
         /**Formulaire html */
-        const form = payload.formElement
+        const form = payload.formElement;
 
         /**si  lessonSaveState === false*/
         if(!getters.lessonSaveStateGet){
@@ -81,8 +81,8 @@ const actions = {
             }
             /**Dispatcher */
             return lessonId
-            ? await dispatch('actionHandler', { action: 'updateLessonAction', formElement: form })
-            : await dispatch('actionHandler', { action: 'createLessonAction', formElement: form });        
+                ? await dispatch('actionHandler', { action: 'updateLessonAction', formElement: form })
+                : await dispatch('actionHandler', { action: 'createLessonAction', formElement: form });        
         }        
     },
 
@@ -99,9 +99,9 @@ const actions = {
         const lessonForm = payload.formElement;
 
         /**requete pour creation leçon  et récupération de l'id*/
-        const endPoint = utils.apiDataUrl.createLessonAction;
+        const urlData = utils.lessonApi.createLesson;
 
-        const createLessonResult = await dispatch('actionHandler', {action: 'fetchAction', form: lessonForm, endPoint: endPoint});
+        const createLessonResult = await dispatch('actionHandler', {action: 'fetchAction', form: lessonForm, endPoint: urlData.endPoint});
 
         /** Si pas d'erreur lors de la requête*/
         if(!createLessonResult.error){
@@ -124,8 +124,8 @@ const actions = {
      * @returns 
      */
     async updateLessonAction({commit, dispatch, getters}, payload){
-         /**Formulaire html */
-         const lessonForm = payload.formElement;
+        /**Formulaire html */
+        const lessonForm = payload.formElement;
 
         /**id lesson inconnu */
         const lessonId = getters.lessonIdStateGet;       
@@ -135,10 +135,17 @@ const actions = {
         }
 
         /**requete mise a jour d'une lecon*/
-        const endPoint = utils.apiDataUrl.updateLessonAction.replace(':id', lessonId);
+        const urlData = utils.lessonApi.updateLessonById;
 
         /**Requête update leçon */            
-        const updateLessonResult = await dispatch('actionHandler', {action: 'fetchAction', form: lessonForm, endPoint: endPoint, fetchMethod: 'patch'});
+        const updateLessonResult = await dispatch('actionHandler', 
+            {
+                action: 'fetchAction',
+                form: lessonForm,
+                endPoint: urlData.endPoint.replace(':id', lessonId),
+                userId: getters.userIdentGet.id,
+                fetchMethod: urlData.method
+            });
 
         /** Si pas d'erreur lors de la requête */
         if(!updateLessonResult.error){

@@ -1,5 +1,7 @@
+/**données API et url des pages*/
 import utils from '../../helper/utils';
-import router from '../../router'
+
+import router from '../../router';
 
 const state = {        
     //données utilisateur après connexion
@@ -53,10 +55,61 @@ const actions = {
         }
 
         /**Requete ok - succes de la demande */
-        commit('setUserIdentMut', { userAuthenticated: true, roleId: loginResult.role, id: loginResult.id});            
+        commit('setUserIdentMut', { userAuthenticated: true, roleId: loginResult.role, id: loginResult.id, email: loginResult.email});            
         commit('setFlashMessageMut', { error: false, message: `Bienvenue ${loginResult.message}`});
         
         return router.push({name: 'UserHomeAccount'});           
+    },
+
+    async getUserInformation({commit, dispatch, getters}, dataObject){
+        /** données API  */
+        const urlData = utils.userApi.getUserById;
+
+        const userId = getters.userIdentGet.id;
+
+        if(!userId){
+            throw new Error('identifiant utilisateur manquant');
+        }
+
+        if(isNaN(userId, 10)){
+            throw new Error('identifiant utilisateur incorrect');
+        }
+       
+        const getUserById = await dispatch('actionHandler', { action: 'fetchAction', endPoint: urlData.endPoint.replace(':id', getters.userIdentGet.id), fetchMethod: urlData.method});
+        
+        /**echec de la requête */
+        if(!getUserById || getUserById.error){
+            return;
+        }
+        return getUserById;
+    },
+
+    async updateUserInformation({dispatch, getters, commit}, data){
+        /** données API  */
+        const urlData = utils.userApi.updateUserById;
+
+        /** id de l'utilisateur */
+        const userId = getters.userIdentGet.id;
+
+        if(!userId){
+            throw new Error('identifiant utilisateur manquant');
+        }
+
+        if(isNaN(userId, 10)){
+            throw new Error('identifiant utilisateur incorrect');
+        }
+
+        const updateUser = await dispatch('actionHandler', { action: 'fetchAction', endPoint: urlData.endPoint.replace(':id', getters.userIdentGet.id), fetchMethod: urlData.method, form: data.form});
+
+        /**echec de la requête */
+        if(!updateUser || updateUser.error){
+            return;
+        }
+
+        /**Requete ok - succes de la demande */        
+        commit('setFlashMessageMut', { error: false, message: 'modification du compte effectuée'});
+
+        return updateUser;
     },
 
     /*
@@ -84,15 +137,13 @@ const actions = {
      */
     resetUserAuth({commit, dispatch}, dataObject){
         try {
-            const message = dataObject.message;
-            const router = dataObject.router;
+            const message = dataObject.message;            
             const pathName = dataObject.pathName;
             //Reset de tous les states
             commit('setUserIdentMut', {});           
             commit('setUserLessonsMut', []);
             dispatch('resetLessonAction');
-            commit('setFlashMessageMut', { visibility: true, error: false, message: message});
-           
+            commit('setFlashMessageMut', { visibility: true, error: false, message: message});           
             router.push({name: pathName });            
         } catch (error) {
             console.log(error);   

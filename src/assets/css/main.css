@@ -12,6 +12,7 @@
     --secondary_color_small:#575757;
     --color_inactif:#c4c4c4;
     --transition_time_button:0.2s;
+    --transition_time_opacity:0.4s;
     --transition_group_animation:0.9s
 
 }

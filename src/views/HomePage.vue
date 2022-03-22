@@ -78,7 +78,9 @@ export default {
     .lesson__container{
         display: flex;
         flex-wrap: wrap;
-        background: var(--main_background_color);
+        align-items: flex-start ;
+        background: var(--main_background_color);      
+        height:calc(100vh - var(--navbar_height))   ;
     }
 
     .footer{

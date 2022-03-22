@@ -67,7 +67,7 @@ export default {
             /**Modificatgion du text de la modale */
             this.$store.commit('setModalTextStateMut', 'enregistrer votre leçon?');
             this.$store.commit('setModalValidateButtonTextStateMut', 'enregister');
-            this.$store.commit('setmodalRejectButtonTextStateMut', 'ne pas enregistrer')  
+            this.$store.commit('setmodalRejectButtonTextStateMut', 'ne pas enregistrer');
             /**Affichage de la modale */
             this.$store.commit('setModalVisibilityStateMut', true);      
             /** Formulaire de la leçon */

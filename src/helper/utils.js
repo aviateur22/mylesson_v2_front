@@ -3,70 +3,77 @@
  * Donnée API
  */
 const utils = {
-    baseUri: 'http://localhost:3000',
-    /**
-     * config url de l'application
-     */
+    baseUri: 'http://localhost:3000/api',
+
+    /** utilisateurs */
+    userApi: {        
+        login: { endPoint: '/users/login', method: 'post' },
+        register: { endPoint: '/users', method: 'post' },
+        logout: { endPoint: '/users/logout', method: 'post' },
+        updatePasswordById: { endPoint: '/users/password/:id', method: 'patch' },
+        getUserById: { endPoint: '/users/:id', method: 'get' },
+        updateUserById: { endPoint: '/users/:id', method: 'patch' },
+        deleteUserById: { endPoint: '/users/:id', method: 'delete' },
+        getAllUser: { endPoint: '/users', method: 'get' }
+    },
+    /** lessons */
+    lessonApi: {
+        createLesson: { endPoint: '/lessons', method: 'post' },
+        getLessonById: { endPoint: '/lessons/:id', method: 'get' },
+        updateLessonById: { endPoint: '/lessons/:id', method: 'patch' },
+        deleteLessonById: { endPoint: '/lessons/:id', method: 'delete' },
+        getLessonByUser: { endPoint: '/lessons/user/:id', method: 'get' },
+        getAllLesson: { endPoint: '/lessons', method: 'get' }
+    },
+    /**tags */
+    tagApi: {
+        findTagByName: { endPoint: '/tags/name/:name', method: 'get' },
+        getTagById: { endPoint: '/tags/:id', method: 'get' },
+        updateTagById: { endPoint: '/tags/:id', method: 'patch' },
+        deleteTagById: { endPoint: '/tags/:id', method: 'delete' },
+        addTag: { endPoint: '/tags', method: 'post' }
+
+    },
+    /**url page utilisateur */
+    pageUserUrl: {
+
+    },
     apiDataUrl: {
         homePage: {url: '/', pathName: 'HomePage'},
         loginPage: '/login',
         signupPage: '/signup',
         resetPasswordPage: '/reset-password',
-        homeAccountPage: '/users/auth/home',
-        deleteAccountPage: '/users/auth/delete-account',
-        infoPage: '/users/auth/account',
+        homeAccountPage: '/users/home',
+        deleteAccountPage: '/users/delete-account',
+        infoPage: '/users/account',
         /**
          * page listant les leçon d'un utilisateur
          */
-        userLessonPage: {url: '/users/auth/lesson', pathName: 'userLessonPage'}, 
+        userLessonPage: {url: '/users/lesson', pathName: 'userLessonPage'}, 
 
         /**
          * type de leçon a ajouter (markdown ou downloadfile)
          */
-        addLessonTypePage: {url: '/users/auth/editor/lesson-type-selection', pathName: 'AddLessonSelection'},
+        addLessonTypePage: {url: '/users/editor/lesson-type-selection', pathName: 'AddLessonSelection'},
 
         /**
          * page d'édition d'une lecon markdown
          */
-        addMarkdownLessonPage: {url: '/users/auth/editor/add/lesson-markdown', pathName: 'AddMarkdownLesson'},
+        addMarkdownLessonPage: {url: '/users/editor/add/lesson-markdown', pathName: 'AddMarkdownLesson'},
 
         /**
          * page d'update d'une leçon existante
          */
-        updateLessonPage: {url: '/users/auth/editor/update/markdown-lesson/:slug', pathName: 'UpdateLesson'},
+        updateLessonPage: {url: '/users/editor/update/markdown-lesson/:slug', pathName: 'UpdateLesson'},
 
         /**
          * page de lecture d'une leçon
          */
         readLessonPage: {url: '/lesson/:slug', pathName: 'ReadLesson'},
 
-        uploadFilePage: '/users/auth/editor/upload/lesson-file',
-        updateUserRolePage: '/users/auth/admin/update-user-role',
-        resetDatabasePage: '/users/auth/super-admin/reset-database',
-
-        /**Gestion requete API */
-        base_uri: '/gh',
-        logoutAction: '/users/logout',
-        userLoginAction: '/users/login',
-        userSignupAction: '/users/signup',
-        userGetInfoAction: '/users/auth/id',        
-        userUpdateInfoAction: '/users/auth/id',
-        userDeleteAccountAction: '/users/auth/id',
-        /**Recuperation de toutes les leçons */
-        userGetAllLessonAction: '/lessons',
-        /**Recuperation leçons d'un utilisateur */
-        userGetLessonAction: '/lessons/auth/user/user-lesson',
-        /**création d'une leçon */
-        createLessonAction: '/lessons/auth',
-        /**uploiad d'un fichier markdown */
-        uploadLessonAction: '/lessons/auth',
-        /**récuperation d'une leçon exisante */
-        getLessonAction: '/lessons/auth/:id',   
-        /**mise a jour d'une lecon */    
-        updateLessonAction: '/lessons/auth/:id',
-        /**suppression d'une leçon */
-        removeLessonAction: '/lessons/auth/id',
-        findTag: '/lessons/auth/tags'
+        uploadFilePage: '/users/editor/upload/lesson-file',
+        updateUserRolePage: '/users/admin/update-user-role',
+        resetDatabasePage: '/users/super-admin/reset-database'
     }
 };
 export default utils;

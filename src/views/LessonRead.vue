@@ -41,21 +41,21 @@
 <script>
 import MarkdownHandler from '../helper/markdown/markdownConverter';
 export default {
-  name: 'lessonRead',
-  methods: {
-  },
-  computed: {
-    /**objet lesson */
-    lesson(){  
-      return this.$store.getters.lessonStateGet;
+    name: 'lessonRead',
+    methods: {
     },
+    computed: {
+        /**objet lesson */
+        lesson(){  
+            return this.$store.getters.lessonStateGet;
+        },
 
-    content(){
-        /** Markdown pour le html */
-        const markdownHandler = new MarkdownHandler();
-        return markdownHandler.getHtml(this.lesson.content);        
+        content(){
+            /** Markdown pour le html */
+            const markdownHandler = new MarkdownHandler();
+            return markdownHandler.getHtml(this.lesson.content);        
+        }
     }
-  }
 }
 </script>
 

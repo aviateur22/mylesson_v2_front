@@ -2,10 +2,10 @@
  * bouton leçon, affiche soit:
  * une leçon en lecture 
  * une leçon en écriture
- */
- import MarkdownHandler from '../../helper/markdown/markdownConverter';
- import utils from '../../helper/utils';
- import router from '../../router'
+*/
+import MarkdownHandler from '../../helper/markdown/markdownConverter';
+import utils from '../../helper/utils';
+import router from '../../router';
 const state = { 
 };
 
@@ -34,15 +34,15 @@ const actions = {
             return commit('setFlashMessageMut', { error: true, message: 'erreur lors de la récuperation de la leçon'});
         }
 
-         /** Markdown pour le html */
-         const markdownHandler = new MarkdownHandler();
-        
-         /**mise a jour des states */
-         commit('setTitleMut', lesson.title);
-         commit('setLessonIdMut', lessonId);
-         commit('setMarkdownContentMut', lesson.content);
-         commit('setHtmlContentMut', markdownHandler.getHtml(lesson.content));
-         commit('lessonSelectionTagMut', lesson.tags);
+        /** Markdown pour le html */
+        const markdownHandler = new MarkdownHandler();
+    
+        /**mise a jour des states */
+        commit('setTitleMut', lesson.title);
+        commit('setLessonIdMut', lessonId);
+        commit('setMarkdownContentMut', lesson.content);
+        commit('setHtmlContentMut', markdownHandler.getHtml(lesson.content));
+        commit('lessonSelectionTagMut', lesson.tags);
 
         /**Affichage de l'éditeur markdown */
         router.push({name: 'UpdateLesson', params: {slug: slug}});
@@ -79,13 +79,13 @@ const actions = {
      * @property {Object} commit - mutation
      * @property {Number} lessonId - id de la lecon a charger
      */
-     async loadLessonAction({dispatch, commit}, lessonData){
-         const lessonId = lessonData.lessonId
+    async loadLessonAction({dispatch, commit}, lessonData){
+        const lessonId = lessonData.lessonId;
         /**reset des states */
         await dispatch('actionHandler', {action: 'resetLessonAction'});
-        const endPoint = utils.apiDataUrl.getLessonAction.replace(':id', lessonId);
+        const urlData = utils.lessonApi.getLessonById;
         /**Requête update leçon */  
-        const loadLesson = await dispatch('actionHandler', {action: 'fetchAction', endPoint: endPoint, fetchMethod: 'get'});
+        const loadLesson = await dispatch('actionHandler', {action: 'fetchAction', endPoint: urlData.endPoint.replace(':id', lessonId), fetchMethod: urlData.method});
                
         /** Erreur dans la réponse */
         if(!loadLesson || loadLesson.error){

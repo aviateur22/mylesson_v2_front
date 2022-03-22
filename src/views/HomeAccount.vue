@@ -1,5 +1,5 @@
 <template>
-<div class="main_container">
+<div class="home__container">
     <div class="container">
         <!-- titre de la page -->
         <section class="nav__title-container">
@@ -17,8 +17,7 @@
                 <Lougout/>
             </section>
         </section>          
-    </div>
- 
+    </div> 
 </div>  
 </template>
 
@@ -69,7 +68,7 @@ export default {
 
 <style scoped>
 
-    .main_container{
+    .home__container{
         width: 100%;
         margin-top: var(--navbar_height);   
         height: calc(100vh - var(--navbar_height));
@@ -112,17 +111,18 @@ export default {
 
     @media screen and (min-width:768px) {
 
+        .nav__button{            
+            justify-content: space-between;
+            align-items: stretch;
+            flex-wrap: wrap;           
+        }
+        
         .container{        
             width: 768px;     
             height: 100vh;                   
             box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
         }
 
-        .nav__button{            
-            justify-content: space-between;
-            align-items: stretch;
-            flex-wrap: wrap;           
-        }
     }
 
 </style>

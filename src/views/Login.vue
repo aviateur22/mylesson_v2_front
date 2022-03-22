@@ -9,7 +9,7 @@
                     <div class="form__group">
                         <label for="email" class="form__label">email</label>
                         <div class="form__control">
-                            <input class="form__input" type="text" placeholder="email" name="email">
+                            <input class="form__input" type="text" placeholder="toto@hotmail.fr" name="email">
                         </div>
                     </div>
 
@@ -51,7 +51,7 @@ export default {
             try {
                 //désactivation du bouton
                 this.disableLoginButton = true;
-                await this.$store.dispatch('actionHandler', { action: 'loginAction', form: e.target, endPoint: utils.apiDataUrl.userLoginAction});
+                await this.$store.dispatch('actionHandler', { action: 'loginAction', form: e.target, endPoint: utils.userApi.login.endPoint});
                 //réactivation du bouton
                 this.disableLoginButton = false;
             } catch (error) {

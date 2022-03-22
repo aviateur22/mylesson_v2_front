@@ -47,6 +47,18 @@ const routes = [
             return import(/* webpackChunkName: "about" */ '../views/HomeAccount.vue');
         }
     },
+    /** page modification des données utilisateur */
+    {
+        path: utils.apiDataUrl.infoPage,
+        name: 'UserInformation',
+        meta: {
+            requiresAuth: true
+        },
+        component: function() {
+            return import(/* webpackChunkName: "about" */ '../views/userInformation.vue');
+        }
+
+    },
     {
         path: utils.apiDataUrl.resetPasswordPage,
         name: 'LostPassword',

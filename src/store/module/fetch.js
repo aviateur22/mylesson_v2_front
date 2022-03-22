@@ -18,14 +18,19 @@ const actions = {
      * @property {object} [data.data] - données a envoyer - [optionnel|null]
      * @returns {Object} fetchResult
      */
-    async fetchAction({commit, getters}, data){
+    async fetchAction({commit, dispatch, getters}, data){
         /**données pour le requete */
         let fetchData;
 
         /**données en provenance d'un formulaire */
-        if(data?.form){
+        if(data?.form){            
             const formData = new FormData(data.form);
-            fetchData = Object.fromEntries(formData.entries());               
+            fetchData = Object.fromEntries(formData.entries());
+
+            /** ajout de l'id utilisateur pour sauvegarder une leçon */
+            if(data.userId){
+                fetchData.userId = data.userId;
+            }            
         } else {
             fetchData = data.data;
         }
@@ -45,6 +50,14 @@ const actions = {
 
         /**fetch */
         const fetchRequest = await fetch(uri, setting);
+
+        console.log(fetchRequest.status);
+
+        /** session JWT terminé */
+        if(Number(fetchRequest.status) === 401){
+            return dispatch('resetUserAuth', {message: 'session expirée merci de vous reconnecter', pathName: 'home'});
+        }
+        
         const result = await fetchRequest.json();
 
         /** réinitialisation des parametres de l'application */

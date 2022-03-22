@@ -5,17 +5,23 @@
                 <h3> envie de vous deconnecter? </h3>
             </section>
             <section class="button__container-section">
-                <button @click="logoutAction" class="button__logout">se deconnecter</button>
+                <SubmitButton :disableLoginButton='disableLoginButton' :textSubmitButton='textSubmitButton' @click="logoutAction"/>                
             </section>
         </div>
     </div>
 </template>
 
 <script>
+import SubmitButton from '../button/SubmitButton.vue';
 export default {
     name: 'Lougout',
+    components: {
+        SubmitButton
+    },
     data(){
         return {
+            disableLoginButton: false,
+            textSubmitButton: 'se deconnecter'
         };
     },
     methods: {
@@ -23,7 +29,10 @@ export default {
          * Deconnexion du client
          */
         async logoutAction() {   
+            //désactivation du bouton
+            this.disableLoginButton = true;
             this.$store.dispatch('logoutAction', this.$router);
+            this.disableLoginButton = false;
         },
     }
 };
@@ -43,7 +52,8 @@ export default {
     }
 
     .button__container-section{
-       width:100%
+       width:100%;
+       padding:0px 20px
     }
 
     .title__section{
@@ -67,7 +77,10 @@ export default {
         background: var(--main_color);        
     }
 
-    @media screen and (min-width:768px) {
-        
+   @media screen and (min-width:768px) {
+
+        .button__container-section{        
+            width: 768px;                                    
+        }
     }
 </style>
