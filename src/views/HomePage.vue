@@ -9,14 +9,14 @@
             <section class="tag__section">
                 <div class="tag__main-container">
                     <div class="tag__container">
-                        <MarkdownTag ref="markdownTag" class="lesson__tag-selection"/>
+                        <MarkdownTag :filterLesson="true" ref="markdownTag" class="lesson__tag-selection"/>
                     </div>
                 </div>
             </section>
             <section class="lesson__section">
                 <div class="lesson__main-container">
                     <div class="lesson__container">
-                        <LessonButton v-for="(lesson, i) in lessons" :key="i" :data="lesson" :actionClickName="'readLesson'"/>                        
+                        <LessonButton v-for="(lesson, i) in lessons" :key="i" :data="lesson" :editLesson="false"/>                        
                     </div>
                 </div>
             </section>

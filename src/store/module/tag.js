@@ -1,16 +1,18 @@
 import utils from '../../helper/utils';
-const state = { 
-    /**liste de tag d'une leçon */
-    lessonTagsState: [],
-
-    /**liste des tags selectionnés par l'utilisateur*/
-    lessonSelectionTagState: []
+const state = {   
+    /** tag selectionné par l'utilisateur */  
+    selectedTags: [],
+    /** tag proposés */
+    proposalTags: []
 };
 
 /**Renvoie du state */
 const getters = {
-    lessonTagsStateGet: (state)=>state.lessonTagsState,
-    lessonSelectionTagGet: (state)=>state.lessonSelectionTagState
+    /** liste des tags selectionnés */
+    getSelectedTags: (state)=>state.selectedTags,
+
+    /** liste des tags proposés */
+    getProposalTags: (state)=>state.proposalTags
 };
 
 const actions = {
@@ -21,21 +23,26 @@ const actions = {
      * @property {string} dataObject.inputTagText - input text value
      * @returns 
      */
-    async lessonTagAction({commit, dispatch}, dataObject){        
-        const inputTagText = dataObject.inputTagText;
+    async getTagsByName({commit, dispatch}, data){        
+        const inputTagText = data.inputTagText;
 
         /** données url API */
-        const urlData = utils.tagApi.findTagByName;
+        const endPoint = utils.tagApi.findTagByName.endPoint.replace(':name', inputTagText);
+
+        const method = utils.tagApi.findTagByName.method;
 
         if(inputTagText.length === 0){
-            return commit('lessonTagMut', []);
+            /** vide la liste de proposition */
+            return commit('setProposalTag', []);            
         } else if(inputTagText?.length < 11){
-            const tags = await dispatch('actionHandler', { action: 'fetchAction', endPoint: urlData.endPoint.replace(':name', inputTagText), fetchMethod: urlData.method});
+            const tags = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method });
+            /** si pas de reponse */
             if(!tags){
                 return;
             }
+
             /**Mise a jour du state avec la liste de tag*/
-            return commit('lessonTagMut', tags);   
+            return commit('setProposalTag', tags);   
         }  
     },
 
@@ -45,18 +52,19 @@ const actions = {
      * @property {Object} getters - state getter
      * @param {Object} tag - tag a ajouter dans la liste
      */
-    addTagToSelection({commit, getters}, tagSelected){
+    async addSelectedTag({getters, commit}, data){
         //tag a ajouter
-        const tag = tagSelected.tag;
+        const tagSelected = data.tagSelected;
+        
         //Vérification presence de Tag
-        const selectionTags = getters.lessonSelectionTagGet;
-        if(selectionTags.length < 5){
-            const findTag = selectionTags.find(selectionTag => selectionTag.id === tag.id);
+        const selectedTags = getters.getSelectedTags;
+       
+        if(selectedTags.length < 5){
+            const findTag = selectedTags.find(tag => tag.id === tagSelected.id);
             if(!findTag){
-                //ajout du tag dans la selection
-                selectionTags.push(tag);                
-                //passe le status  de sauvegarde à false
-                commit('setLessonSaveMut', false);                 
+                //ajout du tag dans la selection                
+                selectedTags.push(tagSelected);
+                commit('setSelectionTag', selectedTags);                                            
             }
         }
     },
@@ -67,26 +75,26 @@ const actions = {
      * @property {Object} getters - state getter
      * @param {Object} tag - tag a supprimer de la liste de selection
      */
-    removeTagFromSelection({commit, getters}, tagSelected){
-        //ta a supprimer
-        const tag = tagSelected.tag;
-        const selectionTags = getters.lessonSelectionTagGet;
-        selectionTags.forEach((selectionTag, i) => {  
-            if(selectionTag.id === tag.id){
-                selectionTags.splice(i, 1);
-                //passe le status  de sauvegarde de la leçon à false
-                commit('setLessonSaveMut', false);
+    removeSelectedTag({commit, getters}, data){
+        //tag à supprimer
+        const tagSelected = data.tagSelected;
+        //liste des tags selectionnés
+        const selectedTags = getters.getSelectedTags;
+        selectedTags.forEach((selectionTag, i) => {  
+            if(selectionTag.id === tagSelected.id){                
+                selectedTags.splice(i, 1); 
+                commit('setSelectionTag', selectedTags);         
             }
         });
     }
 };
 
 const mutations = {    
-    /**Mise a jour de la liste de tag d'une lecon*/
-    lessonTagMut: (state, lessonTag) => (state.lessonTagsState = lessonTag),
+    /**update liste des propositions de tag*/
+    setProposalTag: (state, proposalTag) => (state.proposalTags = proposalTag),
 
-    /**Mise a jour des tag selectionnés */
-    lessonSelectionTagMut: (state, lessonSelectionTag) => (state.lessonSelectionTagState = lessonSelectionTag),
+    /** update liste des tags selectionnés */
+    setSelectionTag: (state, selectionTag) => (state.selectedTags = selectionTag),
 };
 
 export default {

@@ -6,7 +6,7 @@
             </div>
             <div class="form__lesson-container">
                 <div class="form__lesson-button">
-                    <LessonButton v-for="(lesson, id) in this.lessons" :key="id" :data="lesson" :actionClickName="'editLesson'"/>
+                    <LessonButton v-for="(lesson, id) in this.lessons" :key="id" :data="lesson" :editLesson="true"/>
                 </div>                
             </div>       
       </div>      

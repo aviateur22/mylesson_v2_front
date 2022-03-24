@@ -38,12 +38,12 @@ const actions = {
      */
     async continueAction({getters, dispatch, commit}){  
         /**vérification du code d'execution */ 
-        const request = await dispatch('actionHandler', {action: getters.dataStateGet.validateActionName, formElement: getters.dataStateGet.data});
+        const request = await dispatch('actionHandler', {action: getters.dataStateGet.validateActionName, formData: getters.dataStateGet.formData});
 
         /**reset des données de la modal */
         dispatch('actionHandler', {action: 'resetModalParameter'});
         
-        if(request.error){            
+        if(!request){            
             return commit('setModalVisibilityStateMut', false);
         }
         router.push({name: getters.dataStateGet.routerTo});

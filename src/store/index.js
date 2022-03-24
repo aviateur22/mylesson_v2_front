@@ -11,6 +11,8 @@ import home from './module/home';
 import lessonDisplay from './module/lessonDisplay';
 import actionHandler from './module/actionHandler';
 import lessonReader from './module/lessonReader';
+import axiosApi from './module/axios';
+import lesson from './module/lesson';
 
 export default new Vuex.Store({
     plugins: [createPersistedState({
@@ -27,6 +29,8 @@ export default new Vuex.Store({
         home,
         lessonDisplay,
         actionHandler,
-        lessonReader
+        lessonReader,
+        axiosApi,
+        lesson
     }
 });

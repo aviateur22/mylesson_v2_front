@@ -13,12 +13,12 @@
     </div>
 </template>
 <script>
-import store from '../../store';
+
 export default {
     name: 'MarkdownReader',    
     computed: {
         lessonHtml(){
-            return store.getters.htmlContentStateGet;
+            return this.$store.getters.getLessonEditor.editor.htmlOutput;
         }
     }
 };

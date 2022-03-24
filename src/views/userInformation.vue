@@ -6,7 +6,8 @@
                 <h2 class="information__title">données de votre compte</h2>
             </section>
             <!-- boutons de navigation -->
-            <section class="information__form-container">          
+            <section class="information__form-container">    
+                      
                 <form ref="informationForm" class="form">            
                     <div class="form__group">
                         <label for="email" class="form__label">email</label>
@@ -21,6 +22,31 @@
                             <input :disabled='!inputEnable' class="form__input" type="text" name="login" placeholder="toto" v-model="inputUserData.login">
                         </div>
                     </div>
+
+                    <!-- selection du sex -->
+                    <div class="form__group-select">
+                        <label for="sex" class="form__label">Votre sex</label>
+                        <select class="form__input" name="sex" v-model="inputUserData.sex">
+                            <option selected disabled value="">Choisissez votre sex</option>
+                            <option name="sex">homme</option>
+                            <option name="sex">femme</option>
+                        </select>
+                    </div>                   
+
+                    <!-- selection de l'avatar -->
+                    <div class="avatar__container">
+                        <div class="form__group-avatar">
+                            <label for="avatar" class="form__label">votre avatar</label>
+                            <div class="form__control">
+                                <input style="display: none" @change="selectImage" :disabled='!inputEnable' class="form__input" type="file" name="image" ref="imageInput" accept="image">                        
+                            </div>                        
+                        </div>
+                        <!--Preview de l'image -->
+                        <div v-if="image" class="preview__avatar-container">             
+                            <img :src="image" class="preview__avatar"/>
+                        </div>
+                        <SubmitButton class="avatar__button"  :disableSubmitButton='inputEnable' @click.prevent="$refs.imageInput.click()" :textSubmitButton="textAvatarButton"/>
+                    </div>                   
                 </form>                          
             </section>      
             <section class="information__button-container">
@@ -40,6 +66,8 @@
 
 <script>
 import SubmitButton from '../components/button/SubmitButton.vue';
+import axios from 'axios';
+import utils from '../helper/utils';
 export default {
     components: {
         SubmitButton
@@ -50,6 +78,8 @@ export default {
             textSubmitButton: 'modifier',
             /** text bouton annuler */
             textCancelButton: 'annuler',
+            /** text bouton avatar */
+            textAvatarButton: 'changer mon avatar',
             /** active ou desactive les inputs */
             inputEnable: false,
             /** desactivation du bouton valider */
@@ -57,8 +87,18 @@ export default {
             /**données en provenace de la bdd */
             userDataEmail: '',
             userDataLogin: '',  
-            /** données dans l'input modifiable par l'utilisateur */
-            inputUserData: {}
+            userDataSex: '',
+            userDataImage: '',
+            /** données dans l'input modifiable par l'utilisateur
+             * @property inputUserData.email
+             * @property inputUserData.login
+             * @property inputUserData.sex
+             * @property inputUserData.image
+             */
+            inputUserData: {},  
+            selectedSex: '',
+            /** object pour afficher la preview de l'avatar*/
+            image: null,
         };
     },
     methods: {
@@ -92,6 +132,7 @@ export default {
             /** réinitilalise les données */
             this.inputUserData.email = this.userDataEmail; 
             this.inputUserData.login = this.userDataLogin;
+            this.inputUserData.sex = this.userDataSex;
             /** désactivation des inputs */
             this.inputEnable = !this.inputEnable; 
         },
@@ -100,15 +141,14 @@ export default {
          * mise a jour des info utilisateir
          */
         async updateUserInformation(){
-            this.disableSubmitButton = true;
-            const updatUserData = await this.$store.dispatch('actionHandler', { action: 'updateUserInformation', form: this.$refs.informationForm });
+            this.disableSubmitButton = true;               
+            /** creation d'un formData */
+            const formData = new FormData(this.$refs.informationForm);            
 
-            /** modification des données  */
-            if(updatUserData){
-                /** données modifiable si update */
-                this.userDataEmail = updatUserData.email;
-                this.userDataLogin = updatUserData.login;
-            }
+            const request = await this.$store.dispatch('actionHandler', {action: 'updateUserInformation', formData});
+
+            console.log(request);
+
             this.disableSubmitButton = false;
         },
 
@@ -118,15 +158,24 @@ export default {
         async getUserInformation(){
             /** */
             const downloadData = await this.$store.dispatch('actionHandler', { action: 'getUserInformation'});
-
+            
             /** données modifiable si update */
             this.userDataEmail = downloadData.email;
             this.userDataLogin = downloadData.login;
 
             /** données modifiable par les input */
             this.inputUserData = downloadData;
-        }
+            this.inputUserData.sex = '';
+        },
 
+        /**
+         * affichage de la preview
+         */
+        selectImage(){            
+            /** select file in input */            
+            this.inputUserData.image = this.$refs.imageInput.files[0];
+            this.image = URL.createObjectURL(this.inputUserData.image);
+        }
     },
     created(){
         this.getUserInformation();
@@ -137,7 +186,6 @@ export default {
 <style scoped>
     .information__main-container{
         margin-top:var(--navbar_height) ;
-        height: calc( 100vh - var(--navbar_height));
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -179,6 +227,16 @@ export default {
         flex-direction: column;
     }
 
+    .form__group{
+        padding: 10px 0px;        
+    }
+
+    .form__group-select{
+        padding: 10px 0px;
+        display: flex;
+        flex-direction: column;
+    }
+
     .form__control{
         width: 100%;
     }
@@ -198,7 +256,35 @@ export default {
         padding-left: 5px;
     }
 
+    .avatar__container{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .form__group-avatar{
+        width: 100%;   
+        padding: 10px 0px;        
+    }
+    .preview__avatar-container{    
+        width: 150px;
+        height: 250px;
+        position: relative;
+    }
+
+    .preview__avatar{
+        width: 150px;
+        height: 250px;
+        object-fit:contain;
+    }
+
+    .avatar__button{
+        max-width: 200px
+    }
     .information__button-container{
+        border-top: 0.1px solid gray;   
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -207,8 +293,8 @@ export default {
         padding: 1em 1em;
         max-width: 500px;
     }
-
-    .button__container{       
+    
+    .button__container{            
         width: 100%;
     }
 
@@ -220,9 +306,13 @@ export default {
     }    
 
     @media screen and (min-width:768px) {
+
+    }
+
+    @media screen and (min-width:768px) {
+       
         .container{        
-            width: 768px;     
-            
+            width: 768px;            
             box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
         }
 

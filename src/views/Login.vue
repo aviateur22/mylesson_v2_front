@@ -51,7 +51,11 @@ export default {
             try {
                 //désactivation du bouton
                 this.disableLoginButton = true;
-                await this.$store.dispatch('actionHandler', { action: 'loginAction', form: e.target, endPoint: utils.userApi.login.endPoint});
+
+                /** creation d'un formData */                
+                const formData = Object.fromEntries(new FormData(e.target).entries());            
+
+                await this.$store.dispatch('actionHandler', { action: 'loginAction', formData });
                 //réactivation du bouton
                 this.disableLoginButton = false;
             } catch (error) {

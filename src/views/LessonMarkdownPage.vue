@@ -16,7 +16,7 @@
                 </section>
             </div>
             <div class="lesson__button-container">
-                <SubmitButton @click="registerLessonClick" :disableLoginButton='disableLoginButton' :textSubmitButton='textSubmitButton'/>
+                <SubmitButton @click="saveLesson" :disableLoginButton='disableLoginButton' :textSubmitButton='textSubmitButton'/>
                 <!-- <input @click="submitForm" :disabled="!! submitFormValue" type="submit" class="button button--primary" value="Enregistrer"> -->
                 <!-- <router-link @click="submitForm" class="lesson__button-navlink" to="/">Enregistrer ma lesson</router-link> -->
             </div>
@@ -44,20 +44,45 @@ export default {
     },
     methods: {
         /**
-         * 
+         * Action de création ou Update d'une lecon
          */
-        async registerLesson(){
-            //Inscription des tags dans hidden input du Formulaire            
+        async saveLesson(){
+            //desactivation du boutton de soumission
+            this.disableLoginButton = !this.disableLoginButton;
+
+            /** Inscription des tags dans hidden input du Formulaire */
             const tags = await this.$refs.markdowneditor.$refs.markdownTag.setTagId();
 
             /** Formulaire de la leçon */
-            const formLesson = this.$refs.markdowneditor.$refs.submitForm;    
-            
-            /** Enregistrement du formaulaire */
-            const registerLesson = await this.$store.dispatch('actionHandler', {action: 'lessonRegisterAction', formElement: formLesson });
+            const formLesson = this.$refs.markdowneditor.$refs.submitForm;
 
-            /** renvoie du statut de sauvegarde */
-            return registerLesson;
+            /** userId */
+            const userId = this.$store.getters.userIdentGet.id;
+            
+            /** recuperation formdata */
+            const formData = new FormData(formLesson);
+
+            /**ajout de id utilisateur  */
+            formData.append('userId', userId);
+
+            /** requete  */
+            let saveLesson;
+            
+            if(!this.$store.getters.getLessonEditor.editor.id){
+                /** 
+                 * création d'un lecon
+                 */
+                saveLesson = await this.$store.dispatch('actionHandler', {action: 'createLesson', formData: Object.fromEntries(formData.entries()) });
+            } else { 
+                /**
+                 * mise a jour d'une lecon 
+                 */               
+                saveLesson = await this.$store.dispatch('actionHandler', {action: 'updateLessonById', formData: Object.fromEntries(formData.entries()) });
+            }
+            //reactivation du boutton
+            this.disableLoginButton = !this.disableLoginButton; 
+
+            return saveLesson;
         },
 
         /**
@@ -73,35 +98,32 @@ export default {
             /** Formulaire de la leçon */
             const tags = await this.$refs.markdowneditor.$refs.markdownTag.setTagId();
             const formLesson = this.$refs.markdowneditor.$refs.submitForm;
+            /** userId */
+            const userId = this.$store.getters.userIdentGet.id;
+            
+            /** recuperation formdata */
+            const formData = new FormData(formLesson);
+
+            /**ajout de id utilisateur  */
+            formData.append('userId', userId);
 
             const data = {
-                data: formLesson, 
-                validateActionName: 'lessonRegisterAction',  
+                formData: Object.fromEntries(formData.entries()), 
+                validateActionName: this.$store.getters.getLessonEditor.editor.id ? 'updateLessonById' : 'createLesson',  
                 cancelActionName: 'leaveEditor',
                 routerTo: routerPathName
             };
 
             this.$store.commit('setDataMut', data);           
-        },
-
-        /**
-         * clique enregistrement leçon
-         */
-        async registerLessonClick() {    
-            //desactivation du boutton de soumission
-            this.disableLoginButton = !this.disableLoginButton;
-            const registerLesson = await this.registerLesson();
-            //reactivation du boutton
-            this.disableLoginButton = !this.disableLoginButton;                  
         }
     },
     async beforeRouteLeave(to, from, next) {        
         try {            
             /**leçon pas enregistré */
-            if(!this.$store.getters.lessonSaveStateGet){
+            if(!this.$store.getters.getLessonEditor.editor.isSave){
                 /** parametrage de la modal */
                 await this.modalParameter(to.name)
-                /**message d'avertissement */
+                /** message d'avertissement */
                 this.$store.commit('setFlashMessageMut', { error: true, message: 'Attention, la leçon n\'est pas sauvgardée'});  
                  
                 return next(false);

@@ -4,7 +4,7 @@
             <form ref="submitForm" @submit.prevent="registerLesson" class="lesson__form">
                 <div class="lesson__tag-container">
                     <!-- Selection des tags -->
-                    <MarkdownTag ref="markdownTag" class="lesson__tag-selection"/>                      
+                    <MarkdownTag :filterLesson="false" ref="markdownTag" class="lesson__tag-selection"/>                      
                 </div>
                 <div class="form__group">                   
                     <label for="title" class="form__label">titre de votre lesson</label>
@@ -55,16 +55,16 @@ export default {
                 return false;
             }
             //Envoie du text markdown dans le store
-            this.$store.commit('setMarkdownContentMut', this.$refs.textarea.value);
+            this.$store.commit('setLessonMarkdownText', this.$refs.textarea.value);
 
             // Renvoie le text markdown formatté en html
-            const lessonHtml = this.markdownHandler.getHtml(this.$store.getters.markdownContentStateGet);            
+            const lessonHtml = this.markdownHandler.getHtml(this.$store.getters.getLessonEditor.editor.markdownText);            
             
             //Envoie du text au format HTML dans le store pour le composant MarkdownReader
-            this.$store.commit('setHtmlContentMut', lessonHtml);
+            this.$store.commit('setLessonInHtml', lessonHtml);
 
             //passe le status  de sauvegarde à false
-            this.$store.commit('setLessonSaveMut', false);
+            this.$store.commit('setLessonSaveStatus', false);
         },
 
         /**
@@ -72,21 +72,21 @@ export default {
          */
         titleChange(e){ 
             //mutation du titre
-            this.$store.commit('setTitleMut', this.$refs.inputTitle.value);
+            this.$store.commit('setLessonTitle', this.$refs.inputTitle.value);
             //passe le status  de sauvegarde à false
-            this.$store.commit('setLessonSaveMut', false);
+            this.$store.commit('setLessonSaveStatus', false);
         },
 
         /**
          * initilalisation du formulaire pour le chargement d'une leçon 
          */
         formLessonLoad(){
-            /**si id */
-            if(this.$store.getters.lessonIdStateGet){     
-                this.lessonName = this.$store.getters.titleStateGet;
-                this.lessonMarkdown = this.$store.getters.markdownContentStateGet;           
-                this.$refs.inputTitle.value = this.$store.getters.titleStateGet;
-                this.$refs.textarea.value = this.$store.getters.markdownContentStateGet;
+            /**chargement des données si id de present*/
+            if(this.$store.getters.getLessonEditor.editor.id){     
+                this.lessonName = this.$store.getters.getLessonEditor.editor.title;
+                this.lessonMarkdown = this.$store.getters.getLessonEditor.editor.markdownText;           
+                this.$refs.inputTitle.value = this.$store.getters.getLessonEditor.editor.title;
+                this.$refs.textarea.value = this.$store.getters.getLessonEditor.editor.markdownText;
             }
         }
     },

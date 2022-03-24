@@ -20,17 +20,22 @@ const actions = {
      */
     async fetchAction({commit, dispatch, getters}, data){
         /**données pour le requete */
-        let fetchData;
-
+        let fetchData;        
+        console.log(data);
         /**données en provenance d'un formulaire */
         if(data?.form){            
             const formData = new FormData(data.form);
             fetchData = Object.fromEntries(formData.entries());
+            console.log(fetchData);
 
             /** ajout de l'id utilisateur pour sauvegarder une leçon */
             if(data.userId){
                 fetchData.userId = data.userId;
-            }            
+            }    
+            if(data.file){
+                console.log(data.file);
+                fetchData.file = data.file;
+            }        
         } else {
             fetchData = data.data;
         }
@@ -39,10 +44,9 @@ const actions = {
         const setting = {                
             method: data.fetchMethod ? data.fetchMethod.toUpperCase() : 'POST',
             //Permet de renvoyer les cookies lors de la demande
-            credentials: 'include',
+            credentials: 'include',            
             headers: {
-                'User-Ident': getters.userIdentGet.id ? getters.userIdentGet.id : '',
-                mode: 'cors',
+                mode: 'cors',                
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(fetchData)

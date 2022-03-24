@@ -25,11 +25,17 @@ const actions = {
      * @property {string} dataObject.endPoint - end point requête     
      * @returns {Object} [null|pageHtml] - resultat de la requete
      */
-    async signupAction({dispatch, commit}, dataObject){        
-        const signupResult = await dispatch('actionHandler', { action: 'fetchAction', endPoint: dataObject.endPoint, form: dataObject.form });
+    async signupAction({dispatch, commit}, data){
+        /** endpoint de la requete*/
+        const endPoint = utils.userApi.register.endPoint;
+
+        /** methode de la requete */
+        const method = utils.userApi.register.method;
+
+        const signupResult = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData });        
         
-        /**echec de la requête */
-        if(!signupResult || signupResult.error){
+        /** echec de la requete */
+        if(!signupResult){
             return;
         }
         /**Requete ok - succes de la demande */
@@ -46,11 +52,17 @@ const actions = {
      * @property {string} [dataObject.fetchMethod] - methode requête    
      * @returns {Object} [null|pageHtml] - resultat de la requete
      */
-    async loginAction({commit, dispatch}, dataObject){
-        const loginResult = await dispatch('actionHandler', { action: 'fetchAction', endPoint: dataObject.endPoint, form: dataObject.form});
-        
-        /**echec de la requête */
-        if(!loginResult || loginResult.error){
+    async loginAction({commit, dispatch}, data){
+        /** endpoint de la requete*/
+        const endPoint = utils.userApi.login.endPoint;
+
+        /** methode de la requete */
+        const method = utils.userApi.login.method;
+
+        const loginResult = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData });  
+
+        /** echec de la requete */
+        if(!loginResult){
             return;
         }
 
@@ -68,25 +80,32 @@ const actions = {
      * @returns {object} requestedUser
      */
     async getUserInformation({ dispatch, getters}){
-        /** données API  */
-        const urlData = utils.userApi.getUserById;
-
+        /** id utilisateur */
         const userId = getters.userIdentGet.id;
-
+        
+        /** id utilisateur manuqant */
         if(!userId){
             throw new Error('identifiant utilisateur manquant');
-        }
+        }        
 
+        /** id utilsateur faux */
         if(isNaN(userId, 10)){
             throw new Error('identifiant utilisateur incorrect');
         }
-       
-        const getUserById = await dispatch('actionHandler', { action: 'fetchAction', endPoint: urlData.endPoint.replace(':id', getters.userIdentGet.id), fetchMethod: urlData.method});
+
+        /** endpoint de la requete*/
+        const endPoint = utils.userApi.getUserById.endPoint.replace(':id', userId);
+
+        /** methode de la requete */
+        const method = utils.userApi.getUserById.method;
         
+        const getUserById = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method });
+
         /**echec de la requête */
-        if(!getUserById || getUserById.error){
+        if(!getUserById){
             return;
         }
+
         return getUserById;
     },
 
@@ -99,21 +118,26 @@ const actions = {
      * @returns {object} updatedUser
      */
     async updateUserInformation({dispatch, getters, commit}, data){
-        /** données API  */
-        const urlData = utils.userApi.updateUserById;
-
         /** id de l'utilisateur */
         const userId = getters.userIdentGet.id;
 
+        /** id utilisateur manuqant */
         if(!userId){
             throw new Error('identifiant utilisateur manquant');
-        }
+        }        
 
+        /** id utilsateur faux */
         if(isNaN(userId, 10)){
             throw new Error('identifiant utilisateur incorrect');
         }
 
-        const updateUser = await dispatch('actionHandler', { action: 'fetchAction', endPoint: urlData.endPoint.replace(':id', getters.userIdentGet.id), fetchMethod: urlData.method, form: data.form});
+        /** endpoint de la requete*/
+        const endPoint = utils.userApi.updateUserById.endPoint.replace(':id', userId);
+
+        /** methode de la requete */
+        const method = utils.userApi.updateUserById.method;
+
+        const updateUser = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData });
 
         /**echec de la requête */
         if(!updateUser || updateUser.error){
@@ -130,20 +154,20 @@ const actions = {
      * Deconnexion
      */
     async logoutAction({dispatch}) {     
-        try {
-            const urlData = utils.userApi.logout;
+        /** endpoint de la requete*/
+        const endPoint = utils.userApi.logout.endPoint;
 
-            const logoutResult = await dispatch('fetchAction', { endPoint: urlData.endPoint, fetchMethod: urlData.method});
+        /** methode de la requete */
+        const method = utils.userApi.logout.method;
 
-            /**echec de la requête */
-            if(!logoutResult){
-                return;
-            }
-            /**Requete ok - succes de la demande */
-            dispatch('resetUserAuth', { pathName: utils.apiDataUrl.homePage.pathName, isError: false, message: 'a bientôt'});            
-        } catch (error) {
-            console.log(error);  
+        const logoutResult = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method });
+
+        /**echec de la requête */
+        if(!logoutResult){
+            return;
         }
+        /**Requete ok - succes de la demande */
+        dispatch('resetUserAuth', { pathName: utils.apiDataUrl.homePage.pathName, message: 'a bientôt'});       
     },
 
     /**

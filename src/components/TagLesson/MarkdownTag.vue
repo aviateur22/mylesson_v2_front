@@ -7,9 +7,9 @@
                   <!-- input pour marquer son tag -->
                   <div class="tag__input-container">     
                       <transition-group name="tag-selection">
-                          <MarkdownTagSelection class="tag-selection" :tag="tag" @click="deleteTag(tag)" v-for="(tag, id) in selectionTags" :key="id"/>
+                          <MarkdownTagSelection class="tag-selection" :tag="tag" @click="removeSelectedTag(tag)" v-for="(tag, id) in selectedTags" :key="id"/>
                       </transition-group>                        
-                        <input placeholder="tag(s)" class="form__input" v-model="tag"  @keyup="findTag" type="text" name="tag" id="tag">
+                        <input placeholder="tag(s)" class="form__input" v-model="tag"  @keyup="findTagByName" type="text" name="tag" id="tag">
 
                         <!-- input caché pour la récuperation des id de tags  -->
                         <input id="tagId" name="tagId" type="hidden">
@@ -29,7 +29,7 @@
                       </button>
                       <div class="tag__proposal">
                             <!-- tag -->
-                            <MarkdownTagProposal ref="tag" :tag="tag" @click="selectTag(tag)" v-for="(tag, id) in tags" :key="id"/>
+                            <MarkdownTagProposal ref="tag" :tag="tag" @click="addSelectedTag(tag)" v-for="(tag, id) in tags" :key="id"/>
                       </div>                      
                   </div>
                 </section>
@@ -52,13 +52,14 @@ export default {
             tag: null
         };
     },
+    props: ['filterLesson'],
     methods: {
         /**
          * recherche d'un tag en base de données
          */
-        async findTag(e){
+        async findTagByName(e){
             try {                
-                this.$store.dispatch('actionHandler', { action: 'lessonTagAction', inputTagText: this.tag});                
+                this.$store.dispatch('actionHandler', { action: 'getTagsByName', inputTagText: this.tag});                
             } catch (error) {                
                 console.log(error);
             }
@@ -67,13 +68,31 @@ export default {
         /**
          * selection tag
          */
-        selectTag(tagSelected){     
-            //Vérification presence de Tag
-            this.$store.dispatch('actionHandler', { action: 'addTagToSelection', tag: tagSelected});          
+        addSelectedTag(tagSelected){
+            this.$store.dispatch('actionHandler', { action: 'addSelectedTag', tagSelected});
+            /** home page - filtre les lecon par tag */
+            if(this.filterLesson){
+
+            } else {
+                //Ajout des tags dans le lessonStore
+                this.$store.commit('setLessonTags', this.$store.getters.getSelectedTags);   
+                /** status sauvegarde = false*/ 
+                this.$store.commit('setLessonSaveStatus', false);            
+            }
         },
 
-        deleteTag(tagSelected){   
-            this.$store.dispatch('actionHandler', { action: 'removeTagFromSelection', tag: tagSelected});           
+        removeSelectedTag(tagSelected){   
+            this.$store.dispatch('actionHandler', { action: 'removeSelectedTag', tagSelected });  
+            /** home page - filtre les lecon par tag */
+            if(this.filterLesson){
+
+            } else {
+                //Ajout des tags dans le lessonStore
+                this.$store.commit('setLessonTags', this.$store.getters.getSelectedTags);
+                
+                /** status sauvegarde = false*/
+                this.$store.commit('setLessonSaveStatus', false);                
+            }         
         },
 
         /**
@@ -84,7 +103,7 @@ export default {
             tagIdElement.value = '';
 
             //Remplissage input 
-            this.selectionTags.forEach((selectionTag, id) =>{
+            this.selectedTags.forEach((selectionTag, id) =>{
                 if(tagIdElement.value === ''){
                     tagIdElement.value += selectionTag.id;    
                 } else {
@@ -99,12 +118,12 @@ export default {
     computed: {
         /** liste de tag disponible */
         tags(){
-            return this.$store.getters.lessonTagsStateGet;
+            return this.$store.getters.getProposalTags;
         },
 
         /**Liste des tags selectionnés */
-        selectionTags(){
-            return this.$store.getters.lessonSelectionTagGet;
+        selectedTags(){
+            return this.$store.getters.getSelectedTags;
         }
     }
 };

@@ -51,14 +51,11 @@ export default {
          * inscription
          */
         async signupAction(e) {
-            try {
-                this.disableLoginButton = true;
-                await this.$store.dispatch('actionHandler', { action: 'signupAction', form: e.target, endPoint: utils.apiDataUrl.userSignupAction });
-                this.disableLoginButton = false;                   
-            } catch (error) {
-                console.log(error);
-                this.disableLoginButton = false;
-            }     
+            this.disableLoginButton = true;
+            /** creation d'un formData */                
+            const formData = Object.fromEntries(new FormData(e.target).entries());
+            await this.$store.dispatch('actionHandler', { action: 'signupAction', formData });
+            this.disableLoginButton = false;         
         }      
     } 
 

@@ -1,5 +1,5 @@
 <template>
-  <div @click="displayLessonClick(this.actionClickName)" class="lesson__button-container">
+  <div @click="displayLessonClick" class="lesson__button-container">
     <div class="main__container">
       <div class="button__container">
         <section class="button__title-container">
@@ -39,7 +39,7 @@ export default {
     components: {
         LessonTag
     },
-    props: ['data', 'actionClickName'],
+    props: ['data', 'editLesson'],
     data(){
         return {
             markdownHandler: new MarkdownHandler(),
@@ -50,8 +50,8 @@ export default {
          * action du clic sur un bouton
          * @param {string} actionClickName - nom de l'action a executer au clic
          */
-        displayLessonClick(actionClickName){
-            this.$store.dispatch('actionHandler', {action: actionClickName, data: this.data});
+        displayLessonClick(){            
+            this.$store.dispatch('actionHandler', {action: 'getLessonById', lessonId: this.data.id, editLesson: this.editLesson});
         }
     },
     computed: {   
@@ -106,6 +106,10 @@ export default {
 
     .button__tag{
         display: flex;
+    }
+
+    .lesson__markdown-text{
+        padding: 0px 5px;
     }
 
     .button__content-container{
