@@ -49,7 +49,7 @@ const actions = {
 
         /** Markdown pour le html */
         const markdownHandler = new MarkdownHandler();
-        console.log(getLesson);
+
         /**Requete ok */
         commit('setLesson', {            
             id: lessonId,
@@ -176,7 +176,21 @@ const actions = {
      * @param {data} [data] - données pour la requete axios
      * @returns {Object} lesson
      */
-    async getAllLesson({dispatch, getters, commit}, data){    
+    async getAllLesson({dispatch, getters, commit}, data){ 
+        /**requete pour la récupération des leçons*/
+        const endPoint = utils.lessonApi.getAllLesson.endPoint;
+
+        /** method */
+        const method = utils.lessonApi.getAllLesson.method;
+
+        const lessons = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method});
+        
+        /**erreur dansd la requete */
+        if(!lessons){     
+            return;
+        }
+
+        return lessons;   
     },
 
     /**
@@ -187,29 +201,46 @@ const actions = {
      * @param {data} [data] - données pour la requete axios
      * @returns {Object} lesson
      */
-    async getLessonByUserId({dispatch, getters, commit}, data){    
+    async getLessonByUserId({dispatch, getters, commit}, data){
+        /** id utilisateur */
+        const userId = getters.getUserIdent.id;
+
+        /** endpoint de la requete*/
+        const endPoint = utils.lessonApi.getLessonByUser.endPoint.replace(':id', userId);
+        
+        /** methode de la requete */
+        const method = utils.lessonApi.getLessonByUser.method;
+
+        const lessons = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method});        
+
+        if(!lessons){            
+            return;
+        }   
+        
+        return lessons;
     },
 
     /**
-     * Ajout d'un tag à la lecon
-     * @property {Objec} param.dispatch - action
-     * @property {Objec} param.getters - getter
+     * modification du state isSave de la lecon
      * @property {Objec} param.commit - mutation
-     * @param {data} [data] - données du tag a ajouter
+     * @param {data} [data] - TRUE|FALSE - satatus de la lecon
      */
-    async lessonAddTag({getters, commit}, data){        
-        commit('setLessonSaveStatus', false);  
+    lessonUpdateStatus({ commit }, data){        
+        commit('setLessonSaveStatus', data);  
     },
 
     /**
-     * suppression d'un tag
-     * @property {Objec} param.dispatch - action
-     * @property {Objec} param.getters - getter
-     * @property {Objec} param.commit - mutation
-     * @param {data} [data] - données du tag a ajouter
+     * Reset les données du store
      */
-    async lessonDeleteTag({getters, commit}, data){
-        commit('setLessonSaveStatus', false);  
+    resetLessonStoreParameter({commit}){
+        /** suppression des données de la lesson */
+        commit('setLesson', {});   
+
+        /** reset liste des tags proposés */
+        commit('setProposalTag', []);
+
+        /** reset liste des tags selectionnés */
+        commit('setSelectionTag', []);
     }
 };
 

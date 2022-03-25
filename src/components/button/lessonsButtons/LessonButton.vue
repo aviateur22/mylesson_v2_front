@@ -125,4 +125,11 @@ export default {
         }
     }
 
+    @media screen and (min-width:1024px) {
+        .lesson__button-container{   
+            margin: 10px;     
+            width:calc( 40% - 90px); 
+        }
+    }
+
 </style>

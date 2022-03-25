@@ -9,7 +9,7 @@ const state = {
 };
 
 const getters = {    
-    userIdentGet: (state)=>state.userIdentState
+    getUserIdent: (state)=>state.userIdentState
 };
 
 const actions = {    
@@ -67,7 +67,7 @@ const actions = {
         }
 
         /**Requete ok - succes de la demande */
-        commit('setUserIdentMut', { userAuthenticated: true, roleId: loginResult.role, id: loginResult.id, email: loginResult.email});            
+        commit('setUserIdent', { userAuthenticated: true, roleId: loginResult.role, id: loginResult.id, email: loginResult.email});            
         commit('setFlashMessageMut', { error: false, message: `Bienvenue ${loginResult.message}`});
         
         return router.push({name: 'UserHomeAccount'});           
@@ -81,7 +81,7 @@ const actions = {
      */
     async getUserInformation({ dispatch, getters}){
         /** id utilisateur */
-        const userId = getters.userIdentGet.id;
+        const userId = getters.getUserIdent.id;
         
         /** id utilisateur manuqant */
         if(!userId){
@@ -119,7 +119,7 @@ const actions = {
      */
     async updateUserInformation({dispatch, getters, commit}, data){
         /** id de l'utilisateur */
-        const userId = getters.userIdentGet.id;
+        const userId = getters.getUserIdent.id;
 
         /** id utilisateur manuqant */
         if(!userId){
@@ -192,9 +192,8 @@ const actions = {
                 isError = false;
             }
             //Reset de tous les states
-            commit('setUserIdentMut', {});           
-            commit('setUserLessonsMut', []);
-            dispatch('resetLessonAction');
+            commit('setUserIdent', {});           
+            commit('setLesson', {});
             commit('setFlashMessageMut', { visibility: true, error: isError, message: message});           
             router.push({name: pathName });            
         } catch (error) {
@@ -207,7 +206,7 @@ const mutations = {
     /**
      * Update du userAuthenticated state
      */
-    setUserIdentMut: (state, userIdentState)=>(state.userIdentState = userIdentState)
+    setUserIdent: (state, userIdentState)=>(state.userIdentState = userIdentState)
 };
 
 export default {

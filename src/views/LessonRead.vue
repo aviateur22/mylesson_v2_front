@@ -46,8 +46,7 @@ export default {
     },
     computed: {
         /**objet lesson */
-        lesson(){  
-            console.log(this.$store.getters.getLessonEditor)
+        lesson(){              
             return this.$store.getters.getLessonEditor;
         },
 

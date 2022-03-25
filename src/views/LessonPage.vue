@@ -19,18 +19,18 @@ export default {
     components: {
         LessonButton        
     },
+    data(){
+        return {
+            lessons: []
+        };
+    },
     methods: {
-        async getLesson(){
-            await this.$store.dispatch('actionHandler', { action: 'getLessonsAction' });                        
-        }
-    }, 
-    computed: {
-        lessons(){
-            return this.$store.getters.userLessonStateGet;
+        async getLessonByUserId(){
+            this.lessons = await this.$store.dispatch('actionHandler', { action: 'getLessonByUserId' });                        
         }
     },
     created(){
-        this.getLesson();
+        this.getLessonByUserId();
     }
 };
 </script>
@@ -97,6 +97,13 @@ export default {
             width: 768px;                        
             box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
         }
+    }
+
+    @media screen and (min-width:1024px) {      
+        .form__container{        
+            width: 1024px;                                 
+        }  
+
     }
 
 </style>

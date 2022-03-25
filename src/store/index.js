@@ -2,17 +2,12 @@ import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import flashMessage from './module/flashMessage';
 import user from './module/user';
-import lessonEditor from './module/lessonEditor';
-import lessonList from './module/lessonList';
 import tag from './module/tag';
-import fetch from './module/fetch';
-import modal from './module/modal';
-import home from './module/home';
-import lessonDisplay from './module/lessonDisplay';
+import confirmation from './module/confirmation';
 import actionHandler from './module/actionHandler';
-import lessonReader from './module/lessonReader';
 import axiosApi from './module/axios';
 import lesson from './module/lesson';
+import modal from './module/modal';
 
 export default new Vuex.Store({
     plugins: [createPersistedState({
@@ -21,15 +16,10 @@ export default new Vuex.Store({
     modules: {    
         user,
         flashMessage,
-        lessonEditor,
-        lessonList,
-        tag,
-        fetch,
+        tag,      
+        confirmation,
         modal,
-        home,
-        lessonDisplay,
-        actionHandler,
-        lessonReader,
+        actionHandler,        
         axiosApi,
         lesson
     }

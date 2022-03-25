@@ -57,7 +57,7 @@ export default {
             const formLesson = this.$refs.markdowneditor.$refs.submitForm;
 
             /** userId */
-            const userId = this.$store.getters.userIdentGet.id;
+            const userId = this.$store.getters.getUserIdent.id;
             
             /** recuperation formdata */
             const formData = new FormData(formLesson);
@@ -86,20 +86,18 @@ export default {
         },
 
         /**
-         * Context pour la modal
+         * configuration des paramatres de sortie
+         * si la lecon n'est pas sauvargardée
          */
-        async modalParameter(routerPathName){ 
-            /**Modificatgion du text de la modale */
-            this.$store.commit('setModalTextStateMut', 'enregistrer votre leçon?');
-            this.$store.commit('setModalValidateButtonTextStateMut', 'enregister');
-            this.$store.commit('setmodalRejectButtonTextStateMut', 'ne pas enregistrer');
-            /**Affichage de la modale */
-            this.$store.commit('setModalVisibilityStateMut', true);      
-            /** Formulaire de la leçon */
+        async confirmationRequestParameter(routerPathName){                
+            /** mise a jour des tags de la lecon */
             const tags = await this.$refs.markdowneditor.$refs.markdownTag.setTagId();
+
+            /** recuperation donnée de la lecon */
             const formLesson = this.$refs.markdowneditor.$refs.submitForm;
+
             /** userId */
-            const userId = this.$store.getters.userIdentGet.id;
+            const userId = this.$store.getters.getUserIdent.id;
             
             /** recuperation formdata */
             const formData = new FormData(formLesson);
@@ -107,29 +105,49 @@ export default {
             /**ajout de id utilisateur  */
             formData.append('userId', userId);
 
+            /**données permettant d'effectuer l'action  */
             const data = {
-                formData: Object.fromEntries(formData.entries()), 
+                /** formulaire de la lecon si enregistrement */
+                ValidationData: Object.fromEntries(formData.entries()), 
+                /** vide le state lecon si pas d'enregistrement */
+                cancelationData: true,
+                /** action a executer si clic sur OUI */
                 validateActionName: this.$store.getters.getLessonEditor.editor.id ? 'updateLessonById' : 'createLesson',  
-                cancelActionName: 'leaveEditor',
+                /**  action a executer si clic sur NON */
+                cancelActionName: 'lessonUpdateStatus',
+                /** chemin de redirection */
                 routerTo: routerPathName
             };
+            
+            /**Modificatgion du text de la modale */
+            this.$store.commit('setConfirmationData', {
+                confirmationRequestText: 'Voulez-vous enregistrer la leçon',
+                validateButtonText: 'enregistrer',
+                cancelButtonText: 'ne pas enregistrer',
+                confirmationData: data                
+            });       
 
-            this.$store.commit('setDataMut', data);           
+            /**Affichage de la modale */
+            this.$store.commit('setModalVisibilityState', true);   
         }
     },
     async beforeRouteLeave(to, from, next) {        
         try {            
-            /**leçon pas enregistré */
+            /**si la leçon pas enregistrée */
             if(!this.$store.getters.getLessonEditor.editor.isSave){
-                /** parametrage de la modal */
-                await this.modalParameter(to.name)
+                /** chemin prevu de sortie demandé */
+                await this.confirmationRequestParameter(to.name);
                 /** message d'avertissement */
                 this.$store.commit('setFlashMessageMut', { error: true, message: 'Attention, la leçon n\'est pas sauvgardée'});  
                  
                 return next(false);
             }
-            //reset state lecon
-            this.$store.dispatch('resetLessonAction');
+
+            /**masque de la modale */
+            this.$store.commit('setModalVisibilityState', false);
+
+            //reset du strore lesson
+            this.$store.dispatch('resetLessonStoreParameter');
             next();            
         } catch (error) {
             console.log(error);
@@ -184,7 +202,7 @@ export default {
 
 /*#region markdown display */
 .lesson__section-markdown{
-    /* overflow-y: auto; */
+    overflow-y: auto; 
     width: 100%;    
     /* height: 100%;      */
     background: rgb(238, 236, 236);

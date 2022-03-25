@@ -81,7 +81,7 @@ export default {
     },
     computed: {
         authenticated() {
-            return this.$store.getters.userIdentGet.userAuthenticated;
+            return this.$store.getters.getUserIdent.userAuthenticated;
         }
     },
     mounted() {
@@ -105,20 +105,24 @@ export default {
 .nav__container{
     height: var(--navbar_height);
     max-width: 95%;
-    margin: 0px auto;       
+    margin: 0px auto;        
 }
 
 .nav{
     max-width: 100%;
     display: flex;
-    justify-content: space-between;
-    padding-top: 10px;   
+    justify-content: space-between;       
+    height: 100%;
+    align-items: stretch;
 }
 
 .nav__title{
     flex-shrink: 2;
     font-size: 1.8rem;
-    font-weight: 900; 
+    font-weight: 900;
+    display: flex;
+    height: 100%; 
+    align-items: center;
 }
 
 .nav--title{
@@ -128,6 +132,9 @@ export default {
 
 .nav__list-item{
     display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 
 .nav__navlink{
@@ -143,6 +150,11 @@ export default {
 }
 
 /*#region burger menu*/
+.nav__burger{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .burger{
   display: flex;
@@ -176,8 +188,19 @@ export default {
 /*#endregion*/
 
 @media screen and (min-width:768px) {
+    .nav__container{
+        display: flex;
+        justify-content: center;  
+    }
+
+    .nav{        
+        width: 768px;
+    }
 }
 
 @media screen and (min-width:1024px) {
+     .nav{
+        width: 1024px;
+    }
 }
 </style>

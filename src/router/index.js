@@ -149,7 +149,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     if(to.matched.some(record => record.meta.requiresAuth)) {             
         //verification autorisation d'affichage de page    
-        if(store.getters.userIdentGet.userAuthenticated){             
+        if(store.getters.getUserIdent.userAuthenticated){             
             return next();
         }
         store.commit('setFlashMessageMut',
@@ -160,7 +160,7 @@ router.beforeEach((to, from, next) => {
             });                   
         next({name: 'Login'});    
     } else if(to.matched.some(record => record.meta.requiresUnauthenticated)){
-        if(store.getters.userIdentGet.userAuthenticated){
+        if(store.getters.getUserIdent.userAuthenticated){
             store.commit('setFlashMessageMut',
                 {
                     visibility: true,

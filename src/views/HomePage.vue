@@ -38,21 +38,17 @@ export default {
         Footer
     },
     data() {
-        return {            
+        return {
+            lessons: []            
         };
     },
     methods: {
-        getLesson(){
-            this.$store.dispatch('actionHandler', {action: 'getLessons'});
+        async getAllLesson(){
+            this.lessons = await this.$store.dispatch('actionHandler', {action: 'getAllLesson'});
         }
     },
-    computed: {   
-        lessons(){
-            return this.$store.getters.lessonsStateGet;
-        }     
-    },
     created(){
-        this.getLesson();
+        this.getAllLesson();
     }
 };
 </script>
@@ -100,7 +96,10 @@ export default {
         }
     }
 
-    @media screen and (min-width:1024px) {        
+    @media screen and (min-width:1024px) {      
+        .main__container{        
+            width: 1024px;                                 
+        }  
 
     }
 </style>
