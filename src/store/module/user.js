@@ -110,6 +110,30 @@ const actions = {
     },
 
     /**
+     * récuperation de l'image utilisateur
+     * @property {Object} param.dispatch - action
+     * @property {Object} param.getters - getter
+     * @returns 
+     */
+    async getAvatarByKey({ dispatch, getters }, data){
+        /** id utilisateur */
+        const imageKey = data.key;
+    
+        /** id utilisateur manuqant */
+        if(!imageKey){
+            throw new Error('identifiant de l\'image incorrects');
+        }        
+
+        /** endpoint de la requete*/
+        const endPoint = utils.userApi.getAvatarByKey.endPoint.replace(':key', imageKey);
+
+        /** methode de la requete */
+        const method = utils.userApi.getAvatarByKey.method;
+        
+        const uploadFile = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method });        
+    },
+
+    /**
      * mise a jour des donées utilisateurs
      * @property {Object} param.dispatch - action
      * @property {Object} param.getters - getter
@@ -135,12 +159,12 @@ const actions = {
         const endPoint = utils.userApi.updateUserById.endPoint.replace(':id', userId);
 
         /** methode de la requete */
-        const method = utils.userApi.updateUserById.method;
+        const method = utils.userApi.updateUserById.method;      
 
         const updateUser = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData });
 
         /**echec de la requête */
-        if(!updateUser || updateUser.error){
+        if(!updateUser){
             return;
         }
 
@@ -148,6 +172,31 @@ const actions = {
         commit('setFlashMessageMut', { error: false, message: 'modification du compte effectuée'});
 
         return updateUser;
+    },
+
+    async updateUserPassword({dispatch, getters}, data){
+        /** id de l'utilisateur */
+        const userId = getters.getUserIdent.id;
+
+        /** id utilisateur manuqant */
+        if(!userId){
+            throw new Error('identifiant utilisateur manquant');
+        }        
+
+        /** id utilsateur faux */
+        if(isNaN(userId, 10)){
+            throw new Error('identifiant utilisateur incorrect');
+        }
+
+        /** endpoint de la requete*/
+        const endPoint = utils.userApi.updatePasswordById.endPoint.replace(':id', userId);
+
+        /** methode de la requete */
+        const method = utils.userApi.updatePasswordById.method;
+
+        const updatePassword = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData });
+
+        console.log(updatePassword);
     },
 
     /*

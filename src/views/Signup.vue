@@ -25,6 +25,13 @@
                             <input class="form__input" type="password" name="password" placeholder="mot de passe">
                         </div>
                     </div>
+
+                    <div class="form__group">
+                        <label for="confirmPassword" class="form__label">confirmation du mot de passe</label>
+                        <div class="form__control">
+                            <input class="form__input" type="password" name="confirmPassword" placeholder="mot de passe">
+                        </div>
+                    </div>
                 <SubmitButton :disableLoginButton='disableLoginButton' :textSubmitButton='textSubmitButton'/>
             </form> 
       </div>

@@ -47,6 +47,7 @@ const actions = {
             return;
         }
 
+        console.log(getLesson);
         /** Markdown pour le html */
         const markdownHandler = new MarkdownHandler();
 
@@ -57,7 +58,9 @@ const actions = {
             markdownText: getLesson.content,
             htmlOutput: markdownHandler.getHtml(getLesson.content),
             isSave: true,
-            tags: getLesson.tags
+            tags: getLesson.tags,
+            autor: getLesson.autor,
+            avatarKey: getLesson.avatarKey
         });   
         /** ouverture de la lecon en écriture */
         if(data.editLesson){  

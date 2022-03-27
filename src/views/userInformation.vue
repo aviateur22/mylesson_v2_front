@@ -3,23 +3,23 @@
         <div class="container">
             <!-- titre de la page -->
             <section class="information__title-container">
-                <h2 class="information__title">données de votre compte</h2>
+                <h2 class="information__title">Votre Profil</h2>
             </section>
             <!-- boutons de navigation -->
             <section class="information__form-container">    
-                      
-                <form ref="informationForm" class="form">            
+                <!-- Profil utilisateur -->
+                <form @submit.prevent="updateUserProfil" class="form">            
                     <div class="form__group">
                         <label for="email" class="form__label">email</label>
                         <div class="form__control">                            
-                            <input :disabled='!inputEnable' class="form__input" type="text" placeholder="toto@hotmail.fr" name="email" v-model="inputUserData.email">
+                            <input class="form__input" type="text" placeholder="toto@hotmail.fr" name="email" v-model="inputUserData.email">
                         </div>
                     </div>
 
                     <div class="form__group">
                         <label for="login" class="form__label">login</label>
                         <div class="form__control">
-                            <input :disabled='!inputEnable' class="form__input" type="text" name="login" placeholder="toto" v-model="inputUserData.login">
+                            <input class="form__input" type="text" name="login" placeholder="toto" v-model="inputUserData.login">
                         </div>
                     </div>
 
@@ -38,27 +38,55 @@
                         <div class="form__group-avatar">
                             <label for="avatar" class="form__label">votre avatar</label>
                             <div class="form__control">
-                                <input style="display: none" @change="selectImage" :disabled='!inputEnable' class="form__input" type="file" name="image" ref="imageInput" accept="image">                        
+                                <input style="display: none" @change="selectImage" class="form__input" type="file" name="image" ref="imageInput" accept="image">                        
                             </div>                        
                         </div>
                         <!--Preview de l'image -->
-                        <div v-if="image" class="preview__avatar-container">             
-                            <img :src="image" class="preview__avatar"/>
+                        <div v-if="imageSrc" class="preview__avatar-container">             
+                            <img :src="imageSrc" class="preview__avatar"/>
                         </div>
-                        <SubmitButton class="avatar__button"  :disableSubmitButton='inputEnable' @click.prevent="$refs.imageInput.click()" :textSubmitButton="textAvatarButton"/>
-                    </div>                   
-                </form>                          
-            </section>      
-            <section class="information__button-container">
-                <transition name="fade">
-                    <div v-if="inputEnable" class="button__container">                    
-                        <SubmitButton :textSubmitButton='textCancelButton'  @click="cancelAction"/>
+                        <SubmitButton class="avatar__button"  @click.prevent="$refs.imageInput.click()" :textSubmitButton="textAvatarButton"/>
                     </div>
-                </transition>
+                    
+                    <div class="button__container">
+                        <SubmitButton :disableSubmitButton='profilSubmitButtonDisable' :textSubmitButton='profilSubmitButtonText'/> 
+                    </div>                   
+                </form>   
+                <section class="information__title-container">
+                    <h2 class="information__title">Votre mot de passe</h2>
+                </section>
 
-                <div class="button__container">
-                    <SubmitButton :disableSubmitButton='disableSubmitButton' :textSubmitButton='textSubmitButton' @click="updateAction"/> 
-                </div>
+                <!-- changement de mot de passe -->
+                <form @submit.prevent="updateUserPassword" ref="informationForm" class="form">            
+                    <div class="form__group">
+                        <label for="password" class="form__label">ancien mot de passe</label>
+                        <div class="form__control">                            
+                            <input class="form__input" type="password" placeholder="ancien mot de passe" name="password" v-model="userUpdatePassword.password">
+                        </div>
+                    </div>
+
+                    <div class="form__group">
+                        <label for="newPassword" class="form__label">nouveau mot de passe</label>
+                        <div class="form__control">
+                            <input class="form__input" type="password" name="newPassword" placeholder="nouveau mot de passe" v-model="userUpdatePassword.newPassword">
+                        </div>
+                    </div>
+
+                    <!-- selection du sex -->
+                    <div class="form__group-select">                        
+                        <label for="confirmNewPassword" class="form__label">confirmation nouveau mot de passe</label>
+                        <div class="form__control">                            
+                            <input class="form__input" type="password" placeholder="confirmation mot de passe" name="confirmNewPassword" v-model="userUpdatePassword.confirmNewPassword" @keydown="valueUpdate">
+                        </div>
+                    </div> 
+                    
+                    <div class="button__container">
+                        <SubmitButton :disableSubmitButton='passwordSubmitButtonDisable' :textSubmitButton='passwordSubmitButtonText'/> 
+                    </div>                   
+                </form>                        
+            </section>      
+            <section class="information__button-container">                
+
             </section>     
         </div> 
     </div>  
@@ -66,7 +94,6 @@
 
 <script>
 import SubmitButton from '../components/button/SubmitButton.vue';
-import axios from 'axios';
 import utils from '../helper/utils';
 export default {
     components: {
@@ -75,97 +102,78 @@ export default {
     data() {
         return {
             /** text bouton valider */
-            textSubmitButton: 'modifier',
-            /** text bouton annuler */
-            textCancelButton: 'annuler',
+            profilSubmitButtonText: 'enregistrer',
+            passwordSubmitButtonText: 'modifier',
+            
             /** text bouton avatar */
-            textAvatarButton: 'changer mon avatar',
-            /** active ou desactive les inputs */
-            inputEnable: false,
+            textAvatarButton: 'changer mon avatar',            
+
             /** desactivation du bouton valider */
-            disableSubmitButton: false,
-            /**données en provenace de la bdd */
-            userDataEmail: '',
-            userDataLogin: '',  
-            userDataSex: '',
-            userDataImage: '',
+            profilSubmitButtonDisable: false,
+            passwordSubmitButtonDisable: false,
+
+            /**données en provenace de la bdd pour le profil */
+            userData: {},
+
+            /** object pour afficher la preview de l'avatar*/
+            imageSrc: null,
+
+            /**boolean pour détection de modification */
+            dataValueChange: false,
+            passwordValueChange: false,
+
             /** données dans l'input modifiable par l'utilisateur
              * @property inputUserData.email
              * @property inputUserData.login
              * @property inputUserData.sex
              * @property inputUserData.image
              */
-            inputUserData: {},  
-            selectedSex: '',
-            /** object pour afficher la preview de l'avatar*/
-            image: null,
+            inputUserData: {}, 
+            
+            /** données dans l'input modifiable par l'utilisateur
+             * @property userUpdatePassword.password
+             * @property userUpdatePassword.newPassword
+             * @property userUpdatePassword.confirmNewPassword
+             */
+            userUpdatePassword: {},
+            
         };
     },
-    methods: {
+    methods: {    
         /**
-         * clic sur le biuton valider
+         * update du profil
          */
-        async updateAction() {
-            /** enable input form */
-            if(this.textSubmitButton === 'modifier'){
-                /** Activation des inputs */
-                this.inputEnable = !this.inputEnable;
-                this.textSubmitButton = 'enregistrer';
-            } else if(this.textSubmitButton === 'enregistrer'){
-                /** validation des modification */
-                this.updateUserInformation();
-                /** désactivation des inputs */
-                this.inputEnable = !this.inputEnable;
-                this.textSubmitButton = 'modifier'; 
-            } else {
-                /** désactivation des inputs */
-                this.inputEnable = !this.inputEnable;
-                this.textSubmitButton = 'modifier';                
-            }
-        },
+        async updateUserProfil(e) {            
+            this.disableSubmitButton = true;  
 
-        /**
-         * clic sur le bouton annuler
-         */
-        cancelAction() {            
-            this.textSubmitButton = 'modifier';
-            /** réinitilalise les données */
-            this.inputUserData.email = this.userDataEmail; 
-            this.inputUserData.login = this.userDataLogin;
-            this.inputUserData.sex = this.userDataSex;
-            /** désactivation des inputs */
-            this.inputEnable = !this.inputEnable; 
-        },
-
-        /**
-         * mise a jour des info utilisateir
-         */
-        async updateUserInformation(){
-            this.disableSubmitButton = true;               
-            /** creation d'un formData */
-            const formData = new FormData(this.$refs.informationForm);            
+            /** creation d'un formData - middlware multer dans le back cause upload file*/
+            const formData = new FormData(e.target);            
 
             const request = await this.$store.dispatch('actionHandler', {action: 'updateUserInformation', formData});
 
-            console.log(request);
-
             this.disableSubmitButton = false;
         },
-
+       
         /**
         * récupération des infos utilisateur
         */
         async getUserInformation(){
-            /** */
-            const downloadData = await this.$store.dispatch('actionHandler', { action: 'getUserInformation'});
-            
-            /** données modifiable si update */
-            this.userDataEmail = downloadData.email;
-            this.userDataLogin = downloadData.login;
+            console.log('userData');
+            /** récuperation info utilisateur*/
+            const getUserData = await this.$store.dispatch('actionHandler', { action: 'getUserInformation'});           
 
-            /** données modifiable par les input */
-            this.inputUserData = downloadData;
-            this.inputUserData.sex = '';
+            //modification des données pour le sex
+            this.inputUserData.sex = getUserData.sex ? getUserData.sex : '';
+
+            /** initilisation des models modifiable par l'utilisateur */
+            this.inputUserData = getUserData;
+            
+            if(getUserData.avatarKey){
+                /** récupere un text d'erreur si necessaire */
+                await this.$store.dispatch('actionHandler', { action: 'getAvatarByKey', key: getUserData.avatarKey});                
+                /** affiche de l'image avatar */
+                this.imageSrc = utils.baseUri + utils.userApi.getAvatarByKey.endPoint.replace(':key', getUserData.avatarKey);                
+            }
         },
 
         /**
@@ -174,7 +182,18 @@ export default {
         selectImage(){            
             /** select file in input */            
             this.inputUserData.image = this.$refs.imageInput.files[0];
-            this.image = URL.createObjectURL(this.inputUserData.image);
+            this.imageSrc = URL.createObjectURL(this.inputUserData.image);
+        },
+
+        /**
+         * Mise a jour du mot de passe
+         */
+        async updateUserPassword(e){
+            /** creation d'un formData */                
+            const formData = Object.fromEntries(new FormData(e.target).entries());  
+
+            /** */
+            const updatePassword = await this.$store.dispatch('actionHandler', { action: 'updateUserPassword', formData});
         }
     },
     created(){
@@ -201,7 +220,8 @@ export default {
         background: white;  
     }   
 
-    .information__title-container{        
+    .information__title-container{  
+        padding-top: 20px;      
         display: flex;
         align-items: center;
         justify-content: center;
@@ -215,6 +235,7 @@ export default {
 
      .information__form-container{
         display: flex;
+        flex-direction: column;
         align-items: center;    
         width: 100%;     
         max-width: 500px;
@@ -225,6 +246,7 @@ export default {
         width: 100%;
         display: flex;
         flex-direction: column;
+        border-bottom: 0.1px solid gray;   
     }
 
     .form__group{
@@ -270,30 +292,25 @@ export default {
     }
     .preview__avatar-container{    
         width: 150px;
-        height: 250px;
-        position: relative;
+        height: 150px;
+        
+        position: relative;        
     }
 
     .preview__avatar{
         width: 150px;
-        height: 250px;
-        object-fit:contain;
+        height: 150px;
+        border: 1px solid var(--main_color); 
+        border-radius: 50%;
+        object-fit:cover;
+        vertical-align: middle;
+      
     }
 
     .avatar__button{
         max-width: 200px
     }
-    .information__button-container{
-        border-top: 0.1px solid gray;   
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        padding: 1em 1em;
-        max-width: 500px;
-    }
-    
+
     .button__container{            
         width: 100%;
     }
@@ -325,6 +342,14 @@ export default {
 
         .button__container{       
             margin: 0px 0.5em;
+        }
+
+    }
+
+    @media screen and (min-width:1024px) {
+       
+        .container{        
+            width: 1024px;                 
         }
 
     }

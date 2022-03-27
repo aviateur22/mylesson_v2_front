@@ -10,6 +10,7 @@
               <h2 class="lesson__autor">
                   {{this.lesson.autor}}
               </h2>
+              <img :src="imageSrc">
           </section>
           <section class="lesson__date-container">
               <div class="lesson__date-main">
@@ -40,23 +41,33 @@
 
 <script>
 import MarkdownHandler from '../helper/markdown/markdownConverter';
+import utils from '../helper/utils';
 export default {
     name: 'lessonRead',
+    data(){
+        return {
+            
+        };
+    },
     methods: {
     },
     computed: {
         /**objet lesson */
-        lesson(){              
-            return this.$store.getters.getLessonEditor;
+        lesson(){           
+            return this.$store.getters.getLessonEditor.editor;
+        },
+
+        imageSrc(){
+            return utils.baseUri + utils.userApi.getAutorAvatarByKey.endPoint.replace(':key', this.lesson.avatarKey);
         },
 
         content(){
             /** Markdown pour le html */
             const markdownHandler = new MarkdownHandler();
-            return markdownHandler.getHtml(this.lesson.content);        
+            return markdownHandler.getHtml(this.lesson.markdownText);        
         }
     }
-}
+};
 </script>
 
 <style scoped>

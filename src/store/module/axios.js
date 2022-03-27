@@ -21,12 +21,14 @@ const actions = {
      */
 
     async axiosFetchAction({dispatch}, data){
+        console.log(data.responseType);
         const request = await axios({
             withCredentials: true,
             baseURL: utils.baseUri,
             url: data.endPoint,
-            method: data.method,                    
-            data: data.formData
+            method: data.method,     
+            responseType: data.responseType ? data.responseType : 'json',              
+            data: data.formData,           
         });   
         return request.data;       
     }

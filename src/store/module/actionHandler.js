@@ -6,6 +6,7 @@ const actions = {
         try {            
             return await dispatch(payload.action, payload);   
         } catch (err) {      
+            console.log(err);
             /** vérifictaion réponse de axios*/                  
             if(err.response && Number(err.response.status) < 500) {                
                 /**erreur 401 - session expirée */
@@ -16,7 +17,7 @@ const actions = {
                 /** affichages des erreurs managées */
                 commit('setFlashMessageMut', { error: true, message: err.response.data.message});       
             } else {
-                console.log(err)
+                console.log(err);
                 /** affichage d'un message genral si erreur non managée */
                 return commit('setFlashMessageMut', { error: true, message: 'oups erreur'});
             }      

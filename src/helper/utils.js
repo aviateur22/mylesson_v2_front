@@ -14,7 +14,9 @@ const utils = {
         getUserById: { endPoint: '/users/:id', method: 'get' },
         updateUserById: { endPoint: '/users/:id', method: 'patch' },
         deleteUserById: { endPoint: '/users/:id', method: 'delete' },
-        getAllUser: { endPoint: '/users', method: 'get' }
+        getAllUser: { endPoint: '/users', method: 'get' },
+        getAvatarByKey: {endPoint: '/users/image/:key', method: 'get'},
+        getAutorAvatarByKey: {endPoint: '/users/image/autor/:key', method: 'get'}
     },
     /** lessons */
     lessonApi: {

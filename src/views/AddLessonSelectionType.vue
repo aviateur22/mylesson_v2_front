@@ -37,18 +37,17 @@ export default {
          * création d'une nouvelle lecon en base de données
          */
         async createLessonClick(){
-            try {
-                //désactivation du boutton
-                this.disableLoginButton = true;
+            //désactivation du boutton
+            this.disableLoginButton = true;
 
-                /**création d'un leçon */
-                this.$store.dispatch('lessonCreation', {router: this.$router});                
-                
-                //désactivation du boutton
-                this.disableLoginButton = false;
-            } catch (error) {
-                console.log(error);                
-            }
+            /** reste du store lesson */
+            this.$store.dispatch('actionHandler', {action: 'resetLessonStoreParameter'});
+
+            /** redirection sur la page création lecon */
+            this.$router.push({name: utils.apiDataUrl.addMarkdownLessonPage.pathName});  
+
+            //désactivation du boutton
+            this.disableLoginButton = false;
         }
     }
 

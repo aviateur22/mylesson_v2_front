@@ -39,6 +39,10 @@ export default {
     components: {
         LessonTag
     },
+    /**
+     * editLesson: true => ouverture lecon en ecriture
+     * editLesson: false => ouverture lecon en lecture
+     */
     props: ['data', 'editLesson'],
     data(){
         return {
