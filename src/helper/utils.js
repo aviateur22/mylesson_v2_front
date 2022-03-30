@@ -3,39 +3,44 @@
  * Donnée API
  */
 const utils = {
-    baseUri: 'http://localhost:3000/api',
+    baseUri: 'http://localhost:3000',
 
     /** utilisateurs */
     userApi: {        
-        login: { endPoint: '/users/login', method: 'post' },
-        register: { endPoint: '/users', method: 'post' },
-        logout: { endPoint: '/users/logout', method: 'post' },
-        updatePasswordById: { endPoint: '/users/password/:id', method: 'patch' },
-        getUserById: { endPoint: '/users/:id', method: 'get' },
-        updateUserById: { endPoint: '/users/:id', method: 'patch' },
-        deleteUserById: { endPoint: '/users/:id', method: 'delete' },
-        getAllUser: { endPoint: '/users', method: 'get' },
-        getAvatarByKey: {endPoint: '/users/image/:key', method: 'get'},
-        getAutorAvatarByKey: {endPoint: '/users/image/autor/:key', method: 'get'}
+        login: { endPoint: '/api/users/login', method: 'post' },
+        register: { endPoint: '/api/users', method: 'post' },
+        logout: { endPoint: '/api/users/logout', method: 'post' },
+        updatePasswordById: { endPoint: '/api/users/password/:id', method: 'patch' },
+        getUserById: { endPoint: '/api/users/:id', method: 'get' },
+        updateUserById: { endPoint: '/api/users/:id', method: 'patch' },
+        deleteUserById: { endPoint: '/api/users/:id', method: 'delete' },
+        getAllUser: { endPoint: '/api/users', method: 'get' },
+        getAvatarByKey: {endPoint: '/api/users/image/:key', method: 'get'},
+        getAutorAvatarByKey: {endPoint: '/api/users/image/autor/:key', method: 'get'},       
     },
     /** lessons */
     lessonApi: {
-        createLesson: { endPoint: '/lessons', method: 'post' },
-        getLessonById: { endPoint: '/lessons/:id', method: 'get' },
-        updateLessonById: { endPoint: '/lessons/:id', method: 'patch' },
-        deleteLessonById: { endPoint: '/lessons/:id', method: 'delete' },
-        getLessonByUser: { endPoint: '/lessons/user/:id', method: 'get' },
-        getAllLesson: { endPoint: '/lessons', method: 'get' },
-        getLessonByTag: { endPoint: '/lessons/filter/tags', method: 'post' }
+        createLesson: { endPoint: '/api/lessons', method: 'post' },
+        getLessonById: { endPoint: '/api/lessons/:id', method: 'get' },
+        updateLessonById: { endPoint: '/api/lessons/:id', method: 'patch' },
+        deleteLessonById: { endPoint: '/api/lessons/:id', method: 'delete' },
+        getLessonByUser: { endPoint: '/api/lessons/user/:id', method: 'get' },
+        getAllLesson: { endPoint: '/api/lessons', method: 'get' },
+        getLessonByTag: { endPoint: '/api/lessons/filter/tags', method: 'post' },        
     },
     /**tags */
     tagApi: {
-        findTagByName: { endPoint: '/tags/name/:name', method: 'get' },
-        getTagById: { endPoint: '/tags/:id', method: 'get' },
-        updateTagById: { endPoint: '/tags/:id', method: 'patch' },
-        deleteTagById: { endPoint: '/tags/:id', method: 'delete' },
-        addTag: { endPoint: '/tags', method: 'post' }
+        findTagByName: { endPoint: '/api/tags/name/:name', method: 'get' },
+        getTagById: { endPoint: '/api/tags/:id', method: 'get' },
+        updateTagById: { endPoint: '/api/tags/:id', method: 'patch' },
+        deleteTagById: { endPoint: '/api/tags/:id', method: 'delete' },
+        addTag: { endPoint: '/api/tags', method: 'post' }
 
+    },
+    /** media link */
+    linkApi: {
+        getLinkByName: {endPoint: '/api/links/name/:media', method: 'get'},
+        saveLinkByUserId: {endPoint: '/api/links/user/:userId', method: 'post'}
     },
     /**url page utilisateur */
     pageUserUrl: {

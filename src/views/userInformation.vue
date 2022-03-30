@@ -52,11 +52,12 @@
                         <SubmitButton :disableSubmitButton='profilSubmitButtonDisable' :textSubmitButton='profilSubmitButtonText'/> 
                     </div>                   
                 </form>   
+
+                 <!-- changement de mot de passe -->
                 <section class="information__title-container">
                     <h2 class="information__title">Votre mot de passe</h2>
                 </section>
-
-                <!-- changement de mot de passe -->
+               
                 <form @submit.prevent="updateUserPassword" ref="informationForm" class="form">            
                     <div class="form__group">
                         <label for="password" class="form__label">ancien mot de passe</label>
@@ -83,6 +84,55 @@
                     <div class="button__container">
                         <SubmitButton :disableSubmitButton='passwordSubmitButtonDisable' :textSubmitButton='passwordSubmitButtonText'/> 
                     </div>                   
+                </form>   
+
+                <!-- lien reseau linkedin -->
+                <section class="information__title-container">
+                    <h2 class="information__title">Linkedin</h2>
+                </section>
+               
+                <form ref="linkedin" class="form">            
+                    <div class="form__group">
+                        <div class="form__input-container">
+                            <label for="linkUrl" class="form__label">linkedin</label>
+                            <!--image linkedin -->
+                            <div v-if="imageSrc" class="media__image-container">             
+                                <img :src="imageLinkedin" class="media__image"/>
+                            </div>
+                            <div class="form__control">                            
+                                <input class="form__input" type="text" placeholder="https://www.linkedin.com/....." name="linkUrl">
+                            </div>
+                        </div>
+                        <div class="form__button-container">
+                            <SubmitButton @click.prevent="saveLinkMedia(2)" :textSubmitButton='githubTextUpdateButton'/> 
+                            <SubmitButton :textSubmitButton='githubTextDeleteButton'/> 
+                        </div>
+                    </div>
+                </form> 
+
+                <!-- lien reseau github -->
+                <section class="information__title-container">
+                    <h2 class="information__title">github</h2>
+                </section>
+
+                <form class="form" ref="github"> 
+                    <div class="form__group">
+                        <div class="form__input-container">
+                            <label for="linkUrl" class="form__label">github</label>
+                            <!--image github -->
+                            <div v-if="imageSrc" class="media__image-container">             
+                                <img :src="imageGithub" class="media__image"/>
+                            </div>
+                            <div class="form__control">
+                                <input class="form__input" type="text" name="linkUrl" placeholder="https://github.com/.....">
+                            </div>
+                        </div>                   
+                    </div>            
+                    
+                    <div class="form__button-container">
+                        <SubmitButton @click.prevent="saveLinkMedia(1)" :textSubmitButton='githubTextUpdateButton'/> 
+                        <SubmitButton :textSubmitButton='githubTextDeleteButton'/> 
+                    </div>                
                 </form>                        
             </section>      
             <section class="information__button-container">                
@@ -104,6 +154,8 @@ export default {
             /** text bouton valider */
             profilSubmitButtonText: 'enregistrer',
             passwordSubmitButtonText: 'modifier',
+            githubTextDeleteButton: 'supprimer',
+            githubTextUpdateButton: 'modifier',
             
             /** text bouton avatar */
             textAvatarButton: 'changer mon avatar',            
@@ -117,6 +169,10 @@ export default {
 
             /** object pour afficher la preview de l'avatar*/
             imageSrc: null,
+
+            /** image media reseau sicaiux */
+            imageGithub: null,
+            imageLinkedin: null,
 
             /**boolean pour détection de modification */
             dataValueChange: false,
@@ -160,7 +216,7 @@ export default {
         async getUserInformation(){
             console.log('userData');
             /** récuperation info utilisateur*/
-            const getUserData = await this.$store.dispatch('actionHandler', { action: 'getUserInformation'});           
+            const getUserData = await this.$store.dispatch('actionHandler', { action: 'getUserInformation'});
 
             //modification des données pour le sex
             this.inputUserData.sex = getUserData.sex ? getUserData.sex : '';
@@ -174,6 +230,18 @@ export default {
                 /** affiche de l'image avatar */
                 this.imageSrc = utils.baseUri + utils.userApi.getAvatarByKey.endPoint.replace(':key', getUserData.avatarKey);                
             }
+        },
+
+        /** récuperation des images  */
+
+        async getMediaImage(){
+            /** gestion des image reseau sociaux */            
+            const gitubUrl = await this.$store.dispatch('actionHandler', { action: 'getLinkByName', mediaName: 'github'});
+            const linkedin = await this.$store.dispatch('actionHandler', { action: 'getLinkByName', mediaName: 'linkedin'});            
+            /** imahe reseau sociaux */
+            this.imageGithub = utils.baseUri + gitubUrl;
+            this.imageLinkedin = utils.baseUri + linkedin;
+            //utils.userApi.getLinkMediaImageByName.endPoint.replace(':media', 'github');
         },
 
         /**
@@ -194,10 +262,28 @@ export default {
 
             /** */
             const updatePassword = await this.$store.dispatch('actionHandler', { action: 'updateUserPassword', formData});
+        },
+
+        /**
+         * sauvegarde link media
+         */
+        async saveLinkMedia(id){
+            /** rcuperation des form */
+            const data = id === 1 ? this.$refs.github : this.$refs.linkedin;
+          
+            let formData = new FormData(data);              
+            formData.append('mediaId', id);  
+            formData = Object.fromEntries(formData.entries());
+            
+            const saveLinkData = await this.$store.dispatch('actionHandler', { action: 'saveLinkMedia', formData});
         }
     },
     created(){
+        /** recuperation des info utilsateur */
         this.getUserInformation();
+
+        /** chargement des image des media */
+        this.getMediaImage();
     }
 };
 </script>

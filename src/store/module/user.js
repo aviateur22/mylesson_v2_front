@@ -1,6 +1,5 @@
 /**données API et url des pages*/
 import utils from '../../helper/utils';
-
 import router from '../../router';
 
 const state = {        
@@ -131,6 +130,26 @@ const actions = {
         const method = utils.userApi.getAvatarByKey.method;
         
         const uploadFile = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method });        
+    },
+
+    /**
+     * recuoeration image media Sociaux
+     * @param {*} param0 
+     * @param {*} data 
+     */
+    async getLinkMediaImageByName({dispatch}, data){
+        /** nom du media  */
+        const mediaName = data.mediaName;
+
+        /** endpoint de la requete*/
+        const endPoint = utils.userApi.getLinkMediaImageByName.endPoint.replace(':media', mediaName);
+
+        /** methode de la requete */
+        const method = utils.userApi.getLinkMediaImageByName.method;       
+
+        const imageUrl = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method });
+
+        return imageUrl;
     },
 
     /**
