@@ -58,7 +58,7 @@ export default {
             this.$store.commit('setLessonMarkdownText', this.$refs.textarea.value);
 
             // Renvoie le text markdown formatté en html
-            const lessonHtml = this.markdownHandler.getHtml(this.$store.getters.getLessonEditor.editor.markdownText);            
+            const lessonHtml = this.markdownHandler.getHtml(this.$store.getters.getLessonEditor.markdownText);            
             
             //Envoie du text au format HTML dans le store pour le composant MarkdownReader
             this.$store.commit('setLessonInHtml', lessonHtml);
@@ -82,11 +82,11 @@ export default {
          */
         formLessonLoad(){
             /**chargement des données si id de present*/
-            if(this.$store.getters.getLessonEditor.editor.id){     
-                this.lessonName = this.$store.getters.getLessonEditor.editor.title;
-                this.lessonMarkdown = this.$store.getters.getLessonEditor.editor.markdownText;           
-                this.$refs.inputTitle.value = this.$store.getters.getLessonEditor.editor.title;
-                this.$refs.textarea.value = this.$store.getters.getLessonEditor.editor.markdownText;
+            if(this.$store.getters.getLessonEditor.id){     
+                this.lessonName = this.$store.getters.getLessonEditor.title;
+                this.lessonMarkdown = this.$store.getters.getLessonEditor.markdownText;           
+                this.$refs.inputTitle.value = this.$store.getters.getLessonEditor.title;
+                this.$refs.textarea.value = this.$store.getters.getLessonEditor.markdownText;
             }
         }
     },

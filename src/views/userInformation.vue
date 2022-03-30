@@ -303,8 +303,7 @@ export default {
         border: 1px solid var(--main_color); 
         border-radius: 50%;
         object-fit:cover;
-        vertical-align: middle;
-      
+        vertical-align: middle;      
     }
 
     .avatar__button{

@@ -10,7 +10,7 @@
             <!-- tags de la lecon -->
             <section class="button__tag-container">
                 <div class="button__tag">
-                    <LessonTag v-for="(tag,id) in data.tags" :key="id" :data='tag'/>
+                    <LessonTag v-for="(tag,id) in data.lessonsTags" :key="id" :data='tag'/>
                 </div>                
             </section>            
         </section>

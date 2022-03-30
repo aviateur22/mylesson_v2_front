@@ -11,25 +11,58 @@
                     <router-link @click="toggleNavbarMobile" class="nav__navlink-item title--size" to="/">My Lesson</router-link>
                 </h1>
             </div>
-            <section class="nav__items">
-                <ul class="nav__list-item">
-                    <li class="nav__navlink">
-                        <router-link @click="toggleNavbarMobile" class="nav__navlink-item" to="/login">Connexion</router-link>
-                    </li>
-                    <li class="nav__navlink">
-                        <router-link @click="toggleNavbarMobile" class="nav__navlink-item" to="/signup">inscription</router-link>
-                    </li>
-                </ul>
-            </section>
+            <div class="nav__item-container">
+                <section class="nav__items">
+                    <ul class="nav__list-item">
+                        <li v-if="!authenticated" class="nav__navlink">
+                            <router-link @click="toggleNavbarMobile" class="nav__navlink-item" to="/login">Connexion</router-link>
+                        </li>
+                        <li  v-if="!authenticated" class="nav__navlink">
+                            <router-link @click="toggleNavbarMobile" class="nav__navlink-item" to="/signup">inscription</router-link>
+                        </li>
+                        <div v-if="authenticated" class="">
+                            <li class="nav__navlink">
+                            <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.infoPage>mes informations</router-link>
+                            </li>
+                            <li v-if="userRole >= 2" class="nav__navlink">
+                                <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.userLessonPage.url>mes leçons</router-link>
+                            </li>
+                            <li v-if="userRole >= 2" class="nav__navlink">
+                                <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.addLessonTypePage.url>nouvelle leçon</router-link>
+                            </li>
+                            <li v-if="userRole >= 3" class="nav__navlink">
+                                <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.updateUserRolePage>modifier droit d\'utilisateur</router-link>
+                            </li>
+                            <li v-if="userRole >= 4" class="nav__navlink">
+                                <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.resetDatabasePage>reset base de données</router-link>
+                            </li>
+                        </div>
+                    </ul>
+                </section>
+                <section v-if="authenticated" class="nav__disconnect">
+                    <Lougout/>
+                </section>
+
+            </div>            
         </nav>
     </div>
 <router-view name="mobileNavBar"/>
 </template>
 
 <script>
-export default {
+import utils from '../../helper/utils';
+import Lougout from '../button/LogoutButton.vue';
+export default {    
     name: 'navbarMobile',
+    components: {
+        Lougout
+    },
     emits: ['toggleNavbarMobile'],
+    data(){
+        return {
+            baseUrl: utils.apiDataUrl            
+        };
+    },
     methods: {
         /**
          * masque la navbar mobile
@@ -37,8 +70,16 @@ export default {
         toggleNavbarMobile() {
             this.$emit('toggleNavbarMobile', { display: false });
         }
-    }
+    },
+    computed: {
+        authenticated() {
+            return this.$store.getters.getUserIdent.userAuthenticated;
+        },
 
+        userRole(){
+            return this.$store.getters.getUserIdent.roleId;
+        }
+    }
 };
 </script>
 
@@ -74,6 +115,14 @@ export default {
         color:var(--main_color) !important
     }
 
+    .nav__item-container{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
     .nav__items{
         margin-top: 25px;
     }
@@ -93,6 +142,10 @@ export default {
         color: black ;    
         text-decoration: none;
         text-transform: uppercase;
+    }
+
+    .nav__disconnect{
+        width: 100%;
     }
    /*#region button close*/
    

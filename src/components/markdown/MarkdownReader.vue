@@ -18,7 +18,7 @@ export default {
     name: 'MarkdownReader',    
     computed: {
         lessonHtml(){
-            return this.$store.getters.getLessonEditor.editor.htmlOutput;
+            return this.$store.getters.getLessonEditor.htmlOutput;
         }
     }
 };

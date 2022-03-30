@@ -20,8 +20,7 @@ const actions = {
      * @returns {Object} fetchResult
      */
 
-    async axiosFetchAction({dispatch}, data){
-        console.log(data.responseType);
+    async axiosFetchAction({dispatch}, data){        
         const request = await axios({
             withCredentials: true,
             baseURL: utils.baseUri,

@@ -56,7 +56,7 @@ export default {
             /** Formulaire de la leçon */
             const formLesson = this.$refs.markdowneditor.$refs.submitForm;
 
-            /** userId */
+            /** userId  */
             const userId = this.$store.getters.getUserIdent.id;
             
             /** recuperation formdata */
@@ -68,7 +68,7 @@ export default {
             /** requete  */
             let saveLesson;
             
-            if(!this.$store.getters.getLessonEditor.editor.id){
+            if(!this.$store.getters.getLessonEditor.id){
                 /** 
                  * création d'un lecon
                  */
@@ -112,7 +112,7 @@ export default {
                 /** vide le state lecon si pas d'enregistrement */
                 cancelationData: true,
                 /** action a executer si clic sur OUI */
-                validateActionName: this.$store.getters.getLessonEditor.editor.id ? 'updateLessonById' : 'createLesson',  
+                validateActionName: this.$store.getters.getLessonEditor.id ? 'updateLessonById' : 'createLesson',  
                 /**  action a executer si clic sur NON */
                 cancelActionName: 'lessonUpdateStatus',
                 /** chemin de redirection */
@@ -134,7 +134,7 @@ export default {
     async beforeRouteLeave(to, from, next) {        
         try {            
             /**si la leçon pas enregistrée */
-            if(!this.$store.getters.getLessonEditor.editor.isSave){
+            if(!this.$store.getters.getLessonEditor.isSave){
                 /** chemin prevu de sortie demandé */
                 await this.confirmationRequestParameter(to.name);
                 /** message d'avertissement */

@@ -25,7 +25,8 @@ const utils = {
         updateLessonById: { endPoint: '/lessons/:id', method: 'patch' },
         deleteLessonById: { endPoint: '/lessons/:id', method: 'delete' },
         getLessonByUser: { endPoint: '/lessons/user/:id', method: 'get' },
-        getAllLesson: { endPoint: '/lessons', method: 'get' }
+        getAllLesson: { endPoint: '/lessons', method: 'get' },
+        getLessonByTag: { endPoint: '/lessons/filter/tags', method: 'post' }
     },
     /**tags */
     tagApi: {

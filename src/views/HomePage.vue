@@ -38,17 +38,23 @@ export default {
         Footer
     },
     data() {
-        return {
-            lessons: []            
+        return {                   
         };
     },
     methods: {
+        /** récuperation de toutes les lecons disponibles*/
         async getAllLesson(){
-            this.lessons = await this.$store.dispatch('actionHandler', {action: 'getAllLesson'});
+            const getAllLesson = await this.$store.dispatch('actionHandler', {action: 'getLessonByTag'});          
+            this.$store.commit('setLessonList', getAllLesson);
         }
     },
     created(){
         this.getAllLesson();
+    },
+    computed: {
+        lessons() {            
+            return this.$store.getters.getLessonList;
+        }
     }
 };
 </script>

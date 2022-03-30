@@ -11,12 +11,12 @@
                 <div class="nav__button">
                     <NavButton v-for="(navButton, i) in navButtons" :key="i" :data="navButton"/>
                 </div>
-            </section>
-            <!-- button de deconnexion -->
-            <section class="deconnect__container">
-                <Lougout/>
-            </section>
-        </section>          
+            </section>           
+        </section>    
+         <!-- button de deconnexion -->
+        <section class="deconnect__container">
+            <Lougout/>
+        </section>      
     </div> 
 </div>  
 </template>
@@ -37,28 +37,33 @@ export default {
                 {
                     title: 'mes informations',
                     link: utils.apiDataUrl.infoPage,
-                    imgPath: '/'
+                    imgPath: '/',
+                    userRole: 1
                 },
                 
                 {
                     title: 'mes leçons',
                     link: utils.apiDataUrl.userLessonPage.url,
-                    imgPath: '/'
+                    imgPath: '/',
+                    userRole: 2
                 },
                 {
                     title: 'nouvelle leçon',
                     link: utils.apiDataUrl.addLessonTypePage.url,
-                    imgPath: '/'
+                    imgPath: '/',
+                    userRole: 2
                 },
                 {
                     title: 'modifier droit d\'utilisateur',
                     link: utils.apiDataUrl.updateUserRolePage,
-                    imgPath: '/'
+                    imgPath: '/',
+                    userRole: 3
                 },
                 {
                     title: 'Reset base de données',
                     link: utils.apiDataUrl.resetDatabasePage,
-                    imgPath: '/'
+                    imgPath: '/',
+                    userRole: 4
                 }
             ]
         };
@@ -88,8 +93,8 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        flex-grow: 2;
+        justify-content: center;     
+        width: 100%;   
     }
 
     .nav__title{
@@ -99,14 +104,19 @@ export default {
         padding:40px 0px
     }
 
+    .nav__button-container{
+        display: flex;
+        width: 100%;
+    }
     .nav__button{
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
+        width: 100%;
     }
 
     .deconnect__container{
-        width: 100%;
+        width: 100%;      
     }
 
     @media screen and (min-width:768px) {
@@ -118,8 +128,22 @@ export default {
         }
         
         .container{        
-            width: 768px;     
-            height: 100vh;                   
+            width: 768px;                   
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        }
+
+    }
+
+    @media screen and (min-width:1024px) {
+
+        .nav__button{            
+            justify-content: space-between;
+            align-items: stretch;
+            flex-wrap: wrap;           
+        }
+        
+        .container{        
+            width: 1024px;                  
             box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
         }
 

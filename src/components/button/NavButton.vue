@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div  v-if="userRole >= data.userRole" class="container">
       <div class="button__container">     
             <div class="button__navlink">
                 <router-link class="button__navlink-item" :to=data.link>   
@@ -17,7 +17,12 @@
 <script>
 export default {
     name: 'NavButton',
-    props: ['data']
+    props: ['data'],
+    computed: {
+        userRole(){
+            return this.$store.getters.getUserIdent.roleId;
+        }
+    }
 };
 </script>
 

@@ -24,7 +24,7 @@
 
                   <!-- liste de proposition de tag -->
                   <div v-if="tags" class="tag__proposal-container">
-                      <button @click="this.$store.commit('lessonTagMut', []); tag = null" class="tag_proposal-close">
+                      <button @click="this.$store.commit('setProposalTag', []); tag = null" class="tag_proposal-close">
                         x
                       </button>
                       <div class="tag__proposal">
@@ -66,13 +66,29 @@ export default {
         },
 
         /**
-         * selection tag
+         * ajout d'un nouveau tag dans le store "selectedTags"
          */
-        addSelectedTag(tagSelected){
-            this.$store.dispatch('actionHandler', { action: 'addSelectedTag', tagSelected});
-            /** home page - filtre les lecon par tag */
-            if(this.filterLesson){
+        async addSelectedTag(tagSelected){
+            /** recupération des tags selectionnée dans le store */
+            const selectedTags = this.$store.getters.getSelectedTags;
 
+            /** vérification que tag pas déja présent */
+            const findTag = selectedTags.find(tag => tag.id === tagSelected.id);
+
+            /** si tag deja présent */
+            if(findTag){
+                return;
+            }
+            
+            /** ajout du tag dans la liste des tags selectionnée */
+            this.$store.dispatch('actionHandler', { action: 'addSelectedTag', tagSelected});
+            
+            /** home page - filtre les lecon par tag */
+            if(this.filterLesson){                  
+                /** recupere les lessons filtré par tags */
+                const filterLessonByTag = await this.$store.dispatch('actionHandler', { action: 'getLessonByTag'});
+
+                this.$store.commit('setLessonList', filterLessonByTag);
             } else {
                 //Ajout des tags dans le lessonStore
                 this.$store.commit('setLessonTags', this.$store.getters.getSelectedTags);   
@@ -81,11 +97,14 @@ export default {
             }
         },
 
-        removeSelectedTag(tagSelected){   
+        async removeSelectedTag(tagSelected){   
             this.$store.dispatch('actionHandler', { action: 'removeSelectedTag', tagSelected });  
             /** home page - filtre les lecon par tag */
             if(this.filterLesson){
-
+                /** recupere les lessons filtré par tags */
+                const filterLessonByTag = await this.$store.dispatch('actionHandler', { action: 'getLessonByTag'});
+                              
+                this.$store.commit('setLessonList', filterLessonByTag);
             } else {
                 //Ajout des tags dans le lessonStore
                 this.$store.commit('setLessonTags', this.$store.getters.getSelectedTags);

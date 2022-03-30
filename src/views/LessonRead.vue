@@ -54,7 +54,7 @@ export default {
     computed: {
         /**objet lesson */
         lesson(){           
-            return this.$store.getters.getLessonEditor.editor;
+            return this.$store.getters.getLessonEditor;
         },
 
         imageSrc(){

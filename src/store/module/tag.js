@@ -56,16 +56,13 @@ const actions = {
         //tag a ajouter
         const tagSelected = data.tagSelected;
         
-        //Vérification presence de Tag
+        //liste des tags selectionnés
         const selectedTags = getters.getSelectedTags;
        
         if(selectedTags.length < 5){
-            const findTag = selectedTags.find(tag => tag.id === tagSelected.id);
-            if(!findTag){
-                //ajout du tag dans la selection                
-                selectedTags.push(tagSelected);
-                commit('setSelectionTag', selectedTags);                                            
-            }
+            //ajout du tag dans la selection                
+            selectedTags.push(tagSelected);
+            commit('setSelectionTag', selectedTags);     
         }
     },
 

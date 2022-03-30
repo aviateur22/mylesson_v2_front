@@ -3,18 +3,22 @@ import router from '../../router';
 import MarkdownHandler from '../../helper/markdown/markdownConverter';
 
 const state = {
-    lesson: {
-        /**données d'une lecon en ecriture */
-        editor: {}
-    },
+    /** données completes d'une lecon en ecriture ou en lecture */
+    editor: {},
+
+    /** liste de toutes les leçons disponibles */
+    lessonList: []
 };
 
 /**
  * Renvoie du state
  */
 const getters = {
-    /** recuperation lecon en édition */
-    getLessonEditor: (state)=>state.lesson,
+    /** recuperation lecon en édition ou lecture */
+    getLessonEditor: (state)=>state.editor,
+
+    /**recuperation de la liste de leçon */
+    getLessonList: (state)=>state.lessonList
 };
 
 const actions = {
@@ -65,7 +69,7 @@ const actions = {
         /** ouverture de la lecon en écriture */
         if(data.editLesson){  
             /** récupération des tags de la lecon */
-            const tags = getters.getLessonEditor.editor.tags;
+            const tags = getters.getLessonEditor.tags;
 
             /** update de la liste des tags */  
             commit('setSelectionTag', tags);
@@ -128,7 +132,7 @@ const actions = {
      */
     async updateLessonById({dispatch, getters, commit}, data){
         /** id de la lecon*/
-        const lessonId = getters.getLessonEditor.editor.id;
+        const lessonId = getters.getLessonEditor.id;
 
         /** endpoint de la requete*/
         const endPoint = utils.lessonApi.updateLessonById.endPoint.replace(':id', lessonId);
@@ -223,6 +227,23 @@ const actions = {
         return lessons;
     },
 
+    async getLessonByTag({dispatch, getters}){
+        /** endpoint de la requete*/
+        const endPoint = utils.lessonApi.getLessonByTag.endPoint;
+       
+        /** methode de la requete */
+        const method = utils.lessonApi.getLessonByTag.method;
+        
+        /** récupere les tags et  ne renvoi que les id des tags dans la requete */
+        const tags = getters.getSelectedTags.map(tag =>{           
+            return tag.id;            
+        });
+
+        const filterLesson = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: {tags: tags}});
+
+        return filterLesson;
+    },
+
     /**
      * modification du state isSave de la lecon
      * @property {Objec} param.commit - mutation
@@ -249,22 +270,25 @@ const actions = {
 
 const mutations = { 
     /** creation - update - ouverture d'une lecon en ecriture */
-    setLesson: (state, lessonData)=>(state.lesson.editor = lessonData),    
+    setLesson: (state, lessonData)=>(state.editor = lessonData),    
 
     /** modif status sauvegarde */
-    setLessonSaveStatus: (state, saveStatus)=>(state.lesson.editor.isSave = saveStatus),  
+    setLessonSaveStatus: (state, saveStatus)=>(state.editor.isSave = saveStatus),  
 
     /** text format markdown */
-    setLessonMarkdownText: (state, markdownText)=>(state.lesson.editor.markdownText = markdownText),  
+    setLessonMarkdownText: (state, markdownText)=>(state.editor.markdownText = markdownText),  
 
     /** modif titre */
-    setLessonTitle: (state, lessonTitle)=>(state.lesson.editor.title = lessonTitle), 
+    setLessonTitle: (state, lessonTitle)=>(state.editor.title = lessonTitle), 
 
     /** contenu html  */
-    setLessonInHtml: (state, html) =>(state.lesson.editor.htmlOutput = html),
+    setLessonInHtml: (state, html) =>(state.editor.htmlOutput = html),
 
     /** modif liste des tags */
-    setLessonTags: (state, tags) =>(state.lesson.editor.tags = tags),
+    setLessonTags: (state, tags) =>(state.editor.tags = tags),
+
+    /** liste de toutes les lecons*/
+    setLessonList: (state, lessons)=>(state.lessonList = lessons)
 };
 
 export default {
