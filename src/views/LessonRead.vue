@@ -1,47 +1,33 @@
 <template>
   <div class="lesson__main-container">
       <div class="lesson__container">
-        <section class="lesson__title-container">
-              <h2 class="lesson__title">
-                  {{this.lesson.title}}
-              </h2>
-          </section>
-          <section class="lesson__autor-container">
-              <h2 class="lesson__autor">
-                  {{this.lesson.autor}}
-              </h2>
-              <img :src="imageSrc">
-          </section>
-          <section class="lesson__date-container">
-              <div class="lesson__date-main">
-                  <span>{{this.lesson.created}}</span>
-                  <span>{{this.lesson.updated}}</span>
+          <div class="lesson__header">
+              <div class="lesson__presentation">
+                    <TitleComponent/>
+                    <div class="lesson__detail">
+                        <TagsComponent/>  
+                        <DateComponent/> 
+                    </div>                          
               </div>
-          </section>
-          <section class="lesson__tag-container">
-              <div class="lesson__tag-main">
-                    <div class="lesson__tag-title">
-                        <span>thematic</span>
-                    </div>
-                    <div class="lesson__tags">
-                        <span class="lesson__tag" v-for="(tag, id) in lesson.tags" :key="id">{{ tag.name }}</span>
-                    </div>
-              </div>              
-          </section>
-           <section class="lesson__content-container">
-              <div class="lesson__content">
-                  <div class="markdown-body">
-                    <span v-html="content" ></span>
-                </div>
-              </div>
-          </section>
+              <div class="lesson__autor">
+                    <AutorComponent/>
+                    <MediaLinkComponent/>                    
+                </div>         
+          </div>
+          <div class="lesson__body">
+              <ContentComponent/>
+          </div>          
       </div>
   </div>
 </template>
 
 <script>
-import MarkdownHandler from '../helper/markdown/markdownConverter';
-import utils from '../helper/utils';
+import TitleComponent from '../components/lessonRead/TitleLesson.vue';
+import AutorComponent from '../components/lessonRead/Autor.vue';
+import DateComponent from '../components/lessonRead/LessonDate.vue';
+import TagsComponent from '../components/lessonRead/TagContainer.vue';
+import ContentComponent from '../components/lessonRead/Content.vue';
+import MediaLinkComponent from '../components/lessonRead/MediaLinkContainer.vue';
 export default {
     name: 'lessonRead',
     data(){
@@ -49,87 +35,73 @@ export default {
             
         };
     },
+    components: { 
+        AutorComponent,
+        DateComponent,
+        TagsComponent,
+        ContentComponent,
+        TitleComponent,
+        MediaLinkComponent
+    },
     methods: {
     },
-    computed: {
-        /**objet lesson */
-        lesson(){           
-            return this.$store.getters.getLessonEditor;
-        },
-
-        imageSrc(){
-            return utils.baseUri + utils.userApi.getAutorAvatarByKey.endPoint.replace(':key', this.lesson.avatarKey);
-        },
-
-        content(){
-            /** Markdown pour le html */
-            const markdownHandler = new MarkdownHandler();
-            return markdownHandler.getHtml(this.lesson.markdownText);        
-        }
+    computed: {      
     }
 };
 </script>
 
 <style scoped>
-.lesson__main-container{
-  margin-top:var(--navbar_height) ;
-  height: calc( 100vh - var(--navbar_height));
-}
+    .lesson__main-container{
+        margin-top:var(--navbar_height) ;
+        min-height: calc( 100vh - var(--navbar_height));
+        display: flex;
+        justify-content: center;        
+    }
 
-.lesson__title{
-  text-transform: uppercase;
-  font-weight: 800; 
-  padding: 25px 0px;
-}
+    .lesson__container{
+        background: white;
+        width: 100%;
+    }
 
-.lesson__autor{
-    text-transform: uppercase;
-    font-size: var(--text_s);
-    font-weight: 900;
+    .lesson__header{
+        display: flex;
+        flex-direction: column;
+        padding: 10px 0px;
+        background: rgb(231, 231, 231);
+        border-bottom: 0.1px solid black;
+    }
 
-}
+    .lesson__presentation{
+        display: flex;   
+        flex-direction: column; 
+        padding: 10px 0px; 
+    }
 
-.lesson__date-container{
-    padding: 10px 0px;
-}
+    .lesson__detail{
+        display: flex;
+        flex-direction: column;
+         padding: 10px 0px; 
+    }
 
-.lesson__date-main{
-    display: flex;
-    flex-direction: column;
-    font-size: var(--text_s);
-    font-weight: 700;
-    text-transform: uppercase;
-}
+    .lesson__autor{
+        display: flex;
+        flex-direction: row;  
+        padding: 10px 0px;      
+        justify-content: center;
+    }
 
-.lesson__tag-title{
-    text-transform: uppercase;
-    font-size: var(--text_s);
-}
+    @media screen and (min-width:768px) {
 
-.lesson__tag-container{
-    padding: 10px 0px;
-}
+        .lesson__container{        
+            width: 768px;                        
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        }
+    }
 
-.lesson__tag-main{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    @media screen and (min-width:1024px) {  
+        .lesson__container{    
+            width: 1024px;
+        }
+    }
 
-.lesson__tags{
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.lesson__tag{
-    text-transform: uppercase;
-    font-size: var(--text_button_size);
-    font-weight: 700;
-    padding: 5px;
-}
-
-.markdown-body{
-    text-align: left;
-}
 </style>

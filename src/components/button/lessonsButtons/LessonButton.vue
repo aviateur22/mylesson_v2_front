@@ -4,7 +4,7 @@
       <div class="button__container">
         <section class="button__title-container">
             <!-- date de creation -->
-            <span class="button__date">{{data.created_at}}</span>
+            <span class="button__date">{{data.created}}</span>
             <!-- titre de la leçon -->
             <h3 class="button__title">{{ data.title }}</h3>
             <!-- tags de la lecon -->

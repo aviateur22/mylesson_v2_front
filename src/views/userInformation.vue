@@ -1,290 +1,97 @@
 .<template>
     <div class="information__main-container">
         <div class="container">
-            <!-- titre de la page -->
-            <section class="information__title-container">
-                <h2 class="information__title">Votre Profil</h2>
-            </section>
             <!-- boutons de navigation -->
-            <section class="information__form-container">    
-                <!-- Profil utilisateur -->
-                <form @submit.prevent="updateUserProfil" class="form">            
-                    <div class="form__group">
-                        <label for="email" class="form__label">email</label>
-                        <div class="form__control">                            
-                            <input class="form__input" type="text" placeholder="toto@hotmail.fr" name="email" v-model="inputUserData.email">
-                        </div>
-                    </div>
+            <section class="information__form-container">                 
+                <!-- form profile utilisateur-->
+                <ProfileComponent/>
 
-                    <div class="form__group">
-                        <label for="login" class="form__label">login</label>
-                        <div class="form__control">
-                            <input class="form__input" type="text" name="login" placeholder="toto" v-model="inputUserData.login">
-                        </div>
-                    </div>
+                <!-- form pour modification avatar -->
+                <AvatarComponent ref="imageComponent"/>            
 
-                    <!-- selection du sex -->
-                    <div class="form__group-select">
-                        <label for="sex" class="form__label">Votre sex</label>
-                        <select class="form__input" name="sex" v-model="inputUserData.sex">
-                            <option selected disabled value="">Choisissez votre sex</option>
-                            <option name="sex">homme</option>
-                            <option name="sex">femme</option>
-                        </select>
-                    </div>                   
+                <!-- from pour changement du mot de passe -->
+                <PasswordComponent/>
 
-                    <!-- selection de l'avatar -->
-                    <div class="avatar__container">
-                        <div class="form__group-avatar">
-                            <label for="avatar" class="form__label">votre avatar</label>
-                            <div class="form__control">
-                                <input style="display: none" @change="selectImage" class="form__input" type="file" name="image" ref="imageInput" accept="image">                        
-                            </div>                        
-                        </div>
-                        <!--Preview de l'image -->
-                        <div v-if="imageSrc" class="preview__avatar-container">             
-                            <img :src="imageSrc" class="preview__avatar"/>
-                        </div>
-                        <SubmitButton class="avatar__button"  @click.prevent="$refs.imageInput.click()" :textSubmitButton="textAvatarButton"/>
-                    </div>
-                    
-                    <div class="button__container">
-                        <SubmitButton :disableSubmitButton='profilSubmitButtonDisable' :textSubmitButton='profilSubmitButtonText'/> 
-                    </div>                   
-                </form>   
-
-                 <!-- changement de mot de passe -->
-                <section class="information__title-container">
-                    <h2 class="information__title">Votre mot de passe</h2>
-                </section>
-               
-                <form @submit.prevent="updateUserPassword" ref="informationForm" class="form">            
-                    <div class="form__group">
-                        <label for="password" class="form__label">ancien mot de passe</label>
-                        <div class="form__control">                            
-                            <input class="form__input" type="password" placeholder="ancien mot de passe" name="password" v-model="userUpdatePassword.password">
-                        </div>
-                    </div>
-
-                    <div class="form__group">
-                        <label for="newPassword" class="form__label">nouveau mot de passe</label>
-                        <div class="form__control">
-                            <input class="form__input" type="password" name="newPassword" placeholder="nouveau mot de passe" v-model="userUpdatePassword.newPassword">
-                        </div>
-                    </div>
-
-                    <!-- selection du sex -->
-                    <div class="form__group-select">                        
-                        <label for="confirmNewPassword" class="form__label">confirmation nouveau mot de passe</label>
-                        <div class="form__control">                            
-                            <input class="form__input" type="password" placeholder="confirmation mot de passe" name="confirmNewPassword" v-model="userUpdatePassword.confirmNewPassword" @keydown="valueUpdate">
-                        </div>
-                    </div> 
-                    
-                    <div class="button__container">
-                        <SubmitButton :disableSubmitButton='passwordSubmitButtonDisable' :textSubmitButton='passwordSubmitButtonText'/> 
-                    </div>                   
-                </form>   
-
-                <!-- lien reseau linkedin -->
-                <section class="information__title-container">
-                    <h2 class="information__title">Linkedin</h2>
-                </section>
-               
-                <form ref="linkedin" class="form">            
-                    <div class="form__group">
-                        <div class="form__input-container">
-                            <label for="linkUrl" class="form__label">linkedin</label>
-                            <!--image linkedin -->
-                            <div v-if="imageSrc" class="media__image-container">             
-                                <img :src="imageLinkedin" class="media__image"/>
-                            </div>
-                            <div class="form__control">                            
-                                <input class="form__input" type="text" placeholder="https://www.linkedin.com/....." name="linkUrl">
-                            </div>
-                        </div>
-                        <div class="form__button-container">
-                            <SubmitButton @click.prevent="saveLinkMedia(2)" :textSubmitButton='githubTextUpdateButton'/> 
-                            <SubmitButton :textSubmitButton='githubTextDeleteButton'/> 
-                        </div>
-                    </div>
-                </form> 
-
-                <!-- lien reseau github -->
-                <section class="information__title-container">
-                    <h2 class="information__title">github</h2>
-                </section>
-
-                <form class="form" ref="github"> 
-                    <div class="form__group">
-                        <div class="form__input-container">
-                            <label for="linkUrl" class="form__label">github</label>
-                            <!--image github -->
-                            <div v-if="imageSrc" class="media__image-container">             
-                                <img :src="imageGithub" class="media__image"/>
-                            </div>
-                            <div class="form__control">
-                                <input class="form__input" type="text" name="linkUrl" placeholder="https://github.com/.....">
-                            </div>
-                        </div>                   
-                    </div>            
-                    
-                    <div class="form__button-container">
-                        <SubmitButton @click.prevent="saveLinkMedia(1)" :textSubmitButton='githubTextUpdateButton'/> 
-                        <SubmitButton :textSubmitButton='githubTextDeleteButton'/> 
-                    </div>                
-                </form>                        
-            </section>      
-            <section class="information__button-container">                
-
-            </section>     
+                <!-- form pour link media -->
+                <LinkMediaComponent v-for="(link, i) in mediaLinks" :data="link" :key="i"/>
+            </section>
         </div> 
     </div>  
 </template>
 
 <script>
-import SubmitButton from '../components/button/SubmitButton.vue';
-import utils from '../helper/utils';
+import ProfileComponent from '../components/userInformation/Profile.vue';
+import AvatarComponent from '../components/userInformation/SimpleAvatar.vue';
+import PasswordComponent from '../components/userInformation/PasswordChange.vue';
+import LinkMediaComponent from '../components/userInformation/LinkMedia.vue';
 export default {
     components: {
-        SubmitButton
+        ProfileComponent,
+        AvatarComponent,
+        PasswordComponent,
+        LinkMediaComponent
     },
     data() {
         return {
-            /** text bouton valider */
-            profilSubmitButtonText: 'enregistrer',
-            passwordSubmitButtonText: 'modifier',
-            githubTextDeleteButton: 'supprimer',
-            githubTextUpdateButton: 'modifier',
-            
-            /** text bouton avatar */
-            textAvatarButton: 'changer mon avatar',            
+            /** info utilisateur */
+            user: {},
 
-            /** desactivation du bouton valider */
-            profilSubmitButtonDisable: false,
-            passwordSubmitButtonDisable: false,
-
-            /**données en provenace de la bdd pour le profil */
-            userData: {},
-
-            /** object pour afficher la preview de l'avatar*/
-            imageSrc: null,
-
-            /** image media reseau sicaiux */
-            imageGithub: null,
-            imageLinkedin: null,
-
-            /**boolean pour détection de modification */
-            dataValueChange: false,
-            passwordValueChange: false,
-
-            /** données dans l'input modifiable par l'utilisateur
-             * @property inputUserData.email
-             * @property inputUserData.login
-             * @property inputUserData.sex
-             * @property inputUserData.image
-             */
-            inputUserData: {}, 
-            
-            /** données dans l'input modifiable par l'utilisateur
-             * @property userUpdatePassword.password
-             * @property userUpdatePassword.newPassword
-             * @property userUpdatePassword.confirmNewPassword
-             */
-            userUpdatePassword: {},
-            
+            /**links */
+            mediaLinks: [],
         };
     },
-    methods: {    
-        /**
-         * update du profil
-         */
-        async updateUserProfil(e) {            
-            this.disableSubmitButton = true;  
-
-            /** creation d'un formData - middlware multer dans le back cause upload file*/
-            const formData = new FormData(e.target);            
-
-            const request = await this.$store.dispatch('actionHandler', {action: 'updateUserInformation', formData});
-
-            this.disableSubmitButton = false;
-        },
-       
+    methods: {
         /**
         * récupération des infos utilisateur
         */
-        async getUserInformation(){
-            console.log('userData');
+        async getUserInformation(){            
             /** récuperation info utilisateur*/
-            const getUserData = await this.$store.dispatch('actionHandler', { action: 'getUserInformation'});
+            const userInformation = await this.$store.dispatch('actionHandler', { action: 'getUserInformation'});
 
-            //modification des données pour le sex
-            this.inputUserData.sex = getUserData.sex ? getUserData.sex : '';
-
-            /** initilisation des models modifiable par l'utilisateur */
-            this.inputUserData = getUserData;
-            
-            if(getUserData.avatarKey){
-                /** récupere un text d'erreur si necessaire */
-                await this.$store.dispatch('actionHandler', { action: 'getAvatarByKey', key: getUserData.avatarKey});                
-                /** affiche de l'image avatar */
-                this.imageSrc = utils.baseUri + utils.userApi.getAvatarByKey.endPoint.replace(':key', getUserData.avatarKey);                
+            /** pas d'information utilisateur*/
+            if(!userInformation){
+                return;
             }
+            /** parametre user */
+            this.user = userInformation;
+
+            this.getImageUser();
         },
+      
+        /** recupoeration de tous les média disponible */
+        async getAllLinkMedia(){
+            /** récuperation info utilisateur*/
+            const getLinks = await this.$store.dispatch('actionHandler', { action: 'getAllLink'});
 
-        /** récuperation des images  */
+            /** pas d'information utilisateur*/
+            if(!getLinks){
+                return;
+            }
 
-        async getMediaImage(){
-            /** gestion des image reseau sociaux */            
-            const gitubUrl = await this.$store.dispatch('actionHandler', { action: 'getLinkByName', mediaName: 'github'});
-            const linkedin = await this.$store.dispatch('actionHandler', { action: 'getLinkByName', mediaName: 'linkedin'});            
-            /** imahe reseau sociaux */
-            this.imageGithub = utils.baseUri + gitubUrl;
-            this.imageLinkedin = utils.baseUri + linkedin;
-            //utils.userApi.getLinkMediaImageByName.endPoint.replace(':media', 'github');
-        },
-
-        /**
-         * affichage de la preview
-         */
-        selectImage(){            
-            /** select file in input */            
-            this.inputUserData.image = this.$refs.imageInput.files[0];
-            this.imageSrc = URL.createObjectURL(this.inputUserData.image);
+            /** parametre user */
+            this.mediaLinks = getLinks;
         },
 
         /**
-         * Mise a jour du mot de passe
+         * récuperation de l'image utilisateur
          */
-        async updateUserPassword(e){
-            /** creation d'un formData */                
-            const formData = Object.fromEntries(new FormData(e.target).entries());  
-
-            /** */
-            const updatePassword = await this.$store.dispatch('actionHandler', { action: 'updateUserPassword', formData});
+        async getImageUser(){
+            this.$refs.imageComponent.getAvatarImage(this.user.avatarKey);
         },
-
-        /**
-         * sauvegarde link media
-         */
-        async saveLinkMedia(id){
-            /** rcuperation des form */
-            const data = id === 1 ? this.$refs.github : this.$refs.linkedin;
-          
-            let formData = new FormData(data);              
-            formData.append('mediaId', id);  
-            formData = Object.fromEntries(formData.entries());
-            
-            const saveLinkData = await this.$store.dispatch('actionHandler', { action: 'saveLinkMedia', formData});
-        }
+        
     },
-    created(){
-        /** recuperation des info utilsateur */
-        this.getUserInformation();
+    async created(){
+        /** recuperation des infos utilsateur */
+        await this.getUserInformation();
 
-        /** chargement des image des media */
-        this.getMediaImage();
-    }
+        /** recuperation des medias */
+        await this.getAllLinkMedia();
+    },
+    beforeRouteLeave(to, from, next){
+        /** reset des données des informations utilisateurs */
+        this.$store.commit('setUserProfilData', {});
+        next();
+    }  
 };
 </script>
 

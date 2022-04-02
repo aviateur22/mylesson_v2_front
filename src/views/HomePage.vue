@@ -1,11 +1,6 @@
 <template>
   <div class="home__container">
-        <div class="main__container">
-            <section class="title__section">
-                <div class="tite__home-container">
-                    <h2 class="title"> Page Principale </h2>
-                </div>
-            </section>        
+        <div class="main__container-home">
             <section class="tag__section">
                 <div class="tag__main-container">
                     <div class="tag__container">
@@ -65,16 +60,18 @@ export default {
         margin-top:var(--navbar_height) ;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center; 
-        background: red;  
+        justify-content: space-between;
+        align-items: center;         
         background: var(--main_background_color);
+        min-height: calc( 100vh - var(--navbar_height));
     }
     
-    .main__container{
+    .main__container-home{
         width:100%;
         display: flex;
         flex-direction: column;
+        align-items: stretch;
+        height: 100%;
     }
 
     .lesson__container{
@@ -92,7 +89,7 @@ export default {
     
     @media screen and (min-width:768px) {
 
-        .main__container{        
+        .main__container-home{        
             width: 768px;                        
             box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;           
         }
@@ -103,7 +100,7 @@ export default {
     }
 
     @media screen and (min-width:1024px) {      
-        .main__container{        
+        .main__container-home{        
             width: 1024px;                                 
         }  
 

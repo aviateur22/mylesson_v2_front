@@ -1,6 +1,5 @@
 /**données API et url des pages*/
 import utils from '../../helper/utils';
-import router from '../../router';
 
 const state = {        
     //données utilisateur après connexion
@@ -29,24 +28,28 @@ const actions = {
         /** methode de la requete */
         const method = utils.linkApi.getLinkByName.method;       
 
-        const imageUrl = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method });
-        console.log(imageUrl);
+        const imageUrl = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method });  
 
-        if(!imageUrl.mediaRequest.picture_name || !imageUrl.pathUrl){
-            throw new Error('echec recuperation des images médias');
+        /** echec recuperation image  */
+        if(!imageUrl){
+            return;
         }
 
-        console.log(imageUrl);
+        if(!imageUrl.mediaRequest?.picture_name || !imageUrl.pathUrl){
+            throw new Error('echec recuperation des images médias');
+        }
 
         return imageUrl.pathUrl + imageUrl.mediaRequest.picture_name;
     },
 
     /**
-     * 
-     * @param {*} param0 
-     * @param {*} data 
+     * suavegarde du lien media github , linkedin.....
+     * @property {Object} param.dispatch - action
+     * @property {Object} param.getters - getters
+     * @property {Object} param.commit - commit
+     * @property {Object} data.dataForm - donnée du liens a enregistrer
      */
-    async saveLinkMedia({dispatch, getters}, data){
+    async saveLinkMedia({dispatch, getters, commit}, data){
         /** id utilisateur */
         const userId = getters.getUserIdent.id;
 
@@ -55,8 +58,37 @@ const actions = {
 
         /** methode de la requete */
         const method = utils.linkApi.saveLinkByUserId.method;
+
         const saveLinkMedia = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData });
-        console.log(saveLinkMedia)
+
+        if(!saveLinkMedia){
+            return null;
+        }
+
+        /**
+         * mise a jour du profil utilisateur
+         */
+        commit('setUserProfilData', saveLinkMedia);
+
+        /**Requete ok - succes de la demande */
+        commit('setFlashMessageMut', { error: false, message: `enregistrement réussi pour votre lien ${data.mediaName}`});  
+    },
+
+    async getAllLink({dispatch}){
+        /** endpoint de la requete*/
+        const endPoint = utils.linkApi.getAllLink.endPoint;
+
+        /** methode de la requete */
+        const method = utils.linkApi.getAllLink.method;
+
+        const getAllLink = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method });
+        
+        /** si pas de données */
+        if(!getAllLink){
+            return null;
+        }
+
+        return getAllLink;
     }
 };
 

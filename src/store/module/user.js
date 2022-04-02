@@ -5,10 +5,13 @@ import router from '../../router';
 const state = {        
     //données utilisateur après connexion
     userIdentState: {},
+    //donnée utilisateur page de profil
+    userProfilData: {}
 };
 
 const getters = {    
-    getUserIdent: (state)=>state.userIdentState
+    getUserIdent: (state)=>state.userIdentState,
+    getUserProfilData: (state)=>state.userProfilData,
 };
 
 const actions = {    
@@ -78,7 +81,7 @@ const actions = {
      * @property {Object} param.getters - getter
      * @returns {object} requestedUser
      */
-    async getUserInformation({ dispatch, getters}){
+    async getUserInformation({ dispatch, getters, commit}){
         /** id utilisateur */
         const userId = getters.getUserIdent.id;
         
@@ -105,6 +108,8 @@ const actions = {
             return;
         }
 
+        /** mise a jour du store */
+        commit('setUserProfilData', getUserById);
         return getUserById;
     },
 
@@ -130,6 +135,42 @@ const actions = {
         const method = utils.userApi.getAvatarByKey.method;
         
         const uploadFile = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method });        
+    },
+
+    /**
+     * Mise a jour de l'image de profil
+     * @property {Object} param.dispatch
+     * @property {Object} param.getters
+     * @property {Object} param.commit
+     * @property {Object} data.formData - données a envoyées
+     * @returns 
+     */
+    async updateImageByUserId({dispatch, commit, getters}, data){
+        /** id utilisateur */
+        const userId = getters.getUserIdent.id;
+
+        /** endpoint de la requete*/
+        const endPoint = utils.userApi.updateImageByUserId.endPoint.replace(':userId', userId);
+       
+        /** methode de la requete */
+        const method = utils.userApi.updateImageByUserId.method;
+
+        const updateUserImage = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData }); 
+
+        /** echec de la requete */
+        if(!updateUserImage){            
+            return;
+        }
+
+        /**
+         * mise a jour du profil utilisateur
+         */
+        commit('setUserProfilData', updateUserImage);
+
+        /**Requete ok - succes de la demande */        
+        commit('setFlashMessageMut', { error: false, message: 'modification de votre image de profile effectuée'});
+
+        return updateUserImage;
     },
 
     /**
@@ -187,13 +228,25 @@ const actions = {
             return;
         }
 
+        /**
+         * mise a jour du profil utilisateur
+         */
+        commit('setUserProfilData', updateUser);
         /**Requete ok - succes de la demande */        
         commit('setFlashMessageMut', { error: false, message: 'modification du compte effectuée'});
 
         return updateUser;
     },
 
-    async updateUserPassword({dispatch, getters}, data){
+    /**
+     * mise a jour du mot de passe
+     * @property {Object} param.dispatch - action
+     * @property {Object} param.getters - getter
+     * @property {Object} param.commit - mutation
+     * @param {HTMLElement} data.form - formulaire de modification
+     * @returns {object} updatedPassword
+     */
+    async updateUserPassword({dispatch, getters, commit}, data){
         /** id de l'utilisateur */
         const userId = getters.getUserIdent.id;
 
@@ -215,7 +268,17 @@ const actions = {
 
         const updatePassword = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData });
 
-        console.log(updatePassword);
+        /** echec de la mise a jour */
+        if(!updatePassword){
+            return;
+        }
+
+        /**
+         * mise a jour du profil utilisateur
+         */
+        commit('setUserProfilData', updatePassword);
+        /**Requete ok - succes de la demande */        
+        commit('setFlashMessageMut', { error: false, message: 'votre mot de passe est modifié'});
     },
 
     /*
@@ -262,6 +325,7 @@ const actions = {
             //Reset de tous les states
             commit('setUserIdent', {});           
             commit('setLesson', {});
+            commit('setUserProfilData', {});
             commit('setFlashMessageMut', { visibility: true, error: isError, message: message});           
             router.push({name: pathName });            
         } catch (error) {
@@ -274,7 +338,12 @@ const mutations = {
     /**
      * Update du userAuthenticated state
      */
-    setUserIdent: (state, userIdentState)=>(state.userIdentState = userIdentState)
+    setUserIdent: (state, userIdentState)=>(state.userIdentState = userIdentState),
+
+    /**
+     * Mise a jour des données profiles 
+     */
+    setUserProfilData: (state, userData)=>(state.userProfilData = userData),
 };
 
 export default {

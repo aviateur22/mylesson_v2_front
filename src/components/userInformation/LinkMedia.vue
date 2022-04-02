@@ -1,0 +1,182 @@
+<template>
+ <!-- lien reseau linkedin -->
+    <section class="information__title-container">
+        <div class="information__main-container">
+            <div class="information__icone-container">
+                <!--image du media concerné -->
+                <MediaIconeComponent :imageMedia="imageMedia"/>
+            </div>
+            <h2 class="information__title">votre {{data.compagny_name}}</h2>                                                                               
+            </div>
+    </section>
+               
+    <form ref=linkFormUrl class="form">            
+        <div class="form__group">
+            <div class="form__input-container">                   
+                <label for=linkUrl class="form__label">votre lien {{data.compagny_name}}</label>         
+                <div class="form__control">                            
+                    <input class="form__input" type="text" placeholder="https://..." name=linkUrl v-model="urlLink">
+                </div>
+            </div>
+            <div class="form__button-container">
+                <SubmitButton @click.prevent="saveLinkMedia()" :textSubmitButton='updateLinkMediaButtonText'/> 
+                <SubmitButton :textSubmitButton='deleteLinkMediaButtonText'/> 
+            </div>
+        </div>
+    </form> 
+</template>
+
+<script>
+import SubmitButton from '../button/SubmitButton.vue';
+import MediaIconeComponent from './MediaIcone.vue';
+import utils from '../../helper/utils';
+export default {
+    name: 'mediaLink',
+    components: {
+        SubmitButton,
+        MediaIconeComponent
+    },
+    props: ['data'],
+    data(){
+        return {
+            /** image media reseau sicaiux */
+            imageMedia: null,
+
+            deleteLinkMediaButtonText: 'supprimer',
+            updateLinkMediaButtonText: 'enregistrer',
+
+            /** url utilisateur du média */
+            urlLink: ''
+
+        };
+    },
+    methods: {
+        /** 
+         * récuperation des images github et likedin
+         */
+        async getMediaImage(){
+            /** gestion des image reseau sociaux */            
+            const imageUrl = await this.$store.dispatch('actionHandler', { action: 'getLinkByName', mediaName: this.data.compagny_name});        
+
+            if(!imageUrl){
+                return null;
+            }
+
+            /** imahe reseau sociaux */
+            this.imageMedia = utils.baseUri + imageUrl;
+        },
+
+        /**
+         * récuperation du lien du média
+         */
+        getUserUrlMedia(){
+            const userLinks = this.inputUserData.links;
+
+            /** si au moin 1 links */
+            if(userLinks?.length > 0){               
+                const userLink = userLinks.find(link => link.id === this.data.id);
+
+                /** ajout le lien urlLink, si le média est trouvé */
+                if(userLink){
+                    this.urlLink = userLink.UserLink.link_url;
+                }                
+            }
+        },
+
+        /**
+         * enregistrement ou mise a jour des liens github ou linkedin
+         */
+        async saveLinkMedia(){
+            /** creation d'un formData */
+            let formData = new FormData(this.$refs.linkFormUrl);
+
+            formData.append('mediaId', this.data.id);
+
+            formData = Object.fromEntries(formData.entries());
+            
+            await this.$store.dispatch('actionHandler', { action: 'saveLinkMedia', formData, mediaName: this.data.compagny_name});
+        }
+    },
+    computed: {
+        /** données utilisateur */
+        inputUserData(){
+            return this.$store.getters.getUserProfilData;
+        }
+
+    },
+    async created(){       
+        /** chargement des image des media */
+        await this.getMediaImage();
+
+        /** récuperation url enregistré en base de données */
+        this.getUserUrlMedia();
+    }
+};
+</script>
+
+<style scoped>
+    .information__title-container{  
+        padding-top: 20px;      
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .information__main-container{
+        padding: 5px;
+        display: flex;
+        align-items: center;
+
+    }
+    
+    .information__icone-container{
+        width: 80px;
+    }
+    .information__title{
+        padding: 10px;
+        font-size: var(--form_title_size);
+        text-transform: uppercase;
+    }
+
+    .form{        
+        padding: 20px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        border-bottom: 0.1px solid gray;  
+    }
+
+    .form__group{
+        padding: 10px 0px;           
+    }
+
+    .form__input-container{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form__control{
+        width: 100%;
+    }    
+
+    .form__label{
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        padding: 5px 0px;
+        font-weight: 800;
+        text-align: left;
+    }
+
+    .form__input{
+        width: 100%;
+        height: 45px;
+        border:0.5px solid var(--main_color); 
+        border-radius: 10px;
+        padding-left: 5px;
+    }
+
+    .form__button-container{
+        padding-top: 20px;
+    }
+
+</style>

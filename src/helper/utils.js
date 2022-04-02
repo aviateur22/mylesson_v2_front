@@ -16,7 +16,8 @@ const utils = {
         deleteUserById: { endPoint: '/api/users/:id', method: 'delete' },
         getAllUser: { endPoint: '/api/users', method: 'get' },
         getAvatarByKey: {endPoint: '/api/users/image/:key', method: 'get'},
-        getAutorAvatarByKey: {endPoint: '/api/users/image/autor/:key', method: 'get'},       
+        getAutorAvatarByKey: {endPoint: '/api/users/image/autor/:key', method: 'get'},   
+        updateImageByUserId: {endPoint: '/api/users/image/:userId', method: 'patch'}    
     },
     /** lessons */
     lessonApi: {
@@ -40,7 +41,8 @@ const utils = {
     /** media link */
     linkApi: {
         getLinkByName: {endPoint: '/api/links/name/:media', method: 'get'},
-        saveLinkByUserId: {endPoint: '/api/links/user/:userId', method: 'post'}
+        saveLinkByUserId: {endPoint: '/api/links/user/:userId', method: 'post'},
+        getAllLink: { endPoint: '/api/links/', method: 'get'}
     },
     /**url page utilisateur */
     pageUserUrl: {

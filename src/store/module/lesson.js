@@ -64,7 +64,10 @@ const actions = {
             isSave: true,
             tags: getLesson.tags,
             autor: getLesson.autor,
-            avatarKey: getLesson.avatarKey
+            autorLinks: getLesson.links,
+            avatarKey: getLesson.avatarKey,
+            created: getLesson.created,
+            updated: getLesson.updated
         });   
         /** ouverture de la lecon en écriture */
         if(data.editLesson){  
