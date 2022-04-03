@@ -1,17 +1,21 @@
 <template>
 <!-- image des media avec animation roatation -->
     <div class="image">
+        <!-- image de face -->
         <div class="image__inner">
             <section class="image__front">     
                 <div class="image__container">
+                    <!-- image  -->
                     <div v-if="imageMedia" class="media__image-container">             
                         <img :src="imageMedia" class="media__image"/>
                     </div>               
                 </div>
             </section>
+            <!-- imge de derriere -->
             <section class="image__back">
                 <div class="image__presentation-back">
-                   <div v-if="imageMedia" class="media__image-container">             
+                   <div v-if="imageMedia" class="media__image-container">     
+                        <!-- image -->
                         <img :src="imageMedia" class="media__image"/>
                     </div> 
                 </div>
@@ -23,7 +27,7 @@
 
 <script>
 export default {
-    name: 'mediaIcone',
+    name: 'mediaIcone',    
     props: ['imageMedia']
 };
 </script>

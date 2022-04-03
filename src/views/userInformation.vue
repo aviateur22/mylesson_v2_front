@@ -6,13 +6,16 @@
                 <!-- form profile utilisateur-->
                 <ProfileComponent/>
 
+                <!-- Role utilisateur -->
+                <UserRoleComponent/>
+
                 <!-- form pour modification avatar -->
                 <AvatarComponent ref="imageComponent"/>            
 
                 <!-- from pour changement du mot de passe -->
                 <PasswordComponent/>
 
-                <!-- form pour link media -->
+                <!-- form pour link media -->                
                 <LinkMediaComponent v-for="(link, i) in mediaLinks" :data="link" :key="i"/>
             </section>
         </div> 
@@ -24,12 +27,15 @@ import ProfileComponent from '../components/userInformation/Profile.vue';
 import AvatarComponent from '../components/userInformation/SimpleAvatar.vue';
 import PasswordComponent from '../components/userInformation/PasswordChange.vue';
 import LinkMediaComponent from '../components/userInformation/LinkMedia.vue';
+import UserRoleComponent from '../components/userInformation/UserRole.vue';
 export default {
     components: {
         ProfileComponent,
         AvatarComponent,
         PasswordComponent,
-        LinkMediaComponent
+        LinkMediaComponent,
+        UserRoleComponent
+
     },
     data() {
         return {
@@ -58,8 +64,15 @@ export default {
             this.getImageUser();
         },
       
-        /** recupoeration de tous les média disponible */
+        /** recuperation de tous les média disponible */
         async getAllLinkMedia(){
+            /** uniquement pour les utilisateur ayant au moin un niveau writer */
+            const userRoleId = this.$store.getters.getUserIdent.roleId;
+            console.log(userRoleId);
+            if(userRoleId < 2){
+                return;
+            }
+
             /** récuperation info utilisateur*/
             const getLinks = await this.$store.dispatch('actionHandler', { action: 'getAllLink'});
 
@@ -83,7 +96,7 @@ export default {
     async created(){
         /** recuperation des infos utilsateur */
         await this.getUserInformation();
-
+       
         /** recuperation des medias */
         await this.getAllLinkMedia();
     },
@@ -212,11 +225,7 @@ export default {
     }
     .fade-enter, .fade-leave-to {
         opacity: 0;
-    }    
-
-    @media screen and (min-width:768px) {
-
-    }
+    }   
 
     @media screen and (min-width:768px) {
        

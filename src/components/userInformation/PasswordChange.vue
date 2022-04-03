@@ -1,7 +1,7 @@
 <template>
    <!-- changement de mot de passe -->
     <section class="information__title-container">
-        <h2 class="information__title">Votre mot de passe</h2>
+        <h2 class="information__title">modifier votre mot de passe</h2>
     </section>
     
     <form @submit.prevent="updateUserPassword" ref="informationForm" class="form">            

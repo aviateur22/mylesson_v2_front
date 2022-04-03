@@ -1,6 +1,6 @@
 <template>
-  <div v-if="visibility" class="main__container">
-      <div class="container">
+  <div v-if="visibility" class="flash__container">
+      <div class="flash">
           <div class="flash__message-container" :class="{flash__error:  flashMessage.error}">
               <span class="flash__message-text">{{ flashMessage.message }}</span>
           </div>
@@ -10,7 +10,6 @@
 
 <script>
 
-import {mapActions, mapMutations, mapGetters, Store} from 'vuex';
 export default {
     name: 'FlashMessage',
     data() {
@@ -51,14 +50,17 @@ export default {
 
 <style scoped>
 
-    .main__container{
+    .flash__container{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0px 10px;
+    }    
+
+    .flash{        
         width: 100%;
     }
-    .container{
-
-        width: 90%;
-        margin:0px auto;      
-    } 
 
     .flash__message-container{
         border: 1px solid inherit;
@@ -66,7 +68,8 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        background: green;
+        background: rgba(122, 199, 46,0.7);
+        border:0.5px solid green;
         color: white;
         text-transform: uppercase;
         font-size: var(--text_s);
@@ -75,11 +78,28 @@ export default {
 
     .flash__message-text{
         padding: 15px 10px;
-        white-space: pre-wrap
+        white-space: pre-wrap;
+        font-size: var(--text_button_size);
     }
 
     .flash__error{
-        background: red !important;
+        background: rgba(255, 25, 0, 0.7) !important;
+        border:0.5px solid red !important;
+    }
+
+    @media screen and (min-width:768px) {
+       
+        .flash{        
+            width: 768px;                     
+        }
+    }
+
+    @media screen and (min-width:1024px) {
+       
+        .flash{        
+            width: 1024px;                 
+        }
+
     }
 
 </style>
