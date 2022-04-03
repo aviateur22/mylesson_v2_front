@@ -21,6 +21,7 @@ const utils = {
     },
     /** lessons */
     lessonApi: {
+        getTokenByUserId: { endPoint: '/api/lessons/token/:userId', method: 'get' },
         createLesson: { endPoint: '/api/lessons', method: 'post' },
         getLessonById: { endPoint: '/api/lessons/:id', method: 'get' },
         updateLessonById: { endPoint: '/api/lessons/:id', method: 'patch' },
@@ -42,7 +43,8 @@ const utils = {
     linkApi: {
         getLinkByName: {endPoint: '/api/links/name/:media', method: 'get'},
         saveLinkByUserId: {endPoint: '/api/links/user/:userId', method: 'post'},
-        getAllLink: { endPoint: '/api/links/', method: 'get'}
+        getAllLink: { endPoint: '/api/links/', method: 'get'},
+        deleteLinkByUserId: { endPoint: '/api/links/user/:userId', method: 'delete'}
     },
     /**url page utilisateur */
     pageUserUrl: {

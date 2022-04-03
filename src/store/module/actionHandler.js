@@ -5,7 +5,10 @@ const actions = {
     async actionHandler({dispatch, commit}, payload){
         try {            
             return await dispatch(payload.action, payload);   
-        } catch (err) {                  
+        } catch (err) {  
+            /** masque la fenetre de chargement */
+            commit('setLoaderState', false);      
+                      
             /** vérifictaion réponse de axios*/                  
             if(err.response && Number(err.response.status) < 500) {                
                 /**erreur 401 - session expirée */

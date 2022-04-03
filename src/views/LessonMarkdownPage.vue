@@ -44,6 +44,13 @@ export default {
     },
     methods: {
         /**
+         * récuperation d'un token pour le formulaire
+         */
+        async getTokenForm(){
+            const getToken = await this.$store.dispatch('actionHandler', {action: 'getTokenForm'});           
+        },
+
+        /**
          * Action de création ou Update d'une lecon
          */
         async saveLesson(){
@@ -65,6 +72,9 @@ export default {
             /**ajout de id utilisateur  */
             formData.append('userId', userId);
 
+            /** ajout du token */
+            formData.append('formToken', this.$store.getters.getLessonEditor.token);           
+
             /** requete  */
             let saveLesson;
             
@@ -81,8 +91,6 @@ export default {
             }
             //reactivation du boutton
             this.disableLoginButton = !this.disableLoginButton; 
-
-            return saveLesson;
         },
 
         /**
@@ -104,6 +112,9 @@ export default {
 
             /**ajout de id utilisateur  */
             formData.append('userId', userId);
+
+            /** ajout du token */
+            formData.append('formToken', this.$store.getters.getLessonEditor.token);
 
             /**données permettant d'effectuer l'action  */
             const data = {
@@ -130,6 +141,12 @@ export default {
             /**Affichage de la modale */
             this.$store.commit('setModalVisibilityState', true);   
         }
+    },
+    async created(){
+        /** 
+         * generation d'un token pour soumisson du formulaire
+         */
+        await this.getTokenForm();
     },
     async beforeRouteLeave(to, from, next) {        
         try {            

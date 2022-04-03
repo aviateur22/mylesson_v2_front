@@ -8,7 +8,8 @@ import actionHandler from './module/actionHandler';
 import axiosApi from './module/axios';
 import lesson from './module/lesson';
 import modal from './module/modal';
-import link from './module/link'
+import link from './module/link';
+import loader from './module/loader';
 
 export default new Vuex.Store({
     plugins: [createPersistedState({
@@ -23,6 +24,7 @@ export default new Vuex.Store({
         actionHandler,        
         axiosApi,
         lesson,
-        link
+        link,
+        loader
     }
 });

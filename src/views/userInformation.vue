@@ -68,7 +68,7 @@ export default {
         async getAllLinkMedia(){
             /** uniquement pour les utilisateur ayant au moin un niveau writer */
             const userRoleId = this.$store.getters.getUserIdent.roleId;
-            console.log(userRoleId);
+         
             if(userRoleId < 2){
                 return;
             }

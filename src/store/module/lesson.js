@@ -24,6 +24,31 @@ const getters = {
 const actions = {
 
     /**
+     * genration d'un token pour une nouvelle lecon
+     */
+    async getTokenForm({dispatch, getters, commit}){
+        /** id de la lecon */     
+        const userId = getters.getUserIdent.id;
+
+        console.log(userId)
+
+        /** endpoint de la requete*/
+        const endPoint = utils.lessonApi.getTokenByUserId.endPoint.replace(':userId', userId);
+
+        /** methode de la requete */
+        const method = utils.lessonApi.getTokenByUserId.method;
+
+        const token = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method });
+
+        if(!token){
+            return null;
+        }
+
+        /** enregistre le token */
+        commit('setTokenLesson', token.token);
+    },
+
+    /**
      * récuperation d'une lecon par son id
      * @property {Objec} param.dispatch - action
      * @property {Objec} param.getters - getter
@@ -50,8 +75,7 @@ const actions = {
         if(!getLesson){
             return;
         }
-
-        console.log(getLesson);
+        
         /** Markdown pour le html */
         const markdownHandler = new MarkdownHandler();
 
@@ -76,6 +100,9 @@ const actions = {
 
             /** update de la liste des tags */  
             commit('setSelectionTag', tags);
+
+            /** ajoute du token pour le formulaire */
+            commit('setTokenLesson', getLesson.token);
 
             router.push({name: 'UpdateLesson', params: {slug: getLesson.slug}});
         } else {
@@ -112,14 +139,21 @@ const actions = {
         const markdownHandler = new MarkdownHandler();
 
         /**Requete ok */
+        /**Requete ok */
         commit('setLesson', {            
             id: createLesson.id,
             title: createLesson.title,
             markdownText: createLesson.content,
             htmlOutput: markdownHandler.getHtml(createLesson.content),
-            tags: [],
-            isSave: true
-        });                
+            isSave: true,
+            tags: createLesson.tags,
+            autor: createLesson.autor,
+            autorLinks: createLesson.links,
+            avatarKey: createLesson.avatarKey,
+            created: createLesson.created,
+            updated: createLesson.updated,
+            token: createLesson.token,
+        });              
         commit('setFlashMessageMut', { error: false, message: 'enregistrement ok'});
         
         return createLesson;  
@@ -145,22 +179,30 @@ const actions = {
 
         const updateLesson = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData});
 
+        console.log(updateLesson)
+
         /** Si pas d'erreur lors de la requête*/
         if(!updateLesson){    
             return;
         }    
          
         /** Markdown pour le html */
-        const markdownHandler = new MarkdownHandler();
+        const markdownHandler = new MarkdownHandler();       
         
         /**Requete ok */
         commit('setLesson', {            
             id: updateLesson.id,
+            title: updateLesson.title,
             markdownText: updateLesson.content,
             htmlOutput: markdownHandler.getHtml(updateLesson.content),
-            title: updateLesson.title,
             isSave: true,
-            tags: updateLesson.tags
+            tags: updateLesson.tags,
+            autor: updateLesson.autor,
+            autorLinks: updateLesson.links,
+            avatarKey: updateLesson.avatarKey,
+            created: updateLesson.created,
+            updated: updateLesson.updated,
+            token: updateLesson.token,
         });                
         commit('setFlashMessageMut', { error: false, message: 'enregistrement ok'});
         
@@ -289,6 +331,9 @@ const mutations = {
 
     /** modif liste des tags */
     setLessonTags: (state, tags) =>(state.editor.tags = tags),
+
+    /** token formulaire édition d'une lecon */
+    setTokenLesson: (state, token)=>(state.editor.token = token),
 
     /** liste de toutes les lecons*/
     setLessonList: (state, lessons)=>(state.lessonList = lessons)

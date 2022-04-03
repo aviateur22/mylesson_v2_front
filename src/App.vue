@@ -3,17 +3,20 @@
         <Navbar/>        
         <Modal/>
         <FlashMessage class="flash__message"/>
+        <Loader/>
     </div>   
 </template>
 <script>
 import Navbar from './components/navbar/Navbar.vue';
 import FlashMessage from './components/FlashMessage.vue';
 import Modal from './components/modal/Modal.vue';
+import Loader from './components/loader/Loader.vue';
 export default {
     components: {
         Navbar,
         Modal,
-        FlashMessage
+        FlashMessage,
+        Loader
     }  
 };
 </script>

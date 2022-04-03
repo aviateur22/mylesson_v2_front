@@ -76,7 +76,7 @@ export default {
     .home__container{
         width: 100%;
         margin-top: var(--navbar_height);   
-        height: calc(100vh - var(--navbar_height));
+        min-height: calc(100vh - var(--navbar_height));
     }
 
     .container{

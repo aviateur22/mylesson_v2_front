@@ -20,7 +20,10 @@ const actions = {
      * @returns {Object} fetchResult
      */
 
-    async axiosFetchAction({dispatch}, data){        
+    async axiosFetchAction({commit}, data){  
+        /** affichage d'une fenetre de chargement */
+        commit('setLoaderState', true);
+
         const request = await axios({
             withCredentials: true,
             baseURL: utils.baseUri,
@@ -29,6 +32,9 @@ const actions = {
             responseType: data.responseType ? data.responseType : 'json',              
             data: data.formData,           
         });   
+
+        /** masque la fenetre de chargement */
+        commit('setLoaderState', false);
         return request.data;       
     }
 };

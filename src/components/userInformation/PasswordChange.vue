@@ -67,8 +67,14 @@ export default {
          * Mise a jour du mot de passe
          */
         async updateUserPassword(e){
+            /** formdata pour le formulaire */
+            const data = new FormData(e.target);
+
+            /** ajout du token */
+            data.append('formToken', this.$store.getters.getUserProfilData.token);
+
             /** creation d'un formData */                
-            const formData = Object.fromEntries(new FormData(e.target).entries());  
+            const formData = Object.fromEntries(data.entries());  
 
             /** mise a jour du mot de passe*/
             await this.$store.dispatch('actionHandler', { action: 'updateUserPassword', formData});

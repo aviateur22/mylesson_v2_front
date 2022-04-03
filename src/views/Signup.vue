@@ -5,7 +5,7 @@
                 <h2 class="form__title">S'inscrire</h2>
             </div>
             <div class="form__container-control">          
-                <form @submit.prevent="signupAction" class="form">            
+                <form ref="register" class="form">            
                     <div class="form__group">
                         <label for="login" class="form__label">login</label>
                         <div class="form__control">
@@ -17,22 +17,15 @@
                         <div class="form__control">
                             <input class="form__input" type="text" placeholder="email" name="email">
                         </div>
-                    </div>
+                    </div>                   
+                   
+                    <!-- mot de passe -->
+                    <InputToggleButton :title="'mot de passe'" :placeHolder="'mot de passe'" :inputName="'password'"/>
 
-                    <div class="form__group">
-                        <label for="password" class="form__label">Mot de passe</label>
-                        <div class="form__control">
-                            <input class="form__input" type="password" name="password" placeholder="mot de passe">
-                        </div>
-                    </div>
+                    <!-- confirlmation du mot de passe -->
+                    <InputToggleButton :title="'confirmation du mot de passe'" :placeHolder="'confirmation mot de passe'" :inputName="'confirmPassword'"/>
 
-                    <div class="form__group">
-                        <label for="confirmPassword" class="form__label">confirmation du mot de passe</label>
-                        <div class="form__control">
-                            <input class="form__input" type="password" name="confirmPassword" placeholder="mot de passe">
-                        </div>
-                    </div>
-                <SubmitButton :disableLoginButton='disableLoginButton' :textSubmitButton='textSubmitButton'/>
+                <SubmitButton @click.prevent="signupAction" :disableLoginButton='disableLoginButton' :textSubmitButton='textSubmitButton'/>
             </form> 
       </div>
     </div> 
@@ -41,29 +34,36 @@
 
 <script>
 import SubmitButton from '../components/button/SubmitButton.vue';
-import utils from '../helper/utils';
-import {mapActions, mapMutations, mapGetters} from 'vuex';
+import InputToggleButton from '../components/input/InputTextTogglrVisibility.vue';
 export default {
     components: {
-        SubmitButton
+        SubmitButton,
+        InputToggleButton
     },
     data() {
         return {
             textSubmitButton: "s'inscrire",
-            disableLoginButton: false
+            disableLoginButton: false,            
         };
     },
     methods: {
         /**
          * inscription
          */
-        async signupAction(e) {
+        async signupAction() {
             this.disableLoginButton = true;
+
+            /** récuperation du formulaire */
+            const data = new FormData(this.$refs.register);
+
             /** creation d'un formData */                
-            const formData = Object.fromEntries(new FormData(e.target).entries());
+            const formData = Object.fromEntries(data.entries());
+
             await this.$store.dispatch('actionHandler', { action: 'signupAction', formData });
+
             this.disableLoginButton = false;         
-        }      
+        }       
+        
     } 
 
 };

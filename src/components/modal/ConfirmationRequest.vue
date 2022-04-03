@@ -1,5 +1,5 @@
 <template>
-    <div class="modal__container">
+    <div @click.prevent.stop="hideModal" class="modal__container">
         <div class="modal">
             <section class="modal__title-container">
                 <span class="modal__title">{{modalText}}</span>
@@ -43,6 +43,11 @@ export default {
          */
         validateClick() {        
             this.$store.dispatch('actionHandler', {action: 'continueAction'});            
+        },
+
+        /** */
+        hideModal(){
+            this.$store.commit('setModalVisibilityState', false);
         }
     },
     computed: {        

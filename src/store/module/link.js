@@ -89,6 +89,35 @@ const actions = {
         }
 
         return getAllLink;
+    },
+
+    async deleteLinkById({dispatch, commit, getters}, data){ 
+        /** id utilisateur */
+        const userId = getters.getUserIdent.id;
+
+        /** endpoint de la requete*/
+        const endPoint = utils.linkApi.deleteLinkByUserId.endPoint.replace(':userId', userId);
+
+        /** methode de la requete */
+        const method = utils.linkApi.deleteLinkByUserId.method;
+
+        console.log(data.formData)
+
+        const deleteLink = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData });
+
+        if(!deleteLink){
+            return null;
+        }
+
+        console.log(deleteLink)
+
+        /**
+         * mise a jour du profil utilisateur
+         */
+        commit('setUserProfilData', deleteLink);
+
+        /**Requete ok - succes de la demande */
+        commit('setFlashMessageMut', { error: false, message: `suppréssion réussie pour votre lien ${data.mediaName}`});  
     }
 };
 

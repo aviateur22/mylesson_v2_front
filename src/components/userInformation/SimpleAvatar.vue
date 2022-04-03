@@ -57,7 +57,10 @@ export default {
             this.disableAvatarSubmitButton = true;  
            
             /** creation d'un formData - middlware multer dans le back cause upload file*/
-            const formData = new FormData(e.target);            
+            const formData = new FormData(e.target);       
+
+            /** ajout du token du formulaire */
+            formData.append('formToken', this.$store.getters.getUserProfilData.token);
 
             const updateProfilImage = await this.$store.dispatch('actionHandler', {action: 'updateImageByUserId', formData});
 

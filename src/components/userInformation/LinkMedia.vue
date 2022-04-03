@@ -15,12 +15,12 @@
             <div class="form__input-container">                   
                 <label for=linkUrl class="form__label">votre lien {{data.compagny_name}}</label>         
                 <div class="form__control">                            
-                    <input class="form__input" type="text" placeholder="https://..." name=linkUrl v-model="urlLink">
+                    <input class="form__input" type="text" placeholder="https://..." name=linkUrl v-model="urlLinkData.urlLink">
                 </div>
             </div>
             <div class="form__button-container">
                 <SubmitButton @click.prevent="saveLinkMedia()" :textSubmitButton='updateLinkMediaButtonText'/> 
-                <SubmitButton :textSubmitButton='deleteLinkMediaButtonText'/> 
+                <SubmitButton @click.prevent="deleteLink()" :textSubmitButton='deleteLinkMediaButtonText'/> 
             </div>
         </div>
     </form> 
@@ -46,7 +46,7 @@ export default {
             updateLinkMediaButtonText: 'enregistrer',
 
             /** url utilisateur du média */
-            urlLink: ''
+            urlLinkData: {}
 
         };
     },
@@ -78,7 +78,10 @@ export default {
 
                 /** ajout le lien urlLink, si le média est trouvé */
                 if(userLink){
-                    this.urlLink = userLink.UserLink.link_url;
+                    this.urlLinkData = {
+                        urlLink: userLink.UserLink.link_url,
+                        mediaLinkId: userLink.UserLink.link_id                      
+                    };
                 }                
             }
         },
@@ -92,9 +95,32 @@ export default {
 
             formData.append('mediaId', this.data.id);
 
+            /** ajout du token */
+            formData.append('formToken', this.$store.getters.getUserProfilData.token);
+
             formData = Object.fromEntries(formData.entries());
             
             await this.$store.dispatch('actionHandler', { action: 'saveLinkMedia', formData, mediaName: this.data.compagny_name});
+        },
+
+        async deleteLink(){
+            /** creation d'un formData */
+            let formData = new FormData();       
+
+            /** id du média  */
+            const mediaLinkId = this.urlLinkData.mediaLinkId; 
+
+            /** ajout du token */
+            formData.append('formToken', this.$store.getters.getUserProfilData.token);
+
+            /** ajout du medialinkId */
+            formData.append('mediaLinkId', mediaLinkId);
+
+            formData = Object.fromEntries(formData.entries());     
+            
+            await this.$store.dispatch('actionHandler', { action: 'deleteLinkById', formData, mediaName: this.data.compagny_name });
+
+            this.getUserUrlMedia();
         }
     },
     computed: {

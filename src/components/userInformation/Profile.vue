@@ -63,8 +63,14 @@ export default {
         async updateUserProfil(e) {            
             this.disableSubmitButton = true;  
 
+            /** formdata pour le formulaire */
+            const data = new FormData(e.target);
+
+            /** ajout du token */
+            data.append('formToken', this.$store.getters.getUserProfilData.token);
+
             /** creation d'un formData - middlware multer dans le back cause upload file*/
-            const formData = Object.fromEntries(new FormData(e.target).entries());  
+            const formData = Object.fromEntries(data.entries()); 
              
             await this.$store.dispatch('actionHandler', {action: 'updateUserInformation', formData});
 
