@@ -17,8 +17,8 @@ export default {
         font-weight: 800;
         font-size: var(--text_s);
         padding: 0px 10px;
-        padding-bottom: 20px;
-        color: rgb(104, 104, 104);
+        padding-bottom: 10px;
+        color: rgb(211, 208, 208);
 
     }
 

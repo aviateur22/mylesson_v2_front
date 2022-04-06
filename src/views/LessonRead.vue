@@ -3,18 +3,20 @@
       <div class="lesson__container">
           <!-- presentation de la lecon -->
           <div class="lesson__header">
-              <div class="lesson__presentation">
-                    <TitleComponent/>
-                    <div class="lesson__detail">
-                        <TagsComponent/>
+              <div class="lesson__presentation">                    
+                    <div class="lesson__detail">                        
                         <!-- image + autor + date -->
                         <div class="lesson__inner">
-                            <ImageLessonComponent/>
-                            <DateComponent/> 
-                            <div class="lesson__autor">
-                                <AutorComponent/>
-                                <MediaLinkComponent/>                    
+                            <div class="lesson__title">
+                                <TitleComponent/>
+                                <TagsComponent/>                
+                                <div class="lesson__autor">
+                                    <AutorComponent/>
+                                    <MediaLinkComponent/>                    
+                                </div>                
                             </div>
+                            <ImageLessonComponent/>
+                            <DateComponent/>
                         </div>
                     </div>                          
               </div>                                    
@@ -113,16 +115,22 @@ export default {
     .lesson__inner{
         position: relative;
         width: 100%;
-        height: 350px;
+        height: 250px;
+    }
+
+    .lesson__title{
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 1;
     }
 
     .lesson__autor{
         display: flex;
         flex-direction: row;  
         padding: 10px 0px;      
-        justify-content: center;
-        position: absolute;
-        top: 0px;
+        justify-content: flex-start;    
+        align-items: center;    
     }
 
     @media screen and (min-width:768px) {

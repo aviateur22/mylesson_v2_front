@@ -31,5 +31,6 @@ export default {
 <style scoped>
     .markdown-body{
         text-align: left;
+        padding-left: 10px;
 }
 </style>

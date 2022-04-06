@@ -51,11 +51,12 @@ export default {
 
     .autor__container{
         display: flex;
-        align-items: center;
+        align-items: center;       
         padding: 10px;
     }
-
+    
     .autor__image{
+
         width: 40px;
         height: 40px;
         border: 0.5px solid rgb(97, 47, 93);

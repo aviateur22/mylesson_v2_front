@@ -39,7 +39,7 @@ const actions = {
      * genration d'un token pour une nouvelle lecon
      */
     async getTokenForm({dispatch, getters, commit}, data){
-        /** id de la lecon */     
+        /** id de l'utilisateur */     
         const userId = getters.getUserIdent.id;
 
         /** endpoint de la requete*/
@@ -109,8 +109,8 @@ const actions = {
      * @returns {Object} lesson
      */
     async getLessonById({dispatch, getters, commit}, data){   
-        /** id de la lecon */     
-        const lessonId = data.lessonId;   
+        /** id de l'utilisateur */     
+        const lessonId = data.lessonId;
 
         /** suppression des données dans le store */      
         commit('setLesson', {});    
@@ -121,7 +121,7 @@ const actions = {
         /** methode de la requete */
         const method = utils.lessonApi.getLessonById.method;
 
-        const getLesson = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method });      
+        const getLesson = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData});      
         
         /**si pas de reponse */
         if(!getLesson){
@@ -169,7 +169,7 @@ const actions = {
         /** methode de la requete */
         const method = utils.lessonApi.createLesson.method;        
         
-        const createLesson = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData });
+        const createLesson = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData });
 
         /** Si pas d'erreur lors de la requête*/
         if(!createLesson){    
@@ -178,8 +178,7 @@ const actions = {
 
         /** Markdown pour le html */
         const markdownHandler = new MarkdownHandler();
-
-        /**Requete ok */
+        
         /**Requete ok */
         commit('setLesson', {            
             id: createLesson.id,
@@ -242,7 +241,8 @@ const actions = {
             created: updateLesson.created,
             updated: updateLesson.updated,
             token: updateLesson.token,
-        });                
+        });            
+
         commit('setFlashMessageMut', { error: false, message: 'enregistrement ok'});
         
         return updateLesson;  

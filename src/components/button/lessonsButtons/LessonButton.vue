@@ -63,9 +63,19 @@ export default {
             /** recuperation de la lesson par son slug */
             if(!this.editLesson){ 
                 return this.$router.push({name: 'ReadLesson', params: {slug: this.data.slug}});
-            }             
+            }  
+            
+            /** recuperation formdata */
+            const formData = new FormData();
+
+            /** id utilisateur */
+            const userId = this.$store.getters.getUserIdent.id;
+
+            /**ajout de id utilisateur  */
+            formData.append('userId', userId);
+
             /** recuperation lecon pason id */ 
-            this.$store.dispatch('actionHandler', {action: 'getLessonById', lessonId: this.data.id });
+            this.$store.dispatch('actionHandler', {action: 'getLessonById', formData: Object.fromEntries(formData.entries()), lessonId: this.data.id });
         },
         
         async deleteLesson(){            

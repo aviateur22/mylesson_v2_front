@@ -183,7 +183,7 @@ export default {
         right: 0px;
         bottom: 0px;
         right: 0px;
-        z-index: 20;
+        z-index: 100;
     }
 /*#endregion*/
 

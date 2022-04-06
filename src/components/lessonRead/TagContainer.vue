@@ -32,7 +32,7 @@ export default {
 <style scoped>
     .tag__main-container{
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
     }
 
     .tag__container{

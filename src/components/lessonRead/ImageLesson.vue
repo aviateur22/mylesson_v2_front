@@ -50,7 +50,7 @@ export default {
         justify-content: center;
         display: flex;
         width: 100%;
-        height: 350px;
+        height: 250px;
     }
 
     .Lesson__image-container{
@@ -60,8 +60,8 @@ export default {
 
     .Lesson__image{
         width: 100%;
-        height: 350px;
-        object-fit:cover;
+        height: 250px;
+        object-fit: cover;
         object-position: center center;
     }
 

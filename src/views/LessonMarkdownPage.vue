@@ -47,6 +47,7 @@ export default {
          * récuperation d'un token pour le formulaire
          */
         async getTokenForm(){
+            /** generation d'un nouveau de token */
             const getToken = await this.$store.dispatch('actionHandler', {action: 'getTokenForm'});
 
             /** enregistre le token */
@@ -76,7 +77,7 @@ export default {
             formData.append('userId', userId);
 
             /** ajout du token */
-            formData.append('formToken', this.$store.getters.getLessonEditor.token);           
+            formData.append('formToken', this.$store.getters.getLessonEditor.token);       
 
             /** requete  */
             let saveLesson;
@@ -92,6 +93,10 @@ export default {
                  */               
                 saveLesson = await this.$store.dispatch('actionHandler', {action: 'updateLessonById', formData: Object.fromEntries(formData.entries()) });
             }
+
+            /** mise a jour du token */
+            await this.getTokenForm();
+
             //reactivation du boutton
             this.disableLoginButton = !this.disableLoginButton; 
         },

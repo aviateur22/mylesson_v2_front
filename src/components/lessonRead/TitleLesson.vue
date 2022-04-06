@@ -29,13 +29,15 @@ export default {
         align-items: center;
         padding-top: 25px;
         padding-bottom: 10px;
+        width: 100%;
     }
 
     .lesson__title{
         text-transform: uppercase;
         font-size: var(--lesson_title_size);
         font-weight: 700;
-        padding-left: 20px;
+        padding-left: 10px;      
+        color: white; 
 
     }
 

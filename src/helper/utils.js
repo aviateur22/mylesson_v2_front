@@ -24,7 +24,7 @@ const utils = {
     lessonApi: {
         getTokenByUserId: { endPoint: '/api/lessons/token/:userId', method: 'get' },
         createLesson: { endPoint: '/api/lessons', method: 'post' },
-        getLessonById: { endPoint: '/api/lessons/:id', method: 'get' },
+        getLessonById: { endPoint: '/api/lessons/:id', method: 'post' },
         updateLessonById: { endPoint: '/api/lessons/:id', method: 'patch' },
         deleteLessonById: { endPoint: '/api/lessons/:id', method: 'delete' },
         getLessonByUser: { endPoint: '/api/lessons/user/:id', method: 'get' },
