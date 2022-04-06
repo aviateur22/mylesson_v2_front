@@ -47,7 +47,10 @@ export default {
          * récuperation d'un token pour le formulaire
          */
         async getTokenForm(){
-            const getToken = await this.$store.dispatch('actionHandler', {action: 'getTokenForm'});           
+            const getToken = await this.$store.dispatch('actionHandler', {action: 'getTokenForm'});
+
+            /** enregistre le token */
+            this.$store.commit('setTokenLesson', getToken.token);
         },
 
         /**
@@ -148,6 +151,7 @@ export default {
          */
         await this.getTokenForm();
     },
+
     async beforeRouteLeave(to, from, next) {        
         try {            
             /**si la leçon pas enregistrée */

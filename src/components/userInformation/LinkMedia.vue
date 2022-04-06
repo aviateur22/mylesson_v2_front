@@ -81,8 +81,11 @@ export default {
                     this.urlLinkData = {
                         urlLink: userLink.UserLink.link_url,
                         mediaLinkId: userLink.UserLink.link_id                      
-                    };
+                    };                  
                 }                
+            } else {
+                /** reset de  urlLinkData */
+                this.urlLinkData = {};
             }
         },
 
@@ -101,14 +104,25 @@ export default {
             formData = Object.fromEntries(formData.entries());
             
             await this.$store.dispatch('actionHandler', { action: 'saveLinkMedia', formData, mediaName: this.data.compagny_name});
-        },
 
+            /** mise urlLinkData */
+            this.getUserUrlMedia();
+        },
+        
+        /**
+         * Suppression d'un lien média 
+         */
         async deleteLink(){
             /** creation d'un formData */
             let formData = new FormData();       
 
             /** id du média  */
             const mediaLinkId = this.urlLinkData.mediaLinkId; 
+
+            /** aucun lien de trouvé */
+            if(!mediaLinkId){   
+                return null;
+            }
 
             /** ajout du token */
             formData.append('formToken', this.$store.getters.getUserProfilData.token);
@@ -118,8 +132,9 @@ export default {
 
             formData = Object.fromEntries(formData.entries());     
             
-            await this.$store.dispatch('actionHandler', { action: 'deleteLinkById', formData, mediaName: this.data.compagny_name });
+            await this.$store.dispatch('actionHandler', { action: 'deleteLinkByUserId', formData, mediaName: this.data.compagny_name });
 
+            /** mise urlLinkData */
             this.getUserUrlMedia();
         }
     },

@@ -99,7 +99,8 @@ export default {
 
     .modal__title{
         text-transform: uppercase;
-        padding: 10px 0px;
+        padding: 20px 0px;
+        font-weight: 800;
     }
 
     @media screen and (min-width:768px) {

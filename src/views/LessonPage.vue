@@ -6,7 +6,10 @@
             </div>
             <div class="form__lesson-container">
                 <div class="form__lesson-button">
-                    <LessonButton v-for="(lesson, id) in this.lessons" :key="id" :data="lesson" :editLesson="true"/>
+                    <LessonButton v-for="(lesson, id) in this.lessons" :key="id" :data="lesson" :deleteLessonButton="true" :editLesson="true">
+                        <!-- modal de confirmation de suppression -->
+                        <ModalComponent/>
+                    </LessonButton>
                 </div>                
             </div>       
       </div>      
@@ -15,19 +18,27 @@
 
 <script>
 import LessonButton from '../components/button/lessonsButtons/LessonButton.vue';
+import ModalComponent from '../components/modal/Modal.vue';
 export default {
     components: {
-        LessonButton        
+        LessonButton,
+        ModalComponent      
     },
     data(){
-        return {
-            lessons: []
+        return {            
         };
     },
     methods: {
         async getLessonByUserId(){
             this.lessons = await this.$store.dispatch('actionHandler', { action: 'getLessonByUserId' });                        
         }
+    },
+    computed: {
+        /** liste lcons utilisateur */
+        lessons(){
+            return this.$store.getters.getUserLesson;
+        }
+
     },
     created(){
         this.getLessonByUserId();

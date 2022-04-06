@@ -11,7 +11,7 @@
             <section class="lesson__section">
                 <div class="lesson__main-container">
                     <div class="lesson__container">
-                        <LessonButton v-for="(lesson, i) in lessons" :key="i" :data="lesson" :editLesson="false"/>                        
+                        <LessonButton v-for="(lesson, i) in lessons" :key="i" :data="lesson" :deleteLessonButton="false" :editLesson="false"/>                        
                     </div>
                 </div>
             </section>

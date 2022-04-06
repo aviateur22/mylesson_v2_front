@@ -25,7 +25,7 @@ export default {
 <style scoped>
     .tite__container{
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         padding-top: 25px;
         padding-bottom: 10px;
@@ -33,8 +33,9 @@ export default {
 
     .lesson__title{
         text-transform: uppercase;
-        font-size: var(--form_title_size);
-        font-weight: 900;
+        font-size: var(--lesson_title_size);
+        font-weight: 700;
+        padding-left: 20px;
 
     }
 

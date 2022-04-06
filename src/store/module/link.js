@@ -34,12 +34,8 @@ const actions = {
         if(!imageUrl){
             return;
         }
-
-        if(!imageUrl.mediaRequest?.picture_name || !imageUrl.pathUrl){
-            throw new Error('echec recuperation des images médias');
-        }
-
-        return imageUrl.pathUrl + imageUrl.mediaRequest.picture_name;
+        
+        return imageUrl.pathUrl;
     },
 
     /**
@@ -91,7 +87,7 @@ const actions = {
         return getAllLink;
     },
 
-    async deleteLinkById({dispatch, commit, getters}, data){ 
+    async deleteLinkByUserId({dispatch, commit, getters}, data){ 
         /** id utilisateur */
         const userId = getters.getUserIdent.id;
 
@@ -101,15 +97,11 @@ const actions = {
         /** methode de la requete */
         const method = utils.linkApi.deleteLinkByUserId.method;
 
-        console.log(data.formData)
-
         const deleteLink = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData });
 
         if(!deleteLink){
             return null;
         }
-
-        console.log(deleteLink)
 
         /**
          * mise a jour du profil utilisateur

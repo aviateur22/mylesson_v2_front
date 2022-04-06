@@ -3,6 +3,7 @@
  * Donnée API
  */
 const utils = {
+    //baseUri: 'https://mylessonapp.herokuapp.com',
     baseUri: 'http://localhost:3000',
 
     /** utilisateurs */
@@ -28,7 +29,8 @@ const utils = {
         deleteLessonById: { endPoint: '/api/lessons/:id', method: 'delete' },
         getLessonByUser: { endPoint: '/api/lessons/user/:id', method: 'get' },
         getAllLesson: { endPoint: '/api/lessons', method: 'get' },
-        getLessonByTag: { endPoint: '/api/lessons/filter/tags', method: 'post' },        
+        getLessonByTag: { endPoint: '/api/lessons/filter/tags', method: 'post' },   
+        getLessonBySlug: { endPoint: '/api/lessons/slug/:slug', method: 'get' },   
     },
     /**tags */
     tagApi: {

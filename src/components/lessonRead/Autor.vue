@@ -1,5 +1,9 @@
 <template>
     <div class="autor__container">    
+         <!-- conteneur image -->
+        <div class="autor__image-container">
+            <img class="autor__image" :src="imageSrc" alt="image du créateur de le leçon">
+        </div>
         <!-- conteneur description -->
         <div class="autor__text-container">
             <!-- nom -->
@@ -14,11 +18,7 @@
             <div class="autor__login">
                 <span class="autor__text"> par {{this.user.autor}}</span>
             </div>
-        </div>
-        <!-- conteneur image -->
-        <div class="autor__image-container">
-            <img class="autor__image" :src="imageSrc" alt="image du créateur de le leçon">
-        </div>
+        </div>       
     </div>  
 </template>
 
@@ -67,6 +67,7 @@ export default {
         text-transform: uppercase;
         font-size: var(--text_s);
         padding-right: 10px;
+        color: white
     }
 
 </style>

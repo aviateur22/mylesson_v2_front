@@ -6,8 +6,14 @@ const state = {
     /** données completes d'une lecon en ecriture ou en lecture */
     editor: {},
 
+    /**  */
+    deleteLesson: {},
+
     /** liste de toutes les leçons disponibles */
-    lessonList: []
+    lessonList: [],
+
+    /** liste de lecons utilisateur */
+    userLesson: []
 };
 
 /**
@@ -17,8 +23,14 @@ const getters = {
     /** recuperation lecon en édition ou lecture */
     getLessonEditor: (state)=>state.editor,
 
-    /**recuperation de la liste de leçon */
-    getLessonList: (state)=>state.lessonList
+    /** recuperation de la liste de leçon */
+    getLessonList: (state)=>state.lessonList,
+
+    /** recuperation lecon a supprimer */
+    getDeleteLesson: (state)=>state.deleteLesson,
+
+    /** recuperation lecons utilisateur */
+    getUserLesson: (state)=> state.userLesson,
 };
 
 const actions = {
@@ -26,11 +38,9 @@ const actions = {
     /**
      * genration d'un token pour une nouvelle lecon
      */
-    async getTokenForm({dispatch, getters, commit}){
+    async getTokenForm({dispatch, getters, commit}, data){
         /** id de la lecon */     
         const userId = getters.getUserIdent.id;
-
-        console.log(userId)
 
         /** endpoint de la requete*/
         const endPoint = utils.lessonApi.getTokenByUserId.endPoint.replace(':userId', userId);
@@ -43,9 +53,51 @@ const actions = {
         if(!token){
             return null;
         }
+        
+        return token;
+    },
 
-        /** enregistre le token */
-        commit('setTokenLesson', token.token);
+    /** recuperation par slug d'un lecon
+     * @property {Objec} param.dispatch - action
+     * @property {Objec} param.commit - mutation
+     * @param {Object} data - données pour la requete axios
+     * @property {string} data.slug - slug de la lecon
+     * @returns {Object} lesson
+     */
+    async getLessonBySlug({dispatch, commit}, data){
+        /** suppression des données dans le store */      
+        commit('setLesson', {});    
+
+        /** endpoint de la requete*/
+        const endPoint = utils.lessonApi.getLessonBySlug.endPoint.replace(':slug', data.slug);
+
+        /** methode de la requete */
+        const method = utils.lessonApi.getLessonBySlug.method;
+
+        const getLesson = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method });      
+        
+        /**si pas de reponse */
+        if(!getLesson){
+            return;
+        }
+
+        /** Markdown pour le html */
+        const markdownHandler = new MarkdownHandler();
+
+        /**Requete ok */
+        commit('setLesson', { 
+            title: getLesson.title,
+            markdownText: getLesson.content,
+            htmlOutput: markdownHandler.getHtml(getLesson.content),
+            isSave: true,
+            tags: getLesson.tags,
+            autor: getLesson.autor,
+            autorLinks: getLesson.links,
+            avatarKey: getLesson.avatarKey,
+            created: getLesson.created,
+            updated: getLesson.updated,
+            lessonImageUrl: getLesson.lessonImageUrl
+        });
     },
 
     /**
@@ -91,26 +143,15 @@ const actions = {
             autorLinks: getLesson.links,
             avatarKey: getLesson.avatarKey,
             created: getLesson.created,
-            updated: getLesson.updated
+            updated: getLesson.updated,
+            lessonImageUrl: getLesson.lessonImageUrl,
+            token: getLesson.token
         });   
-        /** ouverture de la lecon en écriture */
-        if(data.editLesson){  
-            /** récupération des tags de la lecon */
-            const tags = getters.getLessonEditor.tags;
 
-            /** update de la liste des tags */  
-            commit('setSelectionTag', tags);
-
-            /** ajoute du token pour le formulaire */
-            commit('setTokenLesson', getLesson.token);
-
-            router.push({name: 'UpdateLesson', params: {slug: getLesson.slug}});
-        } else {
-            /** 
-            * ouverture de la lecon en écriture 
-            */
-            router.push({name: 'ReadLesson', params: {slug: getLesson.slug}});
-        }     
+        /** update de la liste des tags */        
+        const tags = getters.getLessonEditor.tags;
+        commit('setSelectionTag', tags);     
+        router.push({name: 'UpdateLesson', params: {slug: getLesson.slug}});  
     },
     
     /**
@@ -179,8 +220,6 @@ const actions = {
 
         const updateLesson = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData});
 
-        console.log(updateLesson)
-
         /** Si pas d'erreur lors de la requête*/
         if(!updateLesson){    
             return;
@@ -217,7 +256,41 @@ const actions = {
      * @param {data} [data] - données pour la requete axios
      * @returns {Object} lesson
      */
-    async deleteLessonById({dispatch, getters, commit}, data){    
+    async deleteLessonById({dispatch, getters, commit}, data){  
+        /** id de la lecon a supprimer */            
+        const lessonId = getters.getDeleteLesson.lessonId;
+
+        /** si pas de lecon */
+        if(!lessonId){
+            return null;
+        }
+
+        /** endpoint de la requete*/
+        const endPoint = utils.lessonApi.deleteLessonById.endPoint.replace(':id', lessonId);
+        
+        /** methode de la requete */
+        const method = utils.lessonApi.deleteLessonById.method;
+
+        const deleteLesson = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData});
+        
+        /** Si pas d'erreur lors de la requête*/
+        if(!deleteLesson){ 
+            commit('setDeleteLesson', {});   
+            return null;
+        }  
+
+        commit('setDeleteLesson', {});
+        commit('setFlashMessageMut', { error: false, message: 'la lecon est bien supprimée'});
+        return await dispatch('actionHandler', {action: 'getLessonByUserId'});
+    },
+
+    /**
+     * Annulation de la supprssion d'une lecon
+     * @param {Object} param
+     * @property {Object} param.commit - muttation du state
+     */
+    cancelDeleteLesson({commit}){
+        commit('setDeleteLesson', {});
     },
 
     /**
@@ -269,8 +342,14 @@ const actions = {
             return;
         }   
         
-        return lessons;
+        commit('setUserLesson', lessons);
     },
+
+    /**
+     * Recupere une liste de lecons par tag
+     * @property {Objec} param.dispatch - action
+     * @property {Objec} param.getters - getter
+     * @returns  {Object} lessons    */
 
     async getLessonByTag({dispatch, getters}){
         /** endpoint de la requete*/
@@ -314,6 +393,10 @@ const actions = {
 };
 
 const mutations = { 
+
+    /** mise a jour lecon utilisateur */
+    setUserLesson: (state, userLesson)=>(state.userLesson = userLesson),
+
     /** creation - update - ouverture d'une lecon en ecriture */
     setLesson: (state, lessonData)=>(state.editor = lessonData),    
 
@@ -335,8 +418,17 @@ const mutations = {
     /** token formulaire édition d'une lecon */
     setTokenLesson: (state, token)=>(state.editor.token = token),
 
-    /** liste de toutes les lecons*/
-    setLessonList: (state, lessons)=>(state.lessonList = lessons)
+    /** liste de toutes les lecons */
+    setLessonList: (state, lessons)=>(state.lessonList = lessons),
+
+    /** modification state complet lecon a supprimer */
+    setDeleteLesson: (state, deleteLesson)=>(state.deleteLesson = deleteLesson),
+
+    /** modification id lecon a supprimer */
+    setDeleteLessonId: (state, lessonId)=>(state.deleteLesson.lessonId = lessonId),
+
+    /** modification token lecon a supprimer */
+    setDeleteLessonToken: (state, tokenDeleteLesson)=>(state.deleteLesson.token = tokenDeleteLesson)
 };
 
 export default {

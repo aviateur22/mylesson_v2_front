@@ -1,18 +1,23 @@
 <template>
   <div class="lesson__main-container">
       <div class="lesson__container">
+          <!-- presentation de la lecon -->
           <div class="lesson__header">
               <div class="lesson__presentation">
                     <TitleComponent/>
                     <div class="lesson__detail">
-                        <TagsComponent/>  
-                        <DateComponent/> 
+                        <TagsComponent/>
+                        <!-- image + autor + date -->
+                        <div class="lesson__inner">
+                            <ImageLessonComponent/>
+                            <DateComponent/> 
+                            <div class="lesson__autor">
+                                <AutorComponent/>
+                                <MediaLinkComponent/>                    
+                            </div>
+                        </div>
                     </div>                          
-              </div>
-              <div class="lesson__autor">
-                    <AutorComponent/>
-                    <MediaLinkComponent/>                    
-                </div>         
+              </div>                                    
           </div>
           <div class="lesson__body">
               <ContentComponent/>
@@ -28,6 +33,7 @@ import DateComponent from '../components/lessonRead/LessonDate.vue';
 import TagsComponent from '../components/lessonRead/TagContainer.vue';
 import ContentComponent from '../components/lessonRead/Content.vue';
 import MediaLinkComponent from '../components/lessonRead/MediaLinkContainer.vue';
+import ImageLessonComponent from '../components/lessonRead/ImageLesson.vue';
 export default {
     name: 'lessonRead',
     data(){
@@ -41,12 +47,36 @@ export default {
         TagsComponent,
         ContentComponent,
         TitleComponent,
-        MediaLinkComponent
+        MediaLinkComponent,
+        ImageLessonComponent
     },
     methods: {
+        /** récuperation lecon par slug */
+        async getLesson(){
+            /** récuperation du slug de la lecon */
+            const slug = this.$route.params.slug;
+
+            /** si pas de slug */
+            if(!slug){
+                throw new Error('pas de slug');
+            }
+
+            /** récupération par slug */
+            const data = await this.$store.dispatch('actionHandler', {action: 'getLessonBySlug', slug });
+        }
     },
     computed: {      
+    },
+    created(){
+        /** récuperation lecon par slug present dans l'url */
+        this.getLesson();
+    },
+    async beforeRouteLeave(to, from, next) {        
+        /** vide les données de le lecon en lecture */
+        this.$store.commit('setLesson', {});
+        next();
     }
+
 };
 </script>
 
@@ -65,22 +95,25 @@ export default {
 
     .lesson__header{
         display: flex;
-        flex-direction: column;
-        padding: 10px 0px;
-        background: rgb(231, 231, 231);
+        flex-direction: column;        
+        background: rgb(247, 247, 247);
         border-bottom: 0.1px solid black;
     }
 
     .lesson__presentation{
         display: flex;   
-        flex-direction: column; 
-        padding: 10px 0px; 
+        flex-direction: column;         
     }
 
     .lesson__detail{
         display: flex;
-        flex-direction: column;
-         padding: 10px 0px; 
+        flex-direction: column; 
+    }
+
+    .lesson__inner{
+        position: relative;
+        width: 100%;
+        height: 350px;
     }
 
     .lesson__autor{
@@ -88,6 +121,8 @@ export default {
         flex-direction: row;  
         padding: 10px 0px;      
         justify-content: center;
+        position: absolute;
+        top: 0px;
     }
 
     @media screen and (min-width:768px) {

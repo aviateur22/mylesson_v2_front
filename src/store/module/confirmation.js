@@ -42,7 +42,7 @@ const actions = {
         
         const request = await dispatch('actionHandler', { action, formData });
 
-        /**reset des données du store */
+        /** reset des données du store */
         commit('setConfirmationData', {});
         
         if(!request){ 
@@ -50,7 +50,10 @@ const actions = {
             return commit('setModalVisibilityState', false);
         }
 
-        router.push({name: routerTo});
+        /** si demande de redirection */
+        if(routerTo){
+            router.push({name: routerTo});
+        }        
 
         /** masque la modal */  
         return commit('setModalVisibilityState', false);

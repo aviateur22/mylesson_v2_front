@@ -90,15 +90,11 @@ export default {
     @media screen and (min-width:768px) {
        
         .flash{        
-            width: 768px;                     
+            width: 700px;                     
         }
     }
 
-    @media screen and (min-width:1024px) {
-       
-        .flash{        
-            width: 1024px;                 
-        }
+    @media screen and (min-width:1024px) {       
 
     }
 

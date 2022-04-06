@@ -65,6 +65,7 @@ export default {
         border: 0.5px solid rgb(97, 47, 93);
         border-radius: 50%;
         object-fit: cover;
+        background: white;
     }
 
 </style>

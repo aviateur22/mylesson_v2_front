@@ -27,6 +27,11 @@ export default {
     .date__main-container{
         display: flex;
         justify-content: center;
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        margin-right: 10px;
+        margin-bottom: 10px;
     }
 
     .date__container{
@@ -39,6 +44,7 @@ export default {
         text-transform: uppercase;
         font-weight: 800;
         font-size: var(--text_s);
+        color: white;
     }
 
 </style>
