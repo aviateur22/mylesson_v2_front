@@ -12,13 +12,10 @@
                             <input class="form__input" type="text" placeholder="toto@hotmail.fr" name="email">
                         </div>
                     </div>
+                    
+                    <!-- mot de passe -->
+                    <InputToggleButton :title="'mot de passe'" :placeHolder="'mot de passe'" :inputName="'password'"/>
 
-                    <div class="form__group">
-                        <label for="password" class="form__label">Mot de passe</label>
-                        <div class="form__control">
-                            <input class="form__input" type="password" name="password" placeholder="mot de passe">
-                        </div>
-                    </div>
                     <SubmitButton :disableLoginButton='disableLoginButton' :textSubmitButton='textSubmitButton'/>
                     <div class="nav__navlink form--color">
                         <router-link class="nav__navlink-item" :to="resetPasswordPageUrL">mot de passe perdu</router-link> 
@@ -31,10 +28,12 @@
 
 <script>
 import SubmitButton from '../components/button/SubmitButton.vue';
+import InputToggleButton from '../components/input/InputTextTogglrVisibility.vue';
 import utils from '../helper/utils';
 export default {
     components: {
-        SubmitButton
+        SubmitButton,
+        InputToggleButton
     },
     data() {
         return {

@@ -78,7 +78,7 @@ const actions = {
         
         /**si pas de reponse */
         if(!getLesson){
-            return;
+            return router.push({name: '404'});
         }
 
         /** Markdown pour le html */

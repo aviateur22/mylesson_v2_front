@@ -3,12 +3,15 @@
         <label :for="inputName" class="form__label">{{title}}</label>
         <div class="form__control">
             <input class="form__input" :type="inputTypePassword" :name="inputName" :placeholder="placeHolder">
-            <button class="form__button-toggle" @click.prevent="togglePasswordVisibility">S</button>
+            <button class="form__button-toggle" @click.prevent="togglePasswordVisibility">
+                <img class="form__image" src='../../assets/img/eye.png' alt="image d'un oeil">
+            </button>
         </div>
     </div>  
 </template>
 
 <script>
+
 export default {
     name: 'inputtoggle',
     data(){
@@ -72,6 +75,10 @@ export default {
         border-radius: 10px;
         cursor: pointer;
         transition: all var(--transition_standard);
+    }
+
+    .form__image{
+        width: 70%;
     }
 
     .form__button-toggle:hover{
