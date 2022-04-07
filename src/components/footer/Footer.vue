@@ -1,6 +1,12 @@
 <template>
   <div class="footer__main-container">
       <div class="footer__container">
+          <!-- a propos -->
+            <CategoryComponent/>
+          <!-- markdown -->
+
+          <!-- conditions legales -->
+
           <section class="thematic">
               <div class="thematic__container">
                   <div class="thematic__title-container">
@@ -39,61 +45,58 @@
 </template>
 
 <script>
+import CategoryComponent from './FooterSubcategory.vue';
 export default {
-
-}
+    components: {
+        CategoryComponent
+    },
+    data(){
+        return {
+            aboutItems: {
+                items: ['qui je suis', 'contenu des leçons'],
+                title: 'à propos'
+            },
+            markdownItems: {
+                items: ['qu\'est ce que le markdown', 'liens utiles markdown'],
+                title: 'markdwon'
+            },
+            LegalInfoItems: {
+                items: ['cookie', 'CGU'],
+                title: 'informations légales'
+            }
+        };
+    },
+};
 </script>
 
 <style scoped>
-.footer__main-container{
-    margin-top: 10px;
-    padding: 20px 10px;
-    display: flex;
-    width: 100%;
-    background: rgb(99, 99, 99)
-}
+    .footer__main-container{   
+        padding: 20px 10px;
+        display: flex;
+        width: 100%;  
+        justify-content: center; 
+        align-items: center;
+    }
 
-.footer__container{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items:stretch ;
-}
+    .footer__container{
+        width: 100%;
+        display: flex;    
+        align-items:center ;
+        justify-content: space-between;
+    }
+    
+    @media screen and (min-width:768px) {
 
-.thematic{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
+        .footer__main-container{        
+            width: 768px;
+        }
+    }
 
-.thematic__title-container{
-    display: flex;
-    justify-content: flex-start;
+    @media screen and (min-width:1024px) {      
+        .footer__main-container{        
+            width: 1024px;                                 
+        }  
 
-}
-
-.thematic__title{
-    padding: 10px 0px;
-    font-size: var(--text_button_size);
-    text-transform: uppercase;
-    text-decoration: underline;
-    font-weight: 700;
-    color: white;
-}
-.thematic__body{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.thematic__item{
-    padding: 5px 0px;
-    text-transform: uppercase;
-    color: white;
-    font-size: var(--text_s);
-    font-weight: 700;
-    cursor: pointer;
-   
-}
+    }
 
 </style>

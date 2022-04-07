@@ -85,6 +85,10 @@ export default {
 
     .footer{
         width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgb(65, 64, 64)
     }
     
     @media screen and (min-width:768px) {
