@@ -1,28 +1,20 @@
 <template>
-    <div class="container">
-      <div class="form__container">
+    <div class="lesson__page-container">
+      <div class="lesson__page-main">
             <div class="form__title-container">
                 <h2 class="form__title">Vos leçons</h2>
             </div>
-            <div class="form__lesson-container">
-                <div class="form__lesson-button">
-                    <LessonButton v-for="(lesson, id) in this.lessons" :key="id" :data="lesson" :deleteLessonButton="true" :editLesson="true">
-                        <!-- modal de confirmation de suppression -->
-                        <ModalComponent/>
-                    </LessonButton>
-                </div>                
-            </div>       
+            <!-- liste les lecon d'un utilisateur -->
+            <LessonButtonContainer :lessons="lessons" :deleteLesson = true :editLesson = true />      
       </div>      
     </div>   
 </template>
 
 <script>
-import LessonButton from '../components/button/lessonsButtons/LessonButton.vue';
-import ModalComponent from '../components/modal/Modal.vue';
+import LessonButtonContainer from '../components/lessonButtonContainer/ButtonLessonContainer.vue'
 export default {
     components: {
-        LessonButton,
-        ModalComponent      
+        LessonButtonContainer
     },
     data(){
         return {            
@@ -47,35 +39,37 @@ export default {
 </script>
 
 <style scoped>
-    .container{    
+    .lesson__page-container {    
         margin-top:var(--navbar_height);
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;    
-        background: white;
+        align-items: center;  
+        min-height: calc(100vh - var(--navbar_height));
     }
 
-    .form__container{
+    .lesson__page-main {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        align-items: flex-start;
+        justify-content: flex-start;
         width: 100%;
-        background:var(--main_background_color);
-        height: 100%;
+        background:white;
+        min-height: calc(100vh - var(--navbar_height));
     }
 
     .form__title-container{
         display: flex;
         align-items: center;
         justify-content: center;
+        width: 100%;
     }
 
     .form__title{
         padding: 10px;
         font-size: var(--form_title_size);
         text-transform: uppercase;
+        padding:40px 0px
     }
 
     .form__lesson-container{
@@ -104,14 +98,14 @@ export default {
 
     @media screen and (min-width:768px) {
 
-        .form__container{        
+        .lesson__page-main {        
             width: 768px;                        
             box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
         }
     }
 
     @media screen and (min-width:1024px) {      
-        .form__container{        
+        .lesson__page-main{        
             width: 1024px;                                 
         }  
 

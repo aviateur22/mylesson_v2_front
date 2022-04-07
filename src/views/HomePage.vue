@@ -8,18 +8,8 @@
                     </div>
                 </div>
             </section>
-            <section v-if="lessons.length > 0" class="lesson__section">
-                <div class="lesson__main-container">                    
-                    <div class="lesson__container">
-                        <LessonButton v-for="(lesson, i) in lessons" :key="i" :data="lesson" :deleteLessonButton="false" :editLesson="false"/>                        
-                    </div>                    
-                </div>
-            </section>
-            <section v-else class="lesson__empty-container">
-                <div class="lesson__empty-text">                            
-                    <h3 class="empty__text"> Pas de leçon</h3>
-                </div>                        
-            </section>
+            <!-- liste toutes les lecons disponible -->
+            <LessonButtonContainer :lessons="lessons" :deleteLesson=false :editLesson=false />            
       </div>   
     <section class="footer">
         <Footer/>
@@ -29,13 +19,13 @@
 
 <script>
 import MarkdownTag from '../components/TagLesson/MarkdownTag.vue';
-import LessonButton from '../components/button/lessonsButtons/LessonButton.vue';
 import Footer from '../components/footer/Footer.vue';
+import LessonButtonContainer from '../components/lessonButtonContainer/ButtonLessonContainer.vue';
 export default {
     components: {
         MarkdownTag,
-        LessonButton,
-        Footer
+        Footer,
+        LessonButtonContainer
     },
     data() {
         return {                   
@@ -79,39 +69,7 @@ export default {
         min-height: calc( 100vh - var(--footer_height) - var(--navbar_height));
         background: white;
     }
-
-    .lesson__container{
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-start ;
-        justify-content: center;
-        padding-top: 20px;
-    }
-
-    .lesson__empty-container{
-        display: flex;
-        width: 100%;
-        align-items: stretch;
-        justify-content: center;
-        height: 100%;
-    }
-
-    .lesson__empty-text{
-        display: flex;
-        align-items: stretch;
-        height: 100%;
-        justify-content: center;
-        width: 100%;
-    }
-
-    .empty__text{
-        padding-top: 30px;
-        text-transform: uppercase;
-        font-size: var(--form_title_size);
-        font-weight: 800;
-
-    }
-
+      
     .footer{
         width: 100%;
         display: flex;

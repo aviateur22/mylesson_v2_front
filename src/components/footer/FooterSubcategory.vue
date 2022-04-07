@@ -23,7 +23,7 @@ export default {
     methods: {
         /** affichage de la page */
         displayPage(item){
-            alert(item);
+            this.$router.push({path: item });
         }
     }
 };

@@ -155,7 +155,7 @@ const routes = [
     /** a propos du markdwon */   
     {
         path: utils.apiDataUrl.aboutMarkdown.url,
-        name: utils.apiDataUrl.abouteMe.pathName,
+        name: utils.apiDataUrl.aboutMarkdown.pathName,
         component: function() {
             return import(/* webpackChunkName: "about" */ '../views/FooterPage/AboutMarkdown.vue');
         }
