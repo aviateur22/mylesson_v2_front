@@ -14,22 +14,29 @@
             <div class="nav__item-container">
                 <section class="nav__items">
                     <ul class="nav__list-item">
+                        <!-- utilisateur non connecté -->
                         <li v-if="!authenticated" class="nav__navlink">
-                            <router-link @click="toggleNavbarMobile" class="nav__navlink-item" to="/login">Connexion</router-link>
+                            <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.loginPage.url>Connexion</router-link>
                         </li>
                         <li  v-if="!authenticated" class="nav__navlink">
-                            <router-link @click="toggleNavbarMobile" class="nav__navlink-item" to="/signup">inscription</router-link>
+                            <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.signupPage.url>inscription</router-link>
                         </li>
+                        <!-- utilisateur connecté -->
                         <div v-if="authenticated" class="">
                             <li class="nav__navlink">
-                            <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.infoPage>mes informations</router-link>
+                                <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.homeAccountPage.url>mon compte</router-link>
                             </li>
+                            <li class="nav__navlink">
+                                <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.infoPage.url>mes informations</router-link>
+                            </li>
+                            <!-- role writer  -->
                             <li v-if="userRole >= 2" class="nav__navlink">
                                 <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.userLessonPage.url>mes leçons</router-link>
                             </li>
                             <li v-if="userRole >= 2" class="nav__navlink">
                                 <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.addLessonTypePage.url>nouvelle leçon</router-link>
                             </li>
+                            <!-- role admin et super admin -->
                             <li v-if="userRole >= 3" class="nav__navlink">
                                 <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.updateUserRolePage>modifier droit d\'utilisateur</router-link>
                             </li>

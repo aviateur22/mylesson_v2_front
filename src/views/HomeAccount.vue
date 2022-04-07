@@ -36,7 +36,7 @@ export default {
             navButtons: [
                 {
                     title: 'mes informations',
-                    link: utils.apiDataUrl.infoPage,
+                    link: utils.apiDataUrl.infoPage.url,
                     imgPath: '/',
                     userRole: 1
                 },

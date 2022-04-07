@@ -1,50 +1,18 @@
 <template>
   <div class="footer__main-container">
       <div class="footer__container">
-          <!-- a propos -->
-            <CategoryComponent/>
-          <!-- markdown -->
-
-          <!-- conditions legales -->
-
-          <section class="thematic">
-              <div class="thematic__container">
-                  <div class="thematic__title-container">
-                      <h3 class="thematic__title">a propos</h3>
-                  </div>
-                  <div class="thematic__body">
-                      <span class="thematic__item">qui je suis</span>
-                      <span class="thematic__item">contenu des leçons</span>
-                  </div>
-              </div>
-          </section>
-          <section class="thematic">
-              <div class="thematic__container">
-                  <div class="thematic__title-container">
-                      <h3 class="thematic__title">markdwon</h3>
-                  </div>
-                  <div class="thematic__body">
-                      <span class="thematic__item">qu'est ce que le markdown</span>
-                      <span class="thematic__item">liens utiles markdown</span>                      
-                  </div>
-              </div>
-          </section>
-           <section class="thematic">
-              <div class="thematic__container">
-                  <div class="thematic__title-container">
-                      <h3 class="thematic__title">informations légales</h3>
-                  </div>
-                  <div class="thematic__body">
-                      <span class="thematic__item">cookie</span>
-                      <span class="thematic__item">CGU</span>                      
-                  </div>
-              </div>
-          </section>
+            <!-- a propos -->
+            <CategoryComponent :dataItems="aboutItems"/>
+            <!-- markdown -->
+            <CategoryComponent :dataItems="markdownItems"/>
+            <!-- conditions legales -->     
+            <CategoryComponent :dataItems="LegalInfoItems"/>           
       </div>
   </div>
 </template>
 
 <script>
+import utils from '../../helper/utils';
 import CategoryComponent from './FooterSubcategory.vue';
 export default {
     components: {
@@ -53,15 +21,42 @@ export default {
     data(){
         return {
             aboutItems: {
-                items: ['qui je suis', 'contenu des leçons'],
+                items: [
+                    {
+                        text: 'Qui je suis',
+                        url: utils.apiDataUrl.abouteMe.url
+                    },
+                    {
+                        text: 'Contenu des leçons',
+                        url: utils.apiDataUrl.lessonPresentation.url
+                    }
+                ],
                 title: 'à propos'
             },
             markdownItems: {
-                items: ['qu\'est ce que le markdown', 'liens utiles markdown'],
-                title: 'markdwon'
+                items: [
+                    {
+                        text: 'Qu\'est ce que le markdown',
+                        url: utils.apiDataUrl.aboutMarkdown.url
+                    },
+                    {
+                        text: 'Liens utiles markdown',
+                        url: utils.apiDataUrl.linksMarkdown.url
+                    }
+                ],
+                title: 'markdown'
             },
             LegalInfoItems: {
-                items: ['cookie', 'CGU'],
+                items: [
+                    {
+                        text: 'Cookie',
+                        url: utils.apiDataUrl.cookie.url
+                    },
+                    {
+                        text: 'CGU',
+                        url: utils.apiDataUrl.cgu.url
+                    }                
+                ],
                 title: 'informations légales'
             }
         };
@@ -71,16 +66,19 @@ export default {
 
 <style scoped>
     .footer__main-container{   
-        padding: 20px 10px;
-        display: flex;
+        padding: 20px 40px;
+        display: flex;    
         width: 100%;  
         justify-content: center; 
-        align-items: center;
+        align-items: center;        
+        background: rgb(65, 64, 64);
+        height: 100%;
     }
 
     .footer__container{
         width: 100%;
-        display: flex;    
+        display: flex;   
+        flex-direction: column; 
         align-items:center ;
         justify-content: space-between;
     }
@@ -89,6 +87,14 @@ export default {
 
         .footer__main-container{        
             width: 768px;
+        }
+
+        .footer__container{
+            width: 100%;
+            display: flex;    
+            flex-direction: row;
+            align-items:center ;
+            justify-content: space-between;
         }
     }
 

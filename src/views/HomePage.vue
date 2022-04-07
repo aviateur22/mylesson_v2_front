@@ -8,12 +8,17 @@
                     </div>
                 </div>
             </section>
-            <section class="lesson__section">
-                <div class="lesson__main-container">
+            <section v-if="lessons.length > 0" class="lesson__section">
+                <div class="lesson__main-container">                    
                     <div class="lesson__container">
                         <LessonButton v-for="(lesson, i) in lessons" :key="i" :data="lesson" :deleteLessonButton="false" :editLesson="false"/>                        
-                    </div>
+                    </div>                    
                 </div>
+            </section>
+            <section v-else class="lesson__empty-container">
+                <div class="lesson__empty-text">                            
+                    <h3 class="empty__text"> Pas de leçon</h3>
+                </div>                        
             </section>
       </div>   
     <section class="footer">
@@ -71,7 +76,8 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        height: 100%;
+        min-height: calc( 100vh - var(--footer_height) - var(--navbar_height));
+        background: white;
     }
 
     .lesson__container{
@@ -79,8 +85,31 @@ export default {
         flex-wrap: wrap;
         align-items: flex-start ;
         justify-content: center;
-        background: transparent;
-        background: var(--main_background_color)
+        padding-top: 20px;
+    }
+
+    .lesson__empty-container{
+        display: flex;
+        width: 100%;
+        align-items: stretch;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .lesson__empty-text{
+        display: flex;
+        align-items: stretch;
+        height: 100%;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .empty__text{
+        padding-top: 30px;
+        text-transform: uppercase;
+        font-size: var(--form_title_size);
+        font-weight: 800;
+
     }
 
     .footer{
@@ -88,7 +117,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgb(65, 64, 64)
+        min-height: var(--footer_height);
     }
     
     @media screen and (min-width:768px) {

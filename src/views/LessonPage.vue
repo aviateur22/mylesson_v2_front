@@ -30,7 +30,7 @@ export default {
     },
     methods: {
         async getLessonByUserId(){
-            this.lessons = await this.$store.dispatch('actionHandler', { action: 'getLessonByUserId' });                        
+            const getUserLesson = await this.$store.dispatch('actionHandler', { action: 'getLessonByUserId' });                        
         }
     },
     computed: {

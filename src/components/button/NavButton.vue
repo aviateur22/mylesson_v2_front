@@ -5,7 +5,7 @@
                 <router-link class="button__navlink-item" :to=data.link>   
                     <div class="nav__navlink-container">
                         <h3 class="button__title">{{ data.title }}</h3>
-                        <img class="button__img" src='../../assets/img/css.png' alt="image de test ">                        
+                        <img class="button__img" src='../../assets/img/css.png' alt="image représentant la catégorie du bouton">                        
                     </div>
                 </router-link> 
             </div>                 

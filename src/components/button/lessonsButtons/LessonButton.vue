@@ -146,14 +146,14 @@ export default {
     .lesson__button-container{
         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
         border-radius: 5px;
-        margin: 10px 0px;
-        
+        margin: 10px 0px;        
         cursor: pointer;      
         width:95%;
         background: rgb(255, 255, 255);
-        height: 400px;
-        
+        height: 400px;        
         overflow: hidden;
+        min-width: 280px;
+        max-width: 280px;
     }
 
     .button__title-container{

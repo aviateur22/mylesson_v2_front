@@ -4,6 +4,7 @@ import HomPage from '../views/HomePage.vue';
 import store from '../store';
 
 const routes = [
+    /** home page */
     {
         path: utils.apiDataUrl.homePage.url,
         name: utils.apiDataUrl.homePage.pathName,
@@ -17,9 +18,10 @@ const routes = [
         // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
     },
+    /** page de connexion */
     {
-        path: '/login',
-        name: 'Login',
+        path: utils.apiDataUrl.loginPage.url,
+        name: utils.apiDataUrl.loginPage.pathName,
         meta: {
             requiresUnauthenticated: true
         },
@@ -27,9 +29,10 @@ const routes = [
             return import(/* webpackChunkName: "about" */ '../views/Login.vue');
         }
     },
+    /** page d'inscription */
     {
-        path: utils.apiDataUrl.signupPage,
-        name: 'Signup',
+        path: utils.apiDataUrl.signupPage.url,
+        name: utils.apiDataUrl.signupPage.pathName,
         meta: {
             requiresUnauthenticated: true
         },
@@ -37,9 +40,10 @@ const routes = [
             return import(/* webpackChunkName: "about" */ '../views/Signup.vue');
         }
     },
+    /** page d'accueil utilisateur apres la connexion */
     {
-        path: utils.apiDataUrl.homeAccountPage,
-        name: 'UserHomeAccount',
+        path: utils.apiDataUrl.homeAccountPage.url,
+        name: utils.apiDataUrl.homeAccountPage.pathName,
         meta: {
             requiresAuth: true
         },
@@ -49,8 +53,8 @@ const routes = [
     },
     /** page modification des données utilisateur */
     {
-        path: utils.apiDataUrl.infoPage,
-        name: 'UserInformation',
+        path: utils.apiDataUrl.infoPage.url,
+        name: utils.apiDataUrl.infoPage.pathName,
         meta: {
             requiresAuth: true
         },
@@ -131,7 +135,55 @@ const routes = [
         component: function() {
             return import(/* webpackChunkName: "about" */ '../views/NewUploadFile.vue');
         }
-    },    
+    }, 
+    /** ma présentation */   
+    {
+        path: utils.apiDataUrl.abouteMe.url,
+        name: utils.apiDataUrl.abouteMe.pathName,
+        component: function() {
+            return import(/* webpackChunkName: "about" */ '../views/FooterPage/Me.vue');
+        }
+    },
+    /** a propos des lecons */   
+    {
+        path: utils.apiDataUrl.lessonPresentation.url,
+        name: utils.apiDataUrl.lessonPresentation.pathName,
+        component: function() {
+            return import(/* webpackChunkName: "about" */ '../views/FooterPage/LessonPresentation.vue');
+        }
+    },
+    /** a propos du markdwon */   
+    {
+        path: utils.apiDataUrl.aboutMarkdown.url,
+        name: utils.apiDataUrl.abouteMe.pathName,
+        component: function() {
+            return import(/* webpackChunkName: "about" */ '../views/FooterPage/AboutMarkdown.vue');
+        }
+    },
+    /** lien internet pour approffondir le markdown */   
+    {
+        path: utils.apiDataUrl.linksMarkdown.url,
+        name: utils.apiDataUrl.linksMarkdown.pathName,
+        component: function() {
+            return import(/* webpackChunkName: "about" */ '../views/FooterPage/MarkdownLinks.vue');
+        }
+    },
+    /** cgu */   
+    {
+        path: utils.apiDataUrl.cgu.url,
+        name: utils.apiDataUrl.cgu.pathName,
+        component: function() {
+            return import(/* webpackChunkName: "about" */ '../views/FooterPage/CGU.vue');
+        }
+    },
+    /** cookie */   
+    {
+        path: utils.apiDataUrl.cookie.url,
+        name: utils.apiDataUrl.cookie.pathName,
+        component: function() {
+            return import(/* webpackChunkName: "about" */ '../views/FooterPage/Cookie.vue');
+        }
+    },
     {
         path: '/:pathMatch(.*)*',
         name: '404',        

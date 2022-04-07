@@ -17,13 +17,13 @@
                 <ul class="nav__list-item">
 
                     <li v-if="!authenticated" class="nav__navlink">
-                        <router-link class="nav__navlink-item" :to="utils.apiDataUrl.loginPage">Connexion</router-link>
+                        <router-link class="nav__navlink-item" :to="utils.apiDataUrl.loginPage.url">Connexion</router-link>
                     </li>
                     <li v-if="!authenticated" class="nav__navlink">
-                        <router-link class="nav__navlink-item" :to="utils.apiDataUrl.signupPage">inscription</router-link>
+                        <router-link class="nav__navlink-item" :to="utils.apiDataUrl.signupPage.url">inscription</router-link>
                     </li>
                     <li v-if="authenticated" class="nav__navlink">
-                        <router-link class="nav__navlink-item" :to="utils.apiDataUrl.homeAccountPage">Mon compte</router-link>
+                        <router-link class="nav__navlink-item" :to="utils.apiDataUrl.homeAccountPage.url">Mon compte</router-link>
                     </li>
                 </ul>
             </section>

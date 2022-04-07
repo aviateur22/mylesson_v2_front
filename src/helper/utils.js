@@ -48,46 +48,61 @@ const utils = {
         getAllLink: { endPoint: '/api/links/', method: 'get'},
         deleteLinkByUserId: { endPoint: '/api/links/user/:userId', method: 'delete'}
     },
-    /**url page utilisateur */
-    pageUserUrl: {
-
-    },
+    /**liens des path - url pour l'affichage des pages*/
     apiDataUrl: {
-        homePage: {url: '/', pathName: 'HomePage'},
-        loginPage: '/login',
-        signupPage: '/signup',
-        resetPasswordPage: '/reset-password',
-        homeAccountPage: '/users/home',
-        deleteAccountPage: '/users/delete-account',
-        infoPage: '/users/account',
-        /**
-         * page listant les leçon d'un utilisateur
-         */
-        userLessonPage: {url: '/users/lesson', pathName: 'userLessonPage'}, 
+        /** page principal - accueil */
+        homePage: { url: '/', pathName: 'HomePage' },
 
-        /**
-         * type de leçon a ajouter (markdown ou downloadfile)
-         */
+        /** Login */
+        loginPage: { url: '/login', pathName: 'Login'},
+
+        /** Register */
+        signupPage: { url: '/signup', pathName: 'Signup' },
+        
+        /** page principal utilisateur apres connexion */
+        homeAccountPage: { url: '/users/home', pathName: 'UserHomeAccount' },
+        
+        /** page d'information sur un utilisateur */
+        infoPage: { url: '/users/account', pathName: 'UserInformation'},
+        
+        /** page listant les leçon d'un utilisateur */
+        userLessonPage: {url: '/users/lesson', pathName: 'UserLessonPage'}, 
+
+        /** type de leçon a ajouter (markdown ou downloadfile) */
         addLessonTypePage: {url: '/users/editor/lesson-type-selection', pathName: 'AddLessonSelection'},
 
-        /**
-         * page d'édition d'une lecon markdown
-         */
+        /** page d'édition d'une lecon markdown */
         addMarkdownLessonPage: {url: '/users/editor/add/lesson-markdown', pathName: 'AddMarkdownLesson'},
 
-        /**
-         * page d'update d'une leçon existante
-         */
+        /** page d'update d'une leçon existante */
         updateLessonPage: {url: '/users/editor/update/markdown-lesson/:slug', pathName: 'UpdateLesson'},
 
-        /**
-         * page de lecture d'une leçon
-         */
+        /** page de lecture d'une leçon */
         readLessonPage: {url: '/lesson/:slug', pathName: 'ReadLesson'},
+
+        /** lien footer - ma presentation */
+        abouteMe: { url: '/aboute-me', pathName: 'AbouteMe'},
+
+        /** lien footer - conteneu des lecons */
+        lessonPresentation: { url: '/lesson-presentation', pathName: 'AboutLesson'},
+
+        /** lien footer - a propos du markdown */
+        aboutMarkdown: { url: '/markdown-presentation', pathName: 'AboutMarkdown'},
+
+        /** lien footer - lien markdwon */
+        linksMarkdown: { url: '/markdown-link', pathName: 'MarkdownLink'},
+
+        /** lien footer - a propos du markdown */
+        cgu: { url: '/information-cgu', pathName: 'CGU'},
+
+        /** lien footer - lien markdwon */
+        cookie: { url: '/information-cookie', pathName: 'Cookie'},
 
         uploadFilePage: '/users/editor/upload/lesson-file',
         updateUserRolePage: '/users/admin/update-user-role',
-        resetDatabasePage: '/users/super-admin/reset-database'
+        resetDatabasePage: '/users/super-admin/reset-database',
+        deleteAccountPage: '/users/delete-account',
+        resetPasswordPage: '/reset-password',
     }
 };
 export default utils;
