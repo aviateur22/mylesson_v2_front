@@ -23,8 +23,13 @@
                     <InputToggleButton :title="'mot de passe'" :placeHolder="'mot de passe'" :inputName="'password'"/>
 
                     <!-- confirlmation du mot de passe -->
-                    <InputToggleButton :title="'confirmation du mot de passe'" :placeHolder="'confirmation mot de passe'" :inputName="'confirmPassword'"/>
+                    <InputToggleButton :title="'confirmation du mot de passe'" :placeHolder="'confirmation mot de passe'" :inputName="'confirmPassword'"/>                    
 
+                    <!-- CGU -->
+                    <InputCheckboxCGU>
+                        <!-- modal avec affichage de text  -->
+                        <ModalComponent/>
+                    </InputCheckboxCGU>
                 <SubmitButton @click.prevent="signupAction" :disableLoginButton='disableLoginButton' :textSubmitButton='textSubmitButton'/>
             </form> 
       </div>
@@ -35,10 +40,15 @@
 <script>
 import SubmitButton from '../components/button/SubmitButton.vue';
 import InputToggleButton from '../components/input/InputTextTogglrVisibility.vue';
+import InputCheckboxCGU from '../components/input/InputCheckboxCGU.vue';
+import ModalComponent from '../components/modal/Modal.vue';
 export default {
     components: {
         SubmitButton,
-        InputToggleButton
+        InputToggleButton,
+        InputCheckboxCGU,
+        ModalComponent
+        
     },
     data() {
         return {
@@ -62,7 +72,7 @@ export default {
             await this.$store.dispatch('actionHandler', { action: 'signupAction', formData });
 
             this.disableLoginButton = false;         
-        }       
+        }
         
     } 
 

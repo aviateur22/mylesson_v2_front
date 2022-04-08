@@ -1,16 +1,19 @@
 <template>
-<div v-if="modalVisibility" class="modal__main-container">
-    <ConfirmationRequest/>
+<div v-if="modalVisibility" class="modal__main-container">    
+    <ConfirmationRequest v-if="!this.$store.getters.getTextDisplayState"/>        
+    <TextModalComponent v-else/>    
 </div>
   
 </template>
 
 <script>
 import ConfirmationRequest from './ConfirmationRequest.vue';
+import TextModalComponent from './CGUDisplay.vue';
 export default {
-    name: 'Modal',
+    name: 'Modal',   
     components: {
-        ConfirmationRequest
+        ConfirmationRequest,
+        TextModalComponent
     },
     computed: {
         /**état de visibilité de la modal */
@@ -18,7 +21,6 @@ export default {
             return this.$store.getters.getModalVisibilityState;
         }
     }
-
 };
 </script>
 

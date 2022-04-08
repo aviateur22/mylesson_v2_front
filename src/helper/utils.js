@@ -3,8 +3,8 @@
  * Donnée API
  */
 const utils = {
-    baseUri: 'https://mylessonapp.herokuapp.com',
-    //baseUri: 'http://localhost:3000',
+    //baseUri: 'https://mylessonapp.herokuapp.com',
+    baseUri: 'http://localhost:3000',
 
     /** utilisateurs */
     userApi: {        
@@ -80,23 +80,32 @@ const utils = {
         /** page de lecture d'une leçon */
         readLessonPage: {url: '/lesson/:slug', pathName: 'ReadLesson'},
 
-        /** lien footer - ma presentation */
-        abouteMe: { url: '/aboute-me', pathName: 'AbouteMe'},
+        /** page pour le chargement des articles du footer */
+        footerArticle: { url: '/information/:slug', pathName: 'FooterArticlePage'},
 
-        /** lien footer - conteneu des lecons */
-        lessonPresentation: { url: '/lesson-presentation', pathName: 'AboutLesson'},
+        /** article static footer - ma presentation */
+        abouteMe: { slug: 'about-me' },
 
-        /** lien footer - a propos du markdown */
-        aboutMarkdown: { url: '/markdown-presentation', pathName: 'AboutMarkdown'},
+        /** article static footer - slug conteneu des lecons */
+        lessonPresentation: { slug: 'lesson'},
 
-        /** lien footer - lien markdwon */
-        linksMarkdown: { url: '/markdown-link', pathName: 'MarkdownLink'},
+        /** article static footer - slug propos du markdown */
+        aboutMarkdown: { slug: 'markdown'},
 
-        /** lien footer - a propos du markdown */
-        cgu: { url: '/information-cgu', pathName: 'CGU'},
+        /** article static footer - slug liens markdwon */
+        linksMarkdown: { slug: 'markdown-link'},
 
-        /** lien footer - lien markdwon */
-        cookie: { url: '/information-cookie', pathName: 'Cookie'},
+        /** mention légal */
+        legalNotice: { slug: 'legal-notice'},
+
+        /** article static footer - slug propos du markdown */
+        cgu: { slug: 'cgu'},
+
+        /** article static footer - slug lien markdwon */
+        cookie: { slug: 'cookie'},
+
+        /** page 404 */
+        notFound: { url: '/:pathMatch(.*)*', pathName: '404'},
 
         uploadFilePage: '/users/editor/upload/lesson-file',
         updateUserRolePage: '/users/admin/update-user-role',

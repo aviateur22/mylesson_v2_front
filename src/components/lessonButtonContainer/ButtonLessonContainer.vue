@@ -3,7 +3,7 @@
     <section v-if="lessons?.length > 0" class="lesson__section">
         <div class="lesson__main-container">                    
             <div class="lesson__container">
-                <LessonButton v-for="(lesson, i) in lessons" :key="i" :data="lesson" :deleteLessonButton="deleteLesson" :editLesson="editLesson">
+                <LessonButton class="lesson" v-for="(lesson, i) in lessons" :key="i" :data="lesson" :deleteLessonButton="deleteLesson" :editLesson="editLesson">
                     <!-- modal de confirmation de suppression -->
                     <ModalComponent/>
                 </LessonButton>                        
@@ -43,13 +43,13 @@ export default {
     .lesson__container{
         display: flex;
         flex-wrap: wrap;
-        align-items: flex-start ;
-        justify-content: flex-start;
+        align-items: center;
+        justify-content: center;
         padding-top: 20px;
         margin: 0px auto;
-        max-width: 90%;
+        max-width: 95%;
     }
-
+    
     .lesson__empty-container{
         display: flex;
         width: 100%;
@@ -64,13 +64,19 @@ export default {
         height: 100%;
         justify-content: center;
         width: 100%;
-    }
+    }    
 
     .empty__text{
         padding-top: 30px;
         text-transform: uppercase;
         font-size: var(--form_title_size);
         font-weight: 800;
+    }
 
+    @media screen and (min-width:768px) {
+
+        .lesson__container{        
+            justify-content: flex-start;
+        }
     }
 </style>

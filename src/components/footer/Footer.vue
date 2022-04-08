@@ -24,11 +24,11 @@ export default {
                 items: [
                     {
                         text: 'Qui je suis',
-                        url: utils.apiDataUrl.abouteMe.url
+                        url: utils.apiDataUrl.abouteMe.slug
                     },
                     {
                         text: 'Contenu des leçons',
-                        url: utils.apiDataUrl.lessonPresentation.url
+                        url: utils.apiDataUrl.lessonPresentation.slug
                     }
                 ],
                 title: 'à propos'
@@ -37,11 +37,7 @@ export default {
                 items: [
                     {
                         text: 'Qu\'est ce que le markdown',
-                        url: utils.apiDataUrl.aboutMarkdown.url
-                    },
-                    {
-                        text: 'Liens utiles markdown',
-                        url: utils.apiDataUrl.linksMarkdown.url
+                        url: utils.apiDataUrl.aboutMarkdown.slug
                     }
                 ],
                 title: 'markdown'
@@ -49,12 +45,16 @@ export default {
             LegalInfoItems: {
                 items: [
                     {
+                        text: 'mentions légales',
+                        url: utils.apiDataUrl.legalNotice.slug
+                    },
+                    {
                         text: 'Cookie',
-                        url: utils.apiDataUrl.cookie.url
+                        url: utils.apiDataUrl.cookie.slug
                     },
                     {
                         text: 'CGU',
-                        url: utils.apiDataUrl.cgu.url
+                        url: utils.apiDataUrl.cgu.slug
                     }                
                 ],
                 title: 'informations légales'
@@ -93,7 +93,7 @@ export default {
             width: 100%;
             display: flex;    
             flex-direction: row;
-            align-items:center ;
+            align-items:flex-start ;
             justify-content: space-between;
         }
     }

@@ -4,6 +4,7 @@
         <Modal/>
         <FlashMessage class="flash__message"/>
         <Loader/>
+        <CookieInfo/>
     </div>   
 </template>
 <script>
@@ -11,12 +12,14 @@ import Navbar from './components/navbar/Navbar.vue';
 import FlashMessage from './components/FlashMessage.vue';
 import Modal from './components/modal/Modal.vue';
 import Loader from './components/loader/Loader.vue';
+import CookieInfo from './components/cookie/CookieInformation.vue';
 export default {
     components: {
         Navbar,
         Modal,
         FlashMessage,
-        Loader
+        Loader,
+        CookieInfo
     }  
 };
 </script>

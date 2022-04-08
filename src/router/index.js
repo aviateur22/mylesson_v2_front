@@ -136,52 +136,12 @@ const routes = [
             return import(/* webpackChunkName: "about" */ '../views/NewUploadFile.vue');
         }
     }, 
-    /** ma présentation */   
+    /** page d'article des footers */   
     {
-        path: utils.apiDataUrl.abouteMe.url,
-        name: utils.apiDataUrl.abouteMe.pathName,
+        path: utils.apiDataUrl.footerArticle.url,
+        name: utils.apiDataUrl.footerArticle.pathName,
         component: function() {
-            return import(/* webpackChunkName: "about" */ '../views/FooterPage/Me.vue');
-        }
-    },
-    /** a propos des lecons */   
-    {
-        path: utils.apiDataUrl.lessonPresentation.url,
-        name: utils.apiDataUrl.lessonPresentation.pathName,
-        component: function() {
-            return import(/* webpackChunkName: "about" */ '../views/FooterPage/LessonPresentation.vue');
-        }
-    },
-    /** a propos du markdwon */   
-    {
-        path: utils.apiDataUrl.aboutMarkdown.url,
-        name: utils.apiDataUrl.aboutMarkdown.pathName,
-        component: function() {
-            return import(/* webpackChunkName: "about" */ '../views/FooterPage/AboutMarkdown.vue');
-        }
-    },
-    /** lien internet pour approffondir le markdown */   
-    {
-        path: utils.apiDataUrl.linksMarkdown.url,
-        name: utils.apiDataUrl.linksMarkdown.pathName,
-        component: function() {
-            return import(/* webpackChunkName: "about" */ '../views/FooterPage/MarkdownLinks.vue');
-        }
-    },
-    /** cgu */   
-    {
-        path: utils.apiDataUrl.cgu.url,
-        name: utils.apiDataUrl.cgu.pathName,
-        component: function() {
-            return import(/* webpackChunkName: "about" */ '../views/FooterPage/CGU.vue');
-        }
-    },
-    /** cookie */   
-    {
-        path: utils.apiDataUrl.cookie.url,
-        name: utils.apiDataUrl.cookie.pathName,
-        component: function() {
-            return import(/* webpackChunkName: "about" */ '../views/FooterPage/Cookie.vue');
+            return import(/* webpackChunkName: "about" */ '../views/FooterArticlePage.vue');
         }
     },
     {

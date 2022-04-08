@@ -10,6 +10,7 @@ import lesson from './module/lesson';
 import modal from './module/modal';
 import link from './module/link';
 import loader from './module/loader';
+import cgu from './module/cgu';
 
 export default new Vuex.Store({
     plugins: [createPersistedState({
@@ -25,6 +26,7 @@ export default new Vuex.Store({
         axiosApi,
         lesson,
         link,
-        loader
+        loader,
+        cgu
     }
 });

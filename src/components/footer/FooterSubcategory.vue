@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import utils from '../../helper/utils';
 import ButtonText from '../button/ButtonText.vue';
 export default {
     name: 'footerSubcatgerory',
@@ -21,9 +22,9 @@ export default {
         ButtonText
     },
     methods: {
-        /** affichage de la page */
+        /** Affichage de la page et chargement des données en fct du slug */
         displayPage(item){
-            this.$router.push({path: item });
+            this.$router.push({name: utils.apiDataUrl.footerArticle.pathName, params: { slug: item }});
         }
     }
 };
