@@ -8,7 +8,11 @@ const routes = [
     {
         path: utils.apiDataUrl.homePage.url,
         name: utils.apiDataUrl.homePage.pathName,
-        component: () => import(/* webpackChunkName: "about" */ '../views/HomePage.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../views/HomePage.vue'),
+        meta: {
+            title: 'my lesson | accueille',
+            metaTags: []
+        }
     },
     {
         path: '/about',
@@ -23,6 +27,7 @@ const routes = [
         path: utils.apiDataUrl.loginPage.url,
         name: utils.apiDataUrl.loginPage.pathName,
         meta: {
+            title: 'my lesson | connexion',
             requiresUnauthenticated: true
         },
         component: function() {
@@ -34,6 +39,7 @@ const routes = [
         path: utils.apiDataUrl.signupPage.url,
         name: utils.apiDataUrl.signupPage.pathName,
         meta: {
+            title: 'my lesson | inscription',
             requiresUnauthenticated: true
         },
         component: function() {
@@ -45,6 +51,7 @@ const routes = [
         path: utils.apiDataUrl.homeAccountPage.url,
         name: utils.apiDataUrl.homeAccountPage.pathName,
         meta: {
+            title: 'my lesson | mon compte',
             requiresAuth: true
         },
         component: function() {
@@ -159,6 +166,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    /** vérification  Page Title */
+    const DEFAULT_PAGE_TITLE = 'my lesson';
+    document.title = to.matched.some(record => record.meta.title) ? to.meta.title : DEFAULT_PAGE_TITLE;
+        
     if(to.matched.some(record => record.meta.requiresAuth)) {             
         //verification autorisation d'affichage de page    
         if(store.getters.getUserIdent.userAuthenticated){             
