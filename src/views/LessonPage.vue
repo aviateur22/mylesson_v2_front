@@ -51,7 +51,7 @@ export default {
     .lesson__page-main {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
         justify-content: flex-start;
         width: 100%;
         background:white;

@@ -74,7 +74,7 @@ export default {
         top: 50vh;
         left: 0px;
         box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-        max-width: 100%;
+        max-width: 90%;
         width: 400px;
         height: 170px;
         border-radius: 10px;
@@ -84,6 +84,7 @@ export default {
         object-fit: contain;
         background-repeat: no-repeat;
         overflow: hidden;  
+        margin-left: 10px;
     }
 
     .article{

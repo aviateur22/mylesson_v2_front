@@ -1,8 +1,10 @@
 <template>
-<div v-if="modalVisibility" class="modal__main-container">    
-    <ConfirmationRequest v-if="!this.$store.getters.getTextDisplayState"/>        
-    <TextModalComponent v-else/>    
-</div>
+    <transition name="slide-fade">
+        <div v-if="modalVisibility" class="modal__main-container">    
+            <ConfirmationRequest v-if="!this.$store.getters.getTextDisplayState"/>        
+            <TextModalComponent v-else/>    
+        </div>
+    </transition>
   
 </template>
 
@@ -25,6 +27,27 @@ export default {
 </script>
 
 <style scoped>
+    .slide-fade-enter-active {      
+        opacity: 1;
+    }
+
+    .slide-fade-leave-active {
+        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+
+    .slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active below version 2.1.8 */ {            
+        opacity: 0; 
+    }
+
+    @keyframes slide-fade-in {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
     .modal__main-container{
         display: flex;
         position: fixed;

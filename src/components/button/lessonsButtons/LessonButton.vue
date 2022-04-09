@@ -152,8 +152,7 @@ export default {
         background: rgb(255, 255, 255);
         height: 400px;        
         overflow: hidden;
-        min-width: 280px;
-        max-width: 280px;
+        min-width: 300px;
     }
 
     .button__title-container{
