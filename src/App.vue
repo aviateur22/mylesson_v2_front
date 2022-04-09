@@ -1,9 +1,18 @@
 <template>
     <div class="app__container">       
+        <!-- navbar -->
         <Navbar/>        
+
+        <!-- molal -->
         <Modal/>
+
+        <!-- affichage de message -->
         <FlashMessage class="flash__message"/>
+
+        <!-- loader de chargement -->
         <Loader/>
+
+        <!-- banniere info cookies -->
         <CookieInfo/>
     </div>   
 </template>
@@ -12,7 +21,7 @@ import Navbar from './components/navbar/Navbar.vue';
 import FlashMessage from './components/FlashMessage.vue';
 import Modal from './components/modal/Modal.vue';
 import Loader from './components/loader/Loader.vue';
-import CookieInfo from './components/cookie/CookieInformation.vue';
+import CookieInfo from './components/cookieBanner/CookieInformation.vue';
 export default {
     components: {
         Navbar,
@@ -20,12 +29,27 @@ export default {
         FlashMessage,
         Loader,
         CookieInfo
-    }  
+    },
+    methods: {
+        /**
+         * affichage de la banniere des cookie
+         */
+        displayCookieBanner(){
+            setTimeout(()=>{
+                this.$store.commit('setCookieBanner', true);
+            }, 5000);
+        }
+    },
+    created(){
+        /**affichage de la banniere des cookies */
+        this.displayCookieBanner();
+    }
+
 };
 </script>
 <style>
     #app {    
-        font-family: Avenir, Helvetica, Arial, sans-serif;
+        /* font-family: Avenir, Helvetica, Arial, sans-serif; */
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;

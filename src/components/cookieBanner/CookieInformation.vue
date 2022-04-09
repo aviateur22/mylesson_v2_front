@@ -1,5 +1,6 @@
 <template>
 <!-- cooke info -->
+<transition name="slide-fade">
     <div v-if="cookieDisplayInfo" class="cookie__main-container">
         <!-- contenu principal -->
         <article class="article">
@@ -17,6 +18,7 @@
             </footer>
         </article>
     </div>
+</transition>
 </template>
 
 <script>
@@ -24,28 +26,55 @@ export default {
     name: 'cookieInformation',
     data(){
         return {
-            cookieDisplayInfo: true
         };
     },
     methods: {
         /**
-         * masque l'information de cookie
+         * masque la banniere information des cookies
          */
         hideCookieInfo(){
-            this.cookieDisplayInfo = !this.cookieDisplayInfo;
+            this.$store.commit('setCookieBanner', !this.cookieDisplayInfo);
         }
 
+    },
+    computed: {
+        cookieDisplayInfo(){
+            return this.$store.getters.getCookieBannerState;
+        }
     }
-
-}
+};
 </script>
 
 <style scoped>
+        .slide-fade-enter-active {            
+            animation: slide-fade-in var(--transition_time_long);
+        }
+
+        .slide-fade-leave-active {
+            transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        }
+
+        .slide-fade-enter, .slide-fade-leave-to
+        /* .slide-fade-leave-active below version 2.1.8 */ {            
+            opacity: 0; 
+            transform: translateX(-400px);
+        }
+
+        @keyframes slide-fade-in {
+            0% {
+                transform: translateX(-400px);
+            }
+            100% {
+                transform: translateX(0px);
+            }
+        }
+
     .cookie__main-container{
         position: absolute;
-        top: 50%;
-        left: 20%;
+        top: 50vh;
+        left: 0px;
         box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+        max-width: 100%;
         width: 400px;
         height: 170px;
         border-radius: 10px;
@@ -54,7 +83,7 @@ export default {
         background-position: top right;
         object-fit: contain;
         background-repeat: no-repeat;
-        overflow: hidden;
+        overflow: hidden;  
     }
 
     .article{

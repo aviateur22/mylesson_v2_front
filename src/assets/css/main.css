@@ -16,7 +16,9 @@
     --transition_standard:0.3s;
     --transition_time_button:0.2s;
     --transition_time_opacity:0.4s;
-    --transition_group_animation:0.9s
+    --transition_group_animation:0.9s;
+    --transition_time_long:2s;
+
 
 }
 

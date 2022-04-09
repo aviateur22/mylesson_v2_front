@@ -10,7 +10,13 @@ import lesson from './module/lesson';
 import modal from './module/modal';
 import link from './module/link';
 import loader from './module/loader';
-import cgu from './module/cgu';
+import cgu from './module/footerPage/cgu';
+import cookieBanner from './module/cookieBanner';
+import aboutMePresentation from './module/footerPage/aboutMePresentation';
+import cookiePresentation from './module/footerPage/cookiePresentation';
+import legalNotice from './module/footerPage/legalNotice';
+import lessonPresentation from './module/footerPage/lessonPresentation';
+import markdownPresentation from './module/footerPage/markdownPresentation';
 
 export default new Vuex.Store({
     plugins: [createPersistedState({
@@ -27,6 +33,12 @@ export default new Vuex.Store({
         lesson,
         link,
         loader,
-        cgu
+        cgu,
+        cookieBanner,
+        aboutMePresentation,
+        cookiePresentation,
+        legalNotice,
+        lessonPresentation,
+        markdownPresentation
     }
 });
