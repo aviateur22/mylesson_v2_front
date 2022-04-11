@@ -14,18 +14,10 @@
                 </div>                
             </section>            
         </section>
-        <!-- contenue de l'image -->
-        <section class="button__img-container">
-
-        </section>
-        <!-- extrait du contenu -->
-        <section class="button__content-container">
-            <div class="lesson__markdown-text">
-                <div class="markdown-body">
-                    <span v-html="this.lessonsHtml" ></span>
-                </div>
-            </div>
-        </section>
+        <!-- thematic de la lecon -->
+        <section class="thematic__container">            
+        
+        </section>        
         <!-- bouton supprimer lecon -->
         <RoundedButton v-if="deleteLessonButton" @click.stop="deleteLesson"/>
       </div>
@@ -148,17 +140,17 @@ export default {
         border-radius: 5px;
         margin: 10px 0px;        
         cursor: pointer;      
-        width:95%;
-        background: rgb(255, 255, 255);
-        height: 400px;        
+        width:95%;        
         overflow: hidden;
-        min-width: 300px;
+        min-width: 300px
     }
 
     .button__title-container{
         padding: 15px 5px;
         background: rgb(107, 107, 107);
-
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .button__date{

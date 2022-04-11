@@ -1,45 +1,58 @@
 <template>
-    <div class="container">
-        <div class="main__container">
-            <div class="lesson__text-container-title">                
-                <h3 class="lesson__text-title">
-                    votre lesson en <span class="title--black">markdown</span>
+    <div class="markdown__main-container">
+        <div class="markdown__container">
+            <div class="markdown__title-container">
+                <h3 class="markdown__title">
+                    écriver votre leçon                    
                 </h3>
             </div>
-            <div class="lesson__container">              
-                <section class="lesson__section-write">                  
+            <div class="markdown__editor-container">
+                <div class="markdown__editor">              
                     <!-- markdown Editeur -->
                     <MarkdownEditor ref="markdowneditor"/>
-                </section>
-                <section class="lesson__section-markdown">
-                    <MarkdownReader/>
-                </section>
-            </div>
-            <div class="lesson__button-container">
-                <SubmitButton @click="saveLesson" :disableLoginButton='disableLoginButton' :textSubmitButton='textSubmitButton'/>
-                <!-- <input @click="submitForm" :disabled="!! submitFormValue" type="submit" class="button button--primary" value="Enregistrer"> -->
-                <!-- <router-link @click="submitForm" class="lesson__button-navlink" to="/">Enregistrer ma lesson</router-link> -->
-            </div>
+                </div>
+                <div class="markdown__button-container fix">   
+                    <div class="markdown__button" v-if="mobileSize" >
+                        <SubmitRoundedButton :imageSource="'../../assets/img/save.png'" @click="saveLesson"/>
+                        <SubmitRoundedButton :imageSource="'../../assets/img/save.png'"/>
+                    </div>                 
+                    <div class="markdown__button" v-else>
+                        <SubmitButton @click="saveLesson" :disableLoginButton='disableLoginButton' :textSubmitButton='"enregistrer"'/>
+                        <SubmitButton :textSubmitButton='"voir"'/>
+                    </div>                    
+                </div>
+            </div>            
         </div>
+        <section v-if="displayHtml" class="markdown__converter-container">
+            <MarkdownReader/>
+        </section>
     </div>
 </template>
 
 <script>
 import MarkdownEditor from '../components/markdown/MarkdownEditor.vue';
 import MarkdownReader from '../components/markdown/MarkdownReader.vue';
+import SubmitRoundedButton from '../components/button/RoundedButton.vue';
 import SubmitButton from '../components/button/SubmitButton.vue';
+import breakPointView from '../helper/vueBreakPoint';
 export default {
     components: {
         MarkdownEditor,
         MarkdownReader,
-        SubmitButton
+        SubmitButton,
+        SubmitRoundedButton
     },
     data(){
         return {
-            textSubmitButton: 'enregistrer',
-
             //Desactive le bouton de soumission durant le traitement de la requete
-            disableLoginButton: false
+            disableLoginButton: false,
+
+            //afficher le rendu html
+            displayHtml: false,
+
+            mobileSize: false,
+
+            wrapText: true
         };
     },
     methods: {
@@ -148,15 +161,26 @@ export default {
 
             /**Affichage de la modale */
             this.$store.commit('setModalVisibilityState', true);   
-        }
+        },
+
+        /**
+         * taille d'affichage pour la gestion des buttons
+         */
+        resizeAction() {
+            this.mobileSize = breakPointView.mobileBreakPoint(1024);
+        },
+
     },
     async created(){
         /** 
          * generation d'un token pour soumisson du formulaire
          */
-        await this.getTokenForm();
+        await this.getTokenForm();        
     },
-
+    mounted() {
+        window.addEventListener('resize', this.resizeAction);
+        this.resizeAction();
+    },
     async beforeRouteLeave(to, from, next) {        
         try {            
             /**si la leçon pas enregistrée */
@@ -184,89 +208,113 @@ export default {
 
 <style scoped>
 
-.container{
-    margin-top: var(--navbar_height); 
-    height: calc(100vh - var(--navbar_height));
-}
+    .markdown__main-container{
+        margin-top: var(--navbar_height); 
+        min-height: calc(100vh - var(--navbar_height)); 
+        display: flex;
+        align-items: stretch;       
+        background: red;
+    }
 
-.main__container{
-    width: 100%;
-    height: 100%;
-}
+    .markdown__container{
+        display: flex;
+        flex-direction: column;   
+        width: 100%;    
+        min-height: calc(100vh - var(--navbar_height));
+    }
 
-.lesson__container{
-    display: flex;
-    flex-direction: column;
-    /* height: 100%; */
-}
+    .markdown__title-container{
+        padding: 20px;
+    }
 
-.lesson__text-title{
-    padding: 30px;
-    font-size: var(--form_title_size);
-    text-transform: uppercase;
-}
+    .markdown__title{    
+        font-size: var(--form_title_size);
+        text-transform: uppercase;
+    }
 
-/*#region markdowEditor */
-.lesson__container{
-    display: flex;
-    flex-direction: column;
-    /* height: 100%; */
-}
-
-.lesson__section-write{
-    /* min-height: 50%; */
-    background: #f7f7f7;
-    display: flex;
-    flex-direction: column;
-}
-
-.lesson__tag-selection{
-    background: green;
-    
-}
-/*#endregion markdowEditor */
-
-/*#region markdown display */
-.lesson__section-markdown{
-    overflow-y: auto; 
-    width: 100%;    
-    /* height: 100%;      */
-    background: rgb(238, 236, 236);
-}
-/*#endregion markdown display */
-
-.lesson__button-container{
-    display: flex;
-    align-items: center;
-    justify-content: center;   
-    width: 100%;
-    padding: 0px 20px;
-    max-width: 768px;
-    margin: 25px auto;
-}
-
-.lesson__button-navlink{
-    width: 100%;
-    border:.5px solid var(--main_color); 
-    text-decoration: none;
-    border-radius: 10px;
-    color: white;
-    text-transform: uppercase;
-    background: transparent;
-    margin: 20px 20px;
-    padding: 20px 0px;
-    font-weight: 800;
-    background: var(--main_color); 
-    max-width: 768px;
-}
-
-@media screen and (min-width:1024px) {       
-    .lesson__container{        
+    .markdown__editor-container{
+        display: flex;
+        width: 80%;
         flex-direction: row;
+        position: relative;
+        height: 100%;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     }
 
-    .lesson__section-write{
-        min-width: 50%
+    .markdown__editor{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
     }
+
+    .markdown__converter-container{
+        overflow-y: auto; 
+        width: 100%;
+        background: rgb(238, 236, 236);
+        position: fixed;
+        top: 0px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px
+    }
+
+    .markdown__button-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;   
+        height: 100%;
+        width: 100%;
+        margin-right: 10px;
+    }
+
+    .markdown__button{
+        width: 100%;
+    }
+
+    .fix{
+        position:fixed;
+        top: 0px;
+        bottom: 0px;
+        right: 0px;
+        width: 150px;
+        
+        }
+    /* 
+    .lesson__button-navlink{
+        width: 100%;
+        border:.5px solid var(--main_color); 
+        text-decoration: none;
+        border-radius: 10px;
+        color: white;
+        text-transform: uppercase;
+        background: transparent;
+        margin: 20px 20px;
+        padding: 20px 0px;
+        font-weight: 800;
+        background: var(--main_color); 
+        max-width: 768px;
+    } */
+
+    @media screen and (min-width:768px) {  
+        .markdown__container{
+            width: 768px;                
+        }
+    }
+
+    @media screen and (min-width:1024px) { 
+         .markdown__main-container{
+            justify-content: center;
+        }    
+
+        .markdown__container{
+            width: 1024px;
+            align-items: center;
+        }
+
+        .markdown__editor-container{
+            width: 100%;
+
+        }
 }
 </style>

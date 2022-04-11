@@ -1,12 +1,22 @@
 <template>
     <div class="rounded__container">
-        <button class="rounded__button">X</button>
+        <button class="rounded__button">
+            <!-- si source image envoyé image de presente -->
+            <div v-if="imageSource" class="image__container">
+                <img :src="imageSource" alt="image représantant l'action du boutton">
+            </div>
+
+            <!-- affichage croix -->
+            <span v-else class="div">X</span>
+
+        </button>
     </div>  
 </template>
 
 <script>
 export default {
     name: 'roundeButton',
+    props: ['imageSource']
 };
 </script>
 

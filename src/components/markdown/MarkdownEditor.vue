@@ -2,17 +2,40 @@
    <div class="lesson__text-container">
         <div class="lesson__form-container">
             <form ref="submitForm" @submit.prevent="registerLesson" class="lesson__form">
+                <!-- selection du thème de la lecon -->
+                <div class="form__group-select">
+                    <div class="form__group">
+                        <label for="thematic" class="form__label">sélectionner votre thématique</label>
+                        <select class="form__input" name="thematic" v-model="thematic">
+                            <option selected disabled value="">Choisissez votre thème</option>
+                            <option name="thematic">homme</option>
+                            <option name="thematic">femme</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="lesson__tag-container">
                     <!-- Selection des tags -->
                     <MarkdownTag :filterLesson="false" ref="markdownTag" class="lesson__tag-selection"/>                      
                 </div>
+
+                <!-- titre de la lecon -->
                 <div class="form__group">                   
                     <label for="title" class="form__label">titre de votre lesson</label>
                     <div class="form__control">
                         <input ref="inputTitle" v-model="lessonName" @keyup="titleChange" class="form__input" type="text" placeholder="titre de votre lesson" name="title">
                     </div>
                 </div>
-                <div class="form__group form__group--textaera">
+                <!-- résumé de la lecon -->
+                <div class="form__group">                   
+                    <label for="summary" class="form__label">résumé de votre lecon</label>
+                    <div class="form__control">
+                        <input v-model="summary" @keyup="summaryChange" class="form__input" type="text" placeholder="mon petit résumé ..." name="summary">
+                    </div>
+                </div>
+
+                <!-- lecon en markdown -->
+                <div class="form__group--textaera">
                     <label for="lesson" class="form__label">votre lesson en Markdown</label>
                     <div class="form__control form--textarea">
                         <textarea @keydown="lessonChange" @keyup="lessonChange" ref="textarea" v-model="this.lessonMarkdown" name="content" id="textarea" rows="" cols="30" placeholder="Commencer votre nouvelle lesson...." class="form__input input--textarea"></textarea>
@@ -104,7 +127,10 @@ export default {
 .lesson__text-container{
     display: flex;
     flex-direction: column;
-    /* height: 100%; */
+    align-items: stretch;
+    justify-content: stretch;
+    height: 100%;
+   
 }
 
 .lesson__text-title{
@@ -114,11 +140,11 @@ export default {
 }
 
 .lesson__form-container{    
-   /* height: 100%; */
+   height: 100%;      
 }
 
 .lesson__form{
-    /* height: 100%; */
+    height: 100%; 
 }
 
 .form__group{
@@ -127,10 +153,6 @@ export default {
     width: 100%;
     align-items: flex-start;
     padding: 10px;
-}
-
-.form__group--textaera{
-    /* height: calc( 100% - 85px); */
 }
 
 .form__label{
@@ -147,10 +169,6 @@ export default {
     height: 100%;  
 }
 
-.form--textarea{
-    height: 100%;
-}
-
 .form__input{
     width: 100%;
     height: 45px;
@@ -160,12 +178,24 @@ export default {
     outline: none;
 }
 
-.input--textarea{
-    min-height: 350px;
+.form__group--textaera{   
+    display: flex; 
+    flex-direction: column;    
+    justify-content: stretch;
+    padding: 10px;
+    background: red;
+    min-height: 480px;
+    height: 45%;
+}
+
+.form--textarea{
+}
+
+.input--textarea{       
     height: 100%;
     border:none;
     border-radius: 0px;
-    border-top:0.5px solid white;
-    background: inherit;    
+    border-top:0.5px solid white;      
+    box-sizing: border-box;
 }
 </style>
