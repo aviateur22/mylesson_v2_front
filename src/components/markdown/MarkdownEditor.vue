@@ -5,11 +5,10 @@
                 <!-- selection du thème de la lecon -->
                 <div class="form__group-select">
                     <div class="form__group">
-                        <label for="thematic" class="form__label">sélectionner votre thématique</label>
-                        <select class="form__input" name="thematic" v-model="thematic">
+                        <label for="thematicId" class="form__label">sélectionner votre thématique</label>                       
+                        <select class="form__input" name="thematicId" v-model="lessonThematic">
                             <option selected disabled value="">Choisissez votre thème</option>
-                            <option name="thematic">homme</option>
-                            <option name="thematic">femme</option>
+                            <option  class="select-option" v-for="(thematic, i) in thematics" :key="i" :value="thematic.id" name="thematicId"> {{ thematic.name.toUpperCase()}}</option>                            
                         </select>
                     </div>
                 </div>
@@ -30,7 +29,7 @@
                 <div class="form__group">                   
                     <label for="summary" class="form__label">résumé de votre lecon</label>
                     <div class="form__control">
-                        <input v-model="summary" @keyup="summaryChange" class="form__input" type="text" placeholder="mon petit résumé ..." name="summary">
+                        <input v-model="lessonSummary" @keyup="summaryChange" class="form__input" type="text" placeholder="mon petit résumé ..." name="summary">
                     </div>
                 </div>
 
@@ -59,6 +58,8 @@ export default {
     data(){
         return {           
             lessonName: null,
+            lessonSummary: null,
+            lessonThematic: '',
             lessonMarkdown: null,
             markdownHandler: new MarkdownHandler()
         };
@@ -110,8 +111,20 @@ export default {
                 this.lessonMarkdown = this.$store.getters.getLessonEditor.markdownText;           
                 this.$refs.inputTitle.value = this.$store.getters.getLessonEditor.title;
                 this.$refs.textarea.value = this.$store.getters.getLessonEditor.markdownText;
+                this.lessonSummary = this.$store.getters.getLessonEditor.summary;
+                this.lessonThematic = this.$store.getters.getLessonEditor.thematic.id;
+                console.log(this.lessonThematic)
             }
         }
+    },
+    computed: {
+        /**
+         * thématiques de disponible
+         */
+        thematics(){            
+            return this.$store.getters.getThematics.thematics;
+        }
+
     },
     mounted(){
         /**
@@ -129,8 +142,7 @@ export default {
     flex-direction: column;
     align-items: stretch;
     justify-content: stretch;
-    height: 100%;
-   
+    height: 100%;   
 }
 
 .lesson__text-title{
@@ -178,17 +190,17 @@ export default {
     outline: none;
 }
 
+.select-option{
+    font-size: var(--text_button_size);
+}
+
 .form__group--textaera{   
     display: flex; 
     flex-direction: column;    
     justify-content: stretch;
     padding: 10px;
-    background: red;
     min-height: 480px;
     height: 45%;
-}
-
-.form--textarea{
 }
 
 .input--textarea{       

@@ -5,42 +5,45 @@
                 <h3 class="markdown__title">
                     écriver votre leçon                    
                 </h3>
+                <div v-if="displayMarkdwonOptionButton" @click="toogleMarkdwonOptionButton" class="markdown__option-button">
+                    <MarkdownOptionButton/>
+                </div>                
             </div>
             <div class="markdown__editor-container">
+                <!-- markown editeur -->
                 <div class="markdown__editor">              
                     <!-- markdown Editeur -->
                     <MarkdownEditor ref="markdowneditor"/>
                 </div>
-                <div class="markdown__button-container fix">   
-                    <div class="markdown__button" v-if="mobileSize" >
-                        <SubmitRoundedButton :imageSource="'../../assets/img/save.png'" @click="saveLesson"/>
-                        <SubmitRoundedButton :imageSource="'../../assets/img/save.png'"/>
-                    </div>                 
-                    <div class="markdown__button" v-else>
+                <!-- boutton enregistrement et html -->
+                <div @click.stop="toogleMarkdwonOptionButton" v-if="!displayMarkdwonOptionButton" class="markdown__button-container fix">                              
+                    <div class="markdown__button">
                         <SubmitButton @click="saveLesson" :disableLoginButton='disableLoginButton' :textSubmitButton='"enregistrer"'/>
-                        <SubmitButton :textSubmitButton='"voir"'/>
+                        <SubmitButton @click="displayHtmlRender" :textSubmitButton='"voir le rendu"'/>
                     </div>                    
                 </div>
             </div>            
         </div>
-        <section v-if="displayHtml" class="markdown__converter-container">
-            <MarkdownReader/>
-        </section>
+        <div @click="displayHtmlRender" v-if="displayHtml" class="markdown__html-container">
+            <div class="markdow__html">
+                <MarkdownReader/>
+            </div>            
+        </div>
     </div>
 </template>
 
 <script>
 import MarkdownEditor from '../components/markdown/MarkdownEditor.vue';
 import MarkdownReader from '../components/markdown/MarkdownReader.vue';
-import SubmitRoundedButton from '../components/button/RoundedButton.vue';
 import SubmitButton from '../components/button/SubmitButton.vue';
 import breakPointView from '../helper/vueBreakPoint';
+import MarkdownOptionButton from '../components/markdown/MarkdownOptionMobile.vue';
 export default {
     components: {
         MarkdownEditor,
         MarkdownReader,
         SubmitButton,
-        SubmitRoundedButton
+        MarkdownOptionButton
     },
     data(){
         return {
@@ -49,10 +52,15 @@ export default {
 
             //afficher le rendu html
             displayHtml: false,
+            
+            //afficher / masquer les button d'option quand position = fixed
+            displayMarkdwonOptionButton: false,
 
-            mobileSize: false,
+            //taille pour masquer les buttons options
+            sizeHideMarkdownButton: 1270,
 
-            wrapText: true
+            //thematiques des lecons
+            thematics: []
         };
     },
     methods: {
@@ -85,13 +93,13 @@ export default {
             
             /** recuperation formdata */
             const formData = new FormData(formLesson);
-
+           
             /**ajout de id utilisateur  */
             formData.append('userId', userId);
 
             /** ajout du token */
             formData.append('formToken', this.$store.getters.getLessonEditor.token);       
-
+           
             /** requete  */
             let saveLesson;
             
@@ -166,16 +174,42 @@ export default {
         /**
          * taille d'affichage pour la gestion des buttons
          */
-        resizeAction() {
-            this.mobileSize = breakPointView.mobileBreakPoint(1024);
+        resizeAction() {  
+            this.displayMarkdwonOptionButton = breakPointView.customBreakPoint(window.innerWidth, this.sizeHideMarkdownButton);
         },
+
+        /**
+         * modification de la visibilité des options markdown
+         */
+        toogleMarkdwonOptionButton(){
+            /** action possible uniquement si window.innerWidth < sizeHideMarkdownButton */
+            if(window.innerWidth <= this.sizeHideMarkdownButton){
+                this.displayMarkdwonOptionButton = !this.displayMarkdwonOptionButton;
+            }            
+        },
+
+        /**
+         * récuperation des thematiques des lecons
+         */
+        async getAllthematics(){
+            const thematics = await this.$store.dispatch('actionHandler', {action: 'getAllThematic'});            
+        },
+
+        displayHtmlRender(){
+            this.displayHtml = !this.displayHtml;
+        }
 
     },
     async created(){
         /** 
          * generation d'un token pour soumisson du formulaire
          */
-        await this.getTokenForm();        
+        await this.getTokenForm();   
+        
+        /**
+         * récupérarion des thématics
+         */
+        await this.getAllthematics();
     },
     mounted() {
         window.addEventListener('resize', this.resizeAction);
@@ -212,8 +246,7 @@ export default {
         margin-top: var(--navbar_height); 
         min-height: calc(100vh - var(--navbar_height)); 
         display: flex;
-        align-items: stretch;       
-        background: red;
+        align-items: stretch;    
     }
 
     .markdown__container{
@@ -223,20 +256,27 @@ export default {
         min-height: calc(100vh - var(--navbar_height));
     }
 
-    .markdown__title-container{
-        padding: 20px;
+    .markdown__title-container{        
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0px 10px;
     }
 
-    .markdown__title{    
+    .markdown__title{   
+        padding: 40px 0px; 
         font-size: var(--form_title_size);
         text-transform: uppercase;
+        text-align: center;
+        width: 100%;
     }
 
     .markdown__editor-container{
-        display: flex;
-        width: 80%;
-        flex-direction: row;
         position: relative;
+        display: flex;
+        width: 100%;
+        flex-direction: row;
         height: 100%;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     }
@@ -245,9 +285,11 @@ export default {
         display: flex;
         flex-direction: column;
         width: 100%;
+        flex-grow: 2;
     }
 
     .markdown__converter-container{
+        flex-grow: 1;
         overflow-y: auto; 
         width: 100%;
         background: rgb(238, 236, 236);
@@ -264,8 +306,9 @@ export default {
         align-items: center;
         justify-content: center;   
         height: 100%;
-        width: 100%;
-        margin-right: 10px;
+        width: 170px;
+        padding: 10px;
+        
     }
 
     .markdown__button{
@@ -277,44 +320,59 @@ export default {
         top: 0px;
         bottom: 0px;
         right: 0px;
-        width: 150px;
-        
-        }
-    /* 
-    .lesson__button-navlink{
-        width: 100%;
-        border:.5px solid var(--main_color); 
-        text-decoration: none;
-        border-radius: 10px;
-        color: white;
-        text-transform: uppercase;
-        background: transparent;
-        margin: 20px 20px;
-        padding: 20px 0px;
-        font-weight: 800;
-        background: var(--main_color); 
-        max-width: 768px;
-    } */
+        width: 250px;
+        background: rgba(0, 0, 0, 0.5);        
+    }
 
-    @media screen and (min-width:768px) {  
+    .markdown__html-container{
+        margin-top: var(--navbar_height); 
+        position: fixed;
+        top:0px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        padding: 5px;
+        background: rgba(0, 0, 0, 0.5);
+         z-index: 2;
+    }
+
+    .markdow__html{
+        max-width: 768px;
+        width: 100%;
+    }
+
+    .markdown__option-button{
+        position: fixed;
+        right: 0px;
+        padding:0px 15px;
+        z-index: 2;
+    }
+
+    @media screen and (min-width:768px) {   
+        .markdown__main-container{
+            justify-content: center;
+        }    
+         
         .markdown__container{
-            width: 768px;                
+            width: 768px; 
+            align-items: center;               
         }
     }
 
-    @media screen and (min-width:1024px) { 
-         .markdown__main-container{
-            justify-content: center;
-        }    
+    @media screen and (min-width:1024px) {         
+         .markdown__editor-container{
+            width: 100%;
+        }
 
         .markdown__container{
-            width: 1024px;
             align-items: center;
         }
 
-        .markdown__editor-container{
-            width: 100%;
-
+        .markdown__editor{
+            min-width: 768px; 
         }
 }
 </style>

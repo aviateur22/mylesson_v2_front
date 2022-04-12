@@ -99,7 +99,7 @@ export default {
     background: white;
     position: fixed;
     width:100%;
-    z-index: 2;
+    z-index: 4;
 }
 
 .nav__container{
@@ -183,7 +183,7 @@ export default {
         right: 0px;
         bottom: 0px;
         right: 0px;
-        z-index: 100;
+        z-index: 10;
     }
 /*#endregion*/
 

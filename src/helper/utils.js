@@ -48,6 +48,11 @@ const utils = {
         getAllLink: { endPoint: '/api/links/', method: 'get'},
         deleteLinkByUserId: { endPoint: '/api/links/user/:userId', method: 'delete'}
     },
+    /** media thematic */
+    thematicApi: {
+        getAllThematic: {endPoint: '/api/thematics', method: 'get'}
+    },
+
     /**liens des path - url pour l'affichage des pages*/
     apiDataUrl: {
         /** page principal - accueil */

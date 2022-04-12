@@ -3,20 +3,24 @@
     <div class="main__container">            
       <div class="button__container">           
         <section class="button__title-container">
-            <!-- date de creation -->
-            <span class="button__date">{{data.created}}</span>
-            <!-- titre de la leçon -->
+             <!-- titre de la leçon -->
             <h3 class="button__title">{{ data.title }}</h3>
+            <!-- date de creation -->
+            <span class="button__date">{{data.created_at}}</span>           
             <!-- tags de la lecon -->
             <section class="button__tag-container">
                 <div class="button__tag">
                     <LessonTag v-for="(tag,id) in data.lessonsTags" :key="id" :data='tag'/>
                 </div>                
-            </section>            
+            </section>  
+            <section class="button__summary">
+                <p class="button__summary-text">{{ data.summary}}</p>                
+            </section> 
+
         </section>
         <!-- thematic de la lecon -->
         <section class="thematic__container">            
-        
+            <img :src="thematicImageUrl" alt="image représentant la thématique de la leçon" class="thematic__image">
         </section>        
         <!-- bouton supprimer lecon -->
         <RoundedButton v-if="deleteLessonButton" @click.stop="deleteLesson"/>
@@ -29,6 +33,7 @@
 import LessonTag from './LessonTag.vue';
 import RoundedButton from '../RoundedButton.vue';
 import MarkdownHandler from '../../../helper/markdown/markdownConverter';
+import utils from '../../../helper/utils';
 export default {    
     name: 'LessonButton',
     components: {
@@ -44,6 +49,7 @@ export default {
     data(){
         return {
             markdownHandler: new MarkdownHandler(),
+            thematicImageUrl: utils.baseUri + this.data.thematicImageUrl
         };
     },
     methods: {
@@ -133,29 +139,33 @@ export default {
 <style scoped>
     .button__container{
         position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: space-between;
+
     }
 
     .lesson__button-container{
-        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
         border-radius: 5px;
         margin: 10px 0px;        
         cursor: pointer;      
         width:95%;        
         overflow: hidden;
-        min-width: 300px
+        min-width: 300px;
     }
 
     .button__title-container{
         padding: 15px 5px;
-        background: rgb(107, 107, 107);
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        color: black;
     }
 
     .button__date{
         font-size: var(--text_s);
-        color: white;
         padding: 10px;
         text-transform: uppercase;
     }
@@ -165,7 +175,6 @@ export default {
         text-transform: uppercase;
         font-weight: 800;
         font-size: var(--text_button_size);
-        color:white
     }
 
     .button__tag-container{
@@ -176,6 +185,15 @@ export default {
 
     .button__tag{
         display: flex;
+    }
+
+    .button__summary{
+        width: 100%;
+        padding: 10px;
+    }
+
+    .button__summary-text{
+        text-align: left;
     }
 
     .lesson__markdown-text{
@@ -195,7 +213,20 @@ export default {
         position: absolute;
         right: 0px;
         top: 0px
+    }
 
+    .thematic__container{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+
+    }
+    
+    .thematic__image{
+        width: 50px;
+        height: 50px;
     }
 
     @media screen and (min-width:560px) {

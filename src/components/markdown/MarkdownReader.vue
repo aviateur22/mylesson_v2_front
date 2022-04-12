@@ -30,6 +30,15 @@ export default {
     display: flex;
     flex-direction: column;
     height: 100%;
+    background: white;
+}
+
+.lesson__markdown-title-container{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
 }
 
 .lesson__markown-title{
@@ -40,7 +49,6 @@ export default {
 
 .lesson__markdown-text{    
     padding-top: 2px;
-    min-height: 350px;
     height: 100%;
     border-top:0.5px solid white;
     overflow-y: auto;
@@ -54,11 +62,5 @@ export default {
 
 @media screen and (min-width:1024px) {       
 
-    .lesson__markdown-title-container{
-        height: 142px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
 }
 </style>

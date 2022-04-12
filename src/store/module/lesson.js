@@ -138,6 +138,8 @@ const actions = {
             markdownText: getLesson.content,
             htmlOutput: markdownHandler.getHtml(getLesson.content),
             isSave: true,
+            thematic: getLesson.thematic,
+            summary: getLesson.summary,
             tags: getLesson.tags,
             autor: getLesson.autor,
             autorLinks: getLesson.links,

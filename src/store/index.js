@@ -17,6 +17,7 @@ import cookiePresentation from './module/footerPage/cookiePresentation';
 import legalNotice from './module/footerPage/legalNotice';
 import lessonPresentation from './module/footerPage/lessonPresentation';
 import markdownPresentation from './module/footerPage/markdownPresentation';
+import thematic from './module/thematic';
 
 export default new Vuex.Store({
     plugins: [createPersistedState({
@@ -39,6 +40,7 @@ export default new Vuex.Store({
         cookiePresentation,
         legalNotice,
         lessonPresentation,
-        markdownPresentation
+        markdownPresentation,
+        thematic
     }
 });
