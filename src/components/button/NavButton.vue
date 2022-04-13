@@ -3,9 +3,11 @@
       <div class="navbutton__container">     
             <div class="button__navlink">
                 <router-link class="navbutton__link" :to=data.link>   
-                    <div class="navbutton__data-container">
+                    <div class="navbutton__data-container">                        
                         <h3 class="button__title">{{ data.title }}</h3>
-                        <img class="button__img" :src="this.getImg()" alt="image représentant la catégorie du bouton">                        
+                        <div class="navbutton__image-container">
+                            <img class="navbutton__image" :src="this.getImg()" alt="image représentant la catégorie du bouton">
+                        </div>                        
                     </div>
                 </router-link> 
             </div>                 
@@ -43,10 +45,6 @@ export default {
     }
 
     .navbutton__container{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
         width:250px;
         border-radius: 5px;
         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -60,7 +58,8 @@ export default {
     .navbutton__data-container{
         height: 200px;
         overflow: hidden;
-        padding: 30px;        
+        display: flex; 
+        flex-direction: column;    
     }
 
     .button__title{        
@@ -68,12 +67,20 @@ export default {
         font-size: 0.9rem;
         font-weight: 600;
         color: rgb(94, 94, 94);
-        padding: 10px 0px;
+        padding-bottom: 20px;
+        flex-grow: 1;
+    }
+
+    .navbutton__image-container{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;        
     }
     
-    .button__img{
-        height: 100%;
-        object-fit: cover;
+    .navbutton__image{  
+        width: 100px;
+        object-fit: scale-down;
     }
 
     @media screen and (min-width:560px) {
