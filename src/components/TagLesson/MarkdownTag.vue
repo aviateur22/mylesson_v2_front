@@ -2,7 +2,7 @@
   <div class="container">
       <div class="main__container">
             <div class="form__group">                   
-                <label for="tag" class="form__label">tag(s) de votre leçon</label>
+                <label for="tag" class="form__label">{{ title }}</label>
                 <section class="tag__input-section">
                   <!-- input pour marquer son tag -->
                   <div class="tag__input-container">     
@@ -52,7 +52,7 @@ export default {
             tag: null
         };
     },
-    props: ['filterLesson'],
+    props: ['filterLesson', 'title'],
     methods: {
         /**
          * recherche d'un tag en base de données

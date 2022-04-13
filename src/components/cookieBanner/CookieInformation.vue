@@ -70,12 +70,12 @@ export default {
         }
 
     .cookie__main-container{
-        position: absolute;
+        position: fixed;
         top: 50vh;
         left: 0px;
         box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
         max-width: 90%;
-        width: 400px;
+        width: 300px;
         height: 170px;
         border-radius: 10px;
         background: white;

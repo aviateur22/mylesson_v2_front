@@ -32,6 +32,12 @@ export default {
 </script>
 
 <style scoped>
+    .lesson__section{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .lesson__main-container{
         display: flex;
         width: 100%;
@@ -45,9 +51,8 @@ export default {
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
-        padding-top: 20px;
-        margin: 0px auto;
-        max-width: 95%;
+        padding: 20px;
+        width: 100%;
     }
     
     .lesson__empty-container{

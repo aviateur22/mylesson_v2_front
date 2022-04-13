@@ -1,27 +1,15 @@
 <template>
   <div @click="displayLessonClick" class="lesson__button-container">     
-    <div class="main__container">            
-      <div class="button__container">           
-        <section class="button__title-container">
-             <!-- titre de la leçon -->
-            <h3 class="button__title">{{ data.title }}</h3>
-            <!-- date de creation -->
-            <span class="button__date">{{data.created_at}}</span>           
-            <!-- tags de la lecon -->
-            <section class="button__tag-container">
-                <div class="button__tag">
-                    <LessonTag v-for="(tag,id) in data.lessonsTags" :key="id" :data='tag'/>
-                </div>                
-            </section>  
-            <section class="button__summary">
-                <p class="button__summary-text">{{ data.summary}}</p>                
-            </section> 
-
-        </section>
+    <div class="lesson__button">            
+      <div class="button__inner">
+          <div class="button__title">
+              <TitleButtonComponent :data="this.data"/>
+          </div>        
         <!-- thematic de la lecon -->
-        <section class="thematic__container">            
-            <img :src="thematicImageUrl" alt="image représentant la thématique de la leçon" class="thematic__image">
-        </section>        
+        <div class="button__thematic-image">
+            <ThematicImageComponent :data="this.data"/>
+        </div>
+        
         <!-- bouton supprimer lecon -->
         <RoundedButton v-if="deleteLessonButton" @click.stop="deleteLesson"/>
       </div>
@@ -30,16 +18,16 @@
 </template>
 
 <script>
-import LessonTag from './LessonTag.vue';
+
 import RoundedButton from '../RoundedButton.vue';
-import MarkdownHandler from '../../../helper/markdown/markdownConverter';
-import utils from '../../../helper/utils';
+import TitleButtonComponent from './TitleButton.vue';
+import ThematicImageComponent from './ThematicImage.vue';
 export default {    
     name: 'LessonButton',
     components: {
-        LessonTag,
-        RoundedButton
-
+        RoundedButton,
+        TitleButtonComponent,
+        ThematicImageComponent
     },
     /**
      * editLesson: true => ouverture lecon en ecriture
@@ -48,8 +36,7 @@ export default {
     props: ['data', 'editLesson', 'deleteLessonButton'],
     data(){
         return {
-            markdownHandler: new MarkdownHandler(),
-            thematicImageUrl: utils.baseUri + this.data.thematicImageUrl
+                    
         };
     },
     methods: {
@@ -127,23 +114,21 @@ export default {
             /**Affichage de la modale */
             this.$store.commit('setModalVisibilityState', true);           
         }
-    },
-    computed: {   
-        lessonsHtml(){
-            return this.markdownHandler.getHtml(this.data.content);
-        }     
-    },
+    }
 };
 </script>
 
 <style scoped>
-    .button__container{
+    .button__inner{
         position: relative;
         display: flex;
         flex-direction: column;
         align-items: stretch;
         justify-content: space-between;
+    }
 
+    .button__title{    
+        border-bottom: 0.1px solid rgb(161, 161, 161);
     }
 
     .lesson__button-container{
@@ -151,96 +136,35 @@ export default {
         border-radius: 5px;
         margin: 10px 0px;        
         cursor: pointer;      
-        width:95%;        
-        overflow: hidden;
-        min-width: 300px;
-    }
-
-    .button__title-container{
-        padding: 15px 5px;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        color: black;
-    }
-
-    .button__date{
-        font-size: var(--text_s);
-        padding: 10px;
-        text-transform: uppercase;
-    }
-
-    .button__title{
-        padding: 5px;
-        text-transform: uppercase;
-        font-weight: 800;
-        font-size: var(--text_button_size);
-    }
-
-    .button__tag-container{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .button__tag{
-        display: flex;
-    }
-
-    .button__summary{
-        width: 100%;
-        padding: 10px;
-    }
-
-    .button__summary-text{
-        text-align: left;
-    }
-
-    .lesson__markdown-text{
-        padding: 0px 5px;   
-
-    }
-
-    .button__content-container{
-        overflow: hidden;
-        width: 100%;
-        text-align: left; 
+        width:100%;        
     }
 
     .button__delete-lesson{
-        background: red;
         padding: 25px;
         position: absolute;
         right: 0px;
         top: 0px
     }
 
-    .thematic__container{
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 10px;
+    @media screen and (min-width: 768px) {        
+        .button__inner{
+            flex-direction: row;
+            align-items: center;
+        }           
+        
+        .button__title{
+            width: 100%;
+            flex-grow: 2;
+            border-right: 0.1px solid rgb(161, 161, 161);
+        }
 
-    }
-    
-    .thematic__image{
-        width: 50px;
-        height: 50px;
-    }
-
-    @media screen and (min-width:560px) {
-        .lesson__button-container{   
-            margin: 10px;     
-            width:calc( 50% - 20px); 
+        .button__thematic-image{
+            width: 200px;
         }
     }
 
     @media screen and (min-width:1024px) {
-        .lesson__button-container{   
-            margin: 10px;     
-            width:calc( 40% - 90px); 
-        }
+            
     }
 
 </style>

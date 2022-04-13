@@ -15,7 +15,7 @@
 
                 <div class="lesson__tag-container">
                     <!-- Selection des tags -->
-                    <MarkdownTag :filterLesson="false" ref="markdownTag" class="lesson__tag-selection"/>                      
+                    <MarkdownTag :title="'Ajouter un ou plusieurs tag(s) à votre leçon'" :filterLesson="false" ref="markdownTag" class="lesson__tag-selection"/>                      
                 </div>
 
                 <!-- titre de la lecon -->
@@ -113,7 +113,6 @@ export default {
                 this.$refs.textarea.value = this.$store.getters.getLessonEditor.markdownText;
                 this.lessonSummary = this.$store.getters.getLessonEditor.summary;
                 this.lessonThematic = this.$store.getters.getLessonEditor.thematic.id;
-                console.log(this.lessonThematic)
             }
         }
     },

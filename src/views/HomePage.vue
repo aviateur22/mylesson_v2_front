@@ -4,7 +4,7 @@
             <section class="tag__section">
                 <div class="tag__main-container">
                     <div class="tag__container">
-                        <MarkdownTag :filterLesson="true" ref="markdownTag" class="lesson__tag-selection"/>
+                        <MarkdownTag  :title="'Ajouter un ou plusieurs tag(s) pour filtrer les leçons'" :filterLesson="true" ref="markdownTag" class="lesson__tag-selection"/>
                     </div>
                 </div>
             </section>
