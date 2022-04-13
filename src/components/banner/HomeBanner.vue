@@ -4,11 +4,12 @@
     <!-- couleur de la banniere -->
     <div class="banner__color">
         <div class="banner__inner-container">
-            <div class="banner__image-container hide--image">
+            <div class="banner__image-container zoom">
                 <img class="banner__image" src="../../assets/img/hand.png" alt="image d'une main avec le pouce en l'air">
             </div>      
             <div class="banner__text-container">
-                <p class="banner__text">des leçons et tutoriels pour nodejs et vuejs</p>    
+                <p class="banner__text left">des leçons et tutoriels basés</p>    
+                <p class="banner__text right">sur nodejs et vuejs</p>
             </div>                  
             
         </div> 
@@ -20,8 +21,7 @@
 
 <script>
 export default {
-    name: 'homeBanner'    
-
+    name: 'homeBanner',
 };
 </script>
 
@@ -65,30 +65,106 @@ export default {
         font-size: var(--text_button_size);
         text-transform: uppercase;
         line-height: 1.5;
-        letter-spacing: 3px;
+        letter-spacing: 3px;                
+    }
+
+    .left{
+        animation: translateFromLeft 4s ease-in-out;
+    }
+
+    .right{
+        animation: translateFromRight 4s ease-in-out;
+    }
+
+    .zoom{            
+        animation: zoom 3s;
+        animation-delay: 0s;        
+    }
+
+    /* affichage texte de la gauche */
+    @keyframes translateFromLeft{
+        0%{
+            opacity: 0;     
+            transform: translateX(-1500px);      
+        }
+
+        50%{
+            opacity: 0;
+            transform: translateX(-500px);
+        }
+
+        70%{
+            opacity: 0;
+            transform: translateX(-200px);
+        }
+
+        100%{
+            opacity: 1;
+            transform: translateX(0px);
+        }
+    }
+
+    /* affichage text de la droite */
+    @keyframes translateFromRight{
+        0%{
+            opacity: 0;     
+            transform: translateX(1500px);      
+        }
+
+        50%{
+            opacity: 0;
+            transform: translateX(500px);
+        }
+
+        70%{
+            opacity: 0;
+            transform: translateX(200px);
+        }
+
+        100%{
+            opacity: 1;
+            transform: translateX(0px);
+        }
+    }
+    /**affichage avec effer de grossiesement  */
+    @keyframes zoom{
+        0%{
+            opacity: 0;     
+            transform:scale(3.5);
+        }
+
+        50%{
+            opacity: 1;     
+            transform:scale(0.5);
+        }
+
+        100%{
+            opacity: 1;
+            transform:scale(1);
+        }
     }
 
     .banner__image-container{
-        width: 150px;
+        width: 180px;
+        height: 180px;      
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 5px solid white;
+        border-radius: 50%;   
+        padding: 10px;
     }
 
-    .banner__image{
-        width: 150px;
-    }
-
-    .hide--image{
-        display: block;
+    .banner__image{  
+        height: 130px;
     }
 
     @media screen and (min-width:768px) {
         
         .banner__inner-container{        
             flex-direction: row;
-        }   
-
-        .hide--image{
-            display: block;
-        }
+            justify-content: space-between;
+        }  
 
         .banner__text-container{
             padding: 0px 35px;

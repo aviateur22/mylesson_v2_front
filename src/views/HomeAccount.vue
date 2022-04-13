@@ -1,6 +1,6 @@
 <template>
-<div class="home__container">
-    <div class="container">
+<div class="account__main-container">
+    <div class="account__container">
         <!-- titre de la page -->
         <section class="nav__title-container">
             <h2 class="nav__title">bienvenue sur ton compte</h2>
@@ -38,32 +38,37 @@ export default {
                     title: 'mes informations',
                     link: utils.apiDataUrl.infoPage.url,
                     imgPath: '/',
-                    userRole: 1
+                    userRole: 1,
+                    imageName: 'home.png'
                 },
                 
                 {
                     title: 'mes leçons',
                     link: utils.apiDataUrl.userLessonPage.url,
                     imgPath: '/',
-                    userRole: 2
+                    userRole: 2,
+                    imageName: 'lesson.png'
                 },
                 {
                     title: 'nouvelle leçon',
                     link: utils.apiDataUrl.addLessonTypePage.url,
                     imgPath: '/',
-                    userRole: 2
+                    userRole: 2,
+                    imageName: 'newLesson.png'
                 },
                 {
                     title: 'modifier droit d\'utilisateur',
                     link: utils.apiDataUrl.updateUserRolePage,
                     imgPath: '/',
-                    userRole: 3
+                    userRole: 3,
+                    imageName: 'css.png'
                 },
                 {
                     title: 'Reset base de données',
                     link: utils.apiDataUrl.resetDatabasePage,
                     imgPath: '/',
-                    userRole: 4
+                    userRole: 4,
+                    imageName: 'css.png'
                 }
             ]
         };
@@ -73,14 +78,14 @@ export default {
 
 <style scoped>
 
-    .home__container{
+    .account__main-container{
         width: 100%;
         margin-top: var(--navbar_height);   
         min-height: calc(100vh - var(--navbar_height));
     }
 
-    .container{
-        height: 100%;
+    .account__container{
+        min-height: calc(100vh - var(--navbar_height));
         margin: 0px auto;
         display: flex;
         flex-direction: column;
@@ -127,7 +132,7 @@ export default {
             flex-wrap: wrap;           
         }
         
-        .container{        
+        .account__container{        
             width: 768px;                   
             box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
         }
@@ -142,7 +147,7 @@ export default {
             flex-wrap: wrap;           
         }
         
-        .container{        
+        .account__container{        
             width: 1024px;                  
             box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
         }

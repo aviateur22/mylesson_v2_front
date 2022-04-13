@@ -71,7 +71,7 @@ export default {
 
     .cookie__main-container{
         position: fixed;
-        top: 50vh;
+        top: 60vh;
         left: 0px;
         box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
         max-width: 90%;

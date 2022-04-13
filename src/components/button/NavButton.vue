@@ -1,11 +1,11 @@
 <template>
-  <div  v-if="userRole >= data.userRole" class="container">
-      <div class="button__container">     
+  <div  v-if="userRole >= data.userRole" class="navbutton__main-container">
+      <div class="navbutton__container">     
             <div class="button__navlink">
-                <router-link class="button__navlink-item" :to=data.link>   
-                    <div class="nav__navlink-container">
+                <router-link class="navbutton__link" :to=data.link>   
+                    <div class="navbutton__data-container">
                         <h3 class="button__title">{{ data.title }}</h3>
-                        <img class="button__img" src='../../assets/img/css.png' alt="image représentant la catégorie du bouton">                        
+                        <img class="button__img" :src="this.getImg()" alt="image représentant la catégorie du bouton">                        
                     </div>
                 </router-link> 
             </div>                 
@@ -18,6 +18,15 @@
 export default {
     name: 'NavButton',
     props: ['data'],
+    methods: {
+        /** Renvoi l'url de l'image */
+        getImg(){
+            if(this.data.imageName){
+                return require('../../assets/img/' + this.data.imageName);
+            }           
+            return null;
+        }
+    },
     computed: {
         userRole(){
             return this.$store.getters.getUserIdent.roleId;
@@ -28,12 +37,12 @@ export default {
 
 <style scoped>
 
-    .container{
+    .navbutton__main-container{
         margin: 25px 15px;
         background: var(--main_background_color);     
     }
 
-    .button__container{
+    .navbutton__container{
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -41,39 +50,40 @@ export default {
         width:250px;
         border-radius: 5px;
         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        padding: 10px;
     }
 
-    .button__navlink-item{
+    .navbutton__link{
         text-decoration: none;
     }
 
-    .button__title{
-        
+    .navbutton__data-container{
+        height: 200px;
+        overflow: hidden;
+        padding: 30px;        
+    }
+
+    .button__title{        
         text-transform: uppercase;
         font-size: 0.9rem;
         font-weight: 600;
         color: rgb(94, 94, 94);
         padding: 10px 0px;
     }
-
-    .button__section-img{
-        display: flex;
-        align-items: center;
-        justify-content: center;       
-    }
     
     .button__img{
+        height: 100%;
         object-fit: cover;
     }
 
     @media screen and (min-width:560px) {
-        .container{
+        .navbutton__main-container{
             margin: 10px 10px;
             background: var(--main_background_color);
             width:calc( 50% - 20px);
         }
 
-        .button__container{
+        .navbutton__container{
             display: flex;
             flex-direction: column;
             align-items:stretch;
