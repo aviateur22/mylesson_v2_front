@@ -64,6 +64,7 @@ export default {
         border-radius: 10px;
         padding-left: 5px;
         margin-right: 5px;
+        outline: none;
     }
 
     .form__button-toggle{

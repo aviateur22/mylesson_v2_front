@@ -134,7 +134,8 @@ export default {
         border:0.5px solid var(--main_color); 
         border-radius: 10px;
         padding-left: 5px;
-        text-decoration: none;
+        text-decoration: none;        
+        outline: none;
     }
 
     .nav__navlink{
