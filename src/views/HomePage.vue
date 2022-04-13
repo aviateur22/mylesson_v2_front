@@ -1,6 +1,7 @@
 <template>
   <div class="home__container">
-        <div class="main__container-home">
+        <div class="main__container-home">    
+            <BannerComponent/>
             <section class="tag__section">
                 <div class="tag__main-container">
                     <div class="tag__container">
@@ -21,11 +22,13 @@
 import MarkdownTag from '../components/TagLesson/MarkdownTag.vue';
 import Footer from '../components/footer/Footer.vue';
 import LessonButtonContainer from '../components/lessonButtonContainer/ButtonLessonContainer.vue';
+import BannerComponent from '../components/banner/HomeBanner.vue';
 export default {
     components: {
         MarkdownTag,
         Footer,
-        LessonButtonContainer
+        LessonButtonContainer,
+        BannerComponent
     },
     data() {
         return {                   
