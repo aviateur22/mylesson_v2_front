@@ -254,6 +254,7 @@ export default {
         flex-direction: column;   
         width: 100%;    
         min-height: calc(100vh - var(--navbar_height));
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     }
 
     .markdown__title-container{        
@@ -277,8 +278,7 @@ export default {
         display: flex;
         width: 100%;
         flex-direction: row;
-        height: 100%;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        height: 100%;        
     }
 
     .markdown__editor{
@@ -340,7 +340,7 @@ export default {
     }
 
     .markdow__html{
-        max-width: 768px;
+        max-width: 1024px;
         width: 100%;
     }
 
@@ -363,16 +363,8 @@ export default {
     }
 
     @media screen and (min-width:1024px) {         
-         .markdown__editor-container{
-            width: 100%;
-        }
-
         .markdown__container{
-            align-items: center;
-        }
-
-        .markdown__editor{
-            min-width: 768px; 
+            width: 1024px; 
         }
 }
 </style>
