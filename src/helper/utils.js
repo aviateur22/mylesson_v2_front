@@ -3,8 +3,8 @@
  * Donnée API
  */
 const utils = {
-    //baseUri: 'https://mylessonapp.herokuapp.com',
-    baseUri: 'http://localhost:3000',
+    baseUri: 'https://mylessonapp.herokuapp.com',
+    //baseUri: 'http://localhost:3000',
 
     /** utilisateurs */
     userApi: {        
