@@ -151,6 +151,17 @@ const routes = [
             return import(/* webpackChunkName: "about" */ '../views/FooterArticlePage.vue');
         }
     },
+    /**Page admin gérer les demande des utilisateurs */
+    {
+        path: utils.apiDataUrl.updateUserRolePage.url,
+        name: utils.apiDataUrl.updateUserRolePage.pathName,
+        meta: {
+            requiresAdminPrivilege: true
+        },
+        component: function() {
+            return import(/* webpackChunkName: "about" */ '../views/adminPage/userUpgradeRoleRequestPage.vue');
+        }
+    },
     {
         path: '/:pathMatch(.*)*',
         name: '404',        
@@ -181,7 +192,32 @@ router.beforeEach((to, from, next) => {
                 error: true,
                 message: 'Vous devez être connecté pour acceder à cette page'
             });                   
-        next({name: 'Login'});    
+        next({name: 'Login'});
+    /** page avec admin privilege */                
+    } else if(to.matched.some(record=>record.meta.requiresAdminPrivilege)){
+        //verification privilege 
+        if(!store.getters.getUserIdent.userAuthenticated){             
+            store.commit('setFlashMessageMut',
+                {
+                    visibility: true,
+                    error: true,
+                    message: 'Vous devez être connecté pour acceder à cette page'
+                });                   
+            return next({name: 'Login'});
+        }
+
+        //verification privilege 
+        if(store.getters.getUserIdent.roleId < 3){             
+            store.commit('setFlashMessageMut',
+                {
+                    visibility: true,
+                    error: true,
+                    message: 'Vous ne pouvez pas accéder a cette page'
+                });                   
+            return next({name: 'HomePage'});
+        }
+
+        return next();
     } else if(to.matched.some(record => record.meta.requiresUnauthenticated)){
         if(store.getters.getUserIdent.userAuthenticated){
             store.commit('setFlashMessageMut',

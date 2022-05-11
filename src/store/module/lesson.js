@@ -86,6 +86,7 @@ const actions = {
 
         /**Requete ok */
         commit('setLesson', { 
+            id: getLesson.id,
             title: getLesson.title,
             markdownText: getLesson.content,
             htmlOutput: markdownHandler.getHtml(getLesson.content),
@@ -96,7 +97,8 @@ const actions = {
             avatarKey: getLesson.avatarKey,
             created: getLesson.created,
             updated: getLesson.updated,
-            lessonImageUrl: getLesson.lessonImageUrl
+            lessonImageUrl: getLesson.lessonImageUrl,
+            adminRequest: getLesson.adminRequest
         });
     },
 
@@ -368,6 +370,29 @@ const actions = {
         const filterLesson = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: {tags: tags}});
 
         return filterLesson;
+    },
+
+    async adminRequest({getters, dispatch, commit}){
+        /** id de l'utilisateur */     
+        const lessonId = getters.getLessonEditor.id;
+
+        if(isNaN(lessonId)){
+            throw new Error('identifiant lecon manquant');
+        }
+
+        /** endpoint de la requete*/
+        const endPoint = utils.lessonApi.adminRequest.endPoint.replace(':lessonId', getters.getLessonEditor.id);
+
+        /** methode de la requete */
+        const method = utils.lessonApi.adminRequest.method;
+
+        const request = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method}); 
+        
+        if(!request){
+            return;
+        }
+
+        commit('setFlashMessageMut', { error: false, message: 'demande enregistrée'});
     },
 
     /**

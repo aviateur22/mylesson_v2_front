@@ -23,7 +23,10 @@
           </div>
           <div class="lesson__body">
               <ContentComponent/>
-          </div>          
+          </div>  
+          <footer>
+              <AdminRequest/>
+           </footer>        
       </div>
   </div>
 </template>
@@ -36,6 +39,7 @@ import TagsComponent from '../components/lessonRead/TagContainer.vue';
 import ContentComponent from '../components/lessonRead/Content.vue';
 import MediaLinkComponent from '../components/lessonRead/MediaLinkContainer.vue';
 import ImageLessonComponent from '../components/lessonRead/ImageLesson.vue';
+import AdminRequest from '../components/lessonRead/RequestAdminCheck.vue';
 export default {
     name: 'lessonRead',
     data(){
@@ -50,7 +54,8 @@ export default {
         ContentComponent,
         TitleComponent,
         MediaLinkComponent,
-        ImageLessonComponent
+        ImageLessonComponent,
+        AdminRequest
     },
     methods: {
         /** récuperation lecon par slug */

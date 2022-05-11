@@ -58,7 +58,7 @@ export default {
                 },
                 {
                     title: 'modifier droit d\'utilisateur',
-                    link: utils.apiDataUrl.updateUserRolePage,
+                    link: utils.apiDataUrl.updateUserRolePage.url,
                     imgPath: '/',
                     userRole: 3,
                     imageName: 'css.png'

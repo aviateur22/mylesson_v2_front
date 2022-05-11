@@ -281,6 +281,42 @@ const actions = {
         commit('setFlashMessageMut', { error: false, message: 'votre mot de passe est modifié'});
     },
 
+    async requestUserUpgrade({getters, dispatch, commit}, data){
+        /** id de l'utilisateur */
+        const userId = getters.getUserIdent.id;
+
+        /** id utilisateur manuqant */
+        if(!userId){
+            throw new Error('identifiant utilisateur manquant');
+        }        
+
+        /** id utilsateur faux */
+        if(isNaN(userId, 10)){
+            throw new Error('identifiant utilisateur incorrect');
+        }
+
+        /** endpoint de la requete*/
+        const endPoint = utils.userApi.requestUpgradeUserRole.endPoint.replace(':userId', userId);
+
+        /** methode de la requete */
+        const method = utils.userApi.requestUpgradeUserRole.method;
+
+        /** requete */
+        console.log(data)
+        const requestUserUpgrade = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData });
+
+        /** echec de la mise a jour */
+        if(!requestUserUpgrade){
+            return;
+        }
+
+        /** Mise a jour des données */
+        commit('setUserProfilData', requestUserUpgrade);
+
+        /**Requete ok - succes de la demande */        
+        commit('setFlashMessageMut', { error: false, message: 'vote demande est prise en compte'});
+    },
+
     /*
      * Deconnexion
      */

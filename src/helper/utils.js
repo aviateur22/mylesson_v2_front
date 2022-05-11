@@ -3,8 +3,8 @@
  * Donnée API
  */
 const utils = {
-    baseUri: 'https://mylessonapp.herokuapp.com',
-    //baseUri: 'http://localhost:3000',
+    //baseUri: 'https://mylessonapp.herokuapp.com',
+    baseUri: 'http://localhost:3000',
 
     /** utilisateurs */
     userApi: {        
@@ -18,7 +18,15 @@ const utils = {
         getAllUser: { endPoint: '/api/users', method: 'get' },
         getAvatarByKey: {endPoint: '/api/users/image/:key', method: 'get'},
         getAutorAvatarByKey: {endPoint: '/api/users/image/autor/:key', method: 'get'},   
-        updateImageByUserId: {endPoint: '/api/users/image/:userId', method: 'patch'}    
+        updateImageByUserId: {endPoint: '/api/users/image/:userId', method: 'patch'},
+        requestUpgradeUserRole: {endPoint: 'api/users/request-upgrade-privilege/:userId', method: 'post'}
+
+    },
+    /**admin */
+    adminApi: {
+        getUsersUpgradeRoleRequest: { endPoint: '/api/admin/upgrade-request', method: 'get'},
+        updateUserRole: { endPoint: '/api/admin/upgrade-user/:userId', method: 'patch'},
+        deleteContent: { endPoint: '', method: ''}
     },
     /** lessons */
     lessonApi: {
@@ -31,6 +39,7 @@ const utils = {
         getAllLesson: { endPoint: '/api/lessons', method: 'get' },
         getLessonByTag: { endPoint: '/api/lessons/filter/tags', method: 'post' },   
         getLessonBySlug: { endPoint: '/api/lessons/slug/:slug', method: 'get' },   
+        adminRequest: { endPoint: '/api/lessons/admin-request/:lessonId', method: 'get'}
     },
     /**tags */
     tagApi: {
@@ -88,6 +97,9 @@ const utils = {
         /** page pour le chargement des articles du footer */
         footerArticle: { url: '/information/:slug', pathName: 'FooterArticlePage'},
 
+        /** page pour afficher les utilisateurs voulant devenir éditeur de lecons */
+        updateUserRolePage: { url: '/admin/users-upgrade-request', pathName: 'UsersRoleUpgradeRequest'},
+
         /** article static footer - ma presentation */
         abouteMe: { slug: 'about-me' },
 
@@ -112,8 +124,8 @@ const utils = {
         /** page 404 */
         notFound: { url: '/:pathMatch(.*)*', pathName: '404'},
 
-        uploadFilePage: '/users/editor/upload/lesson-file',
-        updateUserRolePage: '/users/admin/update-user-role',
+        uploadFilePage: '/users/editor/upload/lesson-file',       
+        
         resetDatabasePage: '/users/super-admin/reset-database',
         deleteAccountPage: '/users/delete-account',
         resetPasswordPage: '/reset-password',

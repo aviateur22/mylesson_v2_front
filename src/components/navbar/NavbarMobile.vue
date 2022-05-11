@@ -38,7 +38,7 @@
                             </li>
                             <!-- role admin et super admin -->
                             <li v-if="userRole >= 3" class="nav__navlink">
-                                <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.updateUserRolePage>modifier droit d\'utilisateur</router-link>
+                                <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.updateUserRolePage.url>modifier droit d\'utilisateur</router-link>
                             </li>
                             <li v-if="userRole >= 4" class="nav__navlink">
                                 <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.resetDatabasePage>reset base de données</router-link>

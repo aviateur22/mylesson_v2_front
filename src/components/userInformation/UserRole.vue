@@ -10,7 +10,13 @@
         </div>   
         <!-- upgrade du status -->
         <div v-if="this.getUserRole <= 1" class="upgrade__container">
-            <SubmitButton textSubmitButton="devenir éditeur de leçons"/>
+            <div class="form__button-container">
+                <SubmitButton :disableLoginButton="this.requestUpgradeRole" @click="requestUpgrade" textSubmitButton="devenir éditeur de leçons"/>
+            </div>
+            <div v-if="this.requestUpgradeRole === true">
+                <p class="role__upgrade-text"> votre demande est prise en compte </p>
+
+            </div>
         </div>                   
     </section>
 </template>
@@ -21,6 +27,26 @@ export default {
     name: 'userRole',
     components: {
         SubmitButton
+    },
+    data(){
+        return {
+          
+        };
+    },
+    methods: {
+        /**demande pour éditer des lecons */
+        async requestUpgrade(){
+            /** formdata pour le formulaire */
+            const data = new FormData();
+
+            /** ajout du token */
+            data.append('formToken', this.$store.getters.getUserProfilData.token);
+
+            const formData = Object.fromEntries(data.entries());  
+            console.log(this.$store.getters.getUserProfilData.token)
+            const request = await this.$store.dispatch('actionHandler', { action: 'requestUserUpgrade', formData });
+        }
+
     },
     computed: {
         /**role utilisateur */
@@ -38,6 +64,13 @@ export default {
             case 4: return 'superAdmin';
             default: return 'utilisateur';
             }
+        },
+        
+        /**
+         * status demande upgrade privilge utilisateur
+         */
+        requestUpgradeRole() {
+            return this.$store.getters.getUserProfilData.requestRoleUpgrade
         }
     }
 };
@@ -89,6 +122,19 @@ export default {
 
     .role__text-strong{
         font-weight: 700;
+    }
+
+    .form__button-container{
+     padding-top: 20px;
+    }
+
+    .role__upgrade-text{
+        padding-top: 1em;
+        color: green;
+        font-size: var(--text_button_size);
+        text-transform: uppercase;
+        font-weight: 800;
+        letter-spacing: 2px;
     }
 
 </style>
