@@ -57,11 +57,18 @@ export default {
                     imageName: 'newLesson.png'
                 },
                 {
-                    title: 'modifier droit d\'utilisateur',
+                    title: 'demande pour devenir éditeur',
                     link: utils.apiDataUrl.updateUserRolePage.url,
                     imgPath: '/',
                     userRole: 3,
-                    imageName: 'css.png'
+                    imageName: 'magic.png'
+                },
+                {
+                    title: 'leçons ayant un contenu abusif',
+                    link: utils.apiDataUrl.lessonCheckPage.url,
+                    imgPath: '/',
+                    userRole: 3,
+                    imageName: 'glasses.png'
                 },
                 {
                     title: 'Reset base de données',

@@ -26,7 +26,10 @@ const utils = {
     adminApi: {
         getUsersUpgradeRoleRequest: { endPoint: '/api/admin/upgrade-request', method: 'get'},
         updateUserRole: { endPoint: '/api/admin/upgrade-user/:userId', method: 'patch'},
-        deleteContent: { endPoint: '', method: ''}
+        removeUserPrivilegeByUserLogin: { endPoint: '/api/admin/remove-privilege/:userLogin', method: 'post'},        
+        getAbusiveLesson: { endPoint: '/api/admin/abusive-content', method: 'get'},
+        deleteUserByLogin: { endPoint: '/api/admin/delete-user/:userLogin', method: 'post'},
+        deleteContent: { endPoint: '', method: ''},
     },
     /** lessons */
     lessonApi: {
@@ -39,7 +42,7 @@ const utils = {
         getAllLesson: { endPoint: '/api/lessons', method: 'get' },
         getLessonByTag: { endPoint: '/api/lessons/filter/tags', method: 'post' },   
         getLessonBySlug: { endPoint: '/api/lessons/slug/:slug', method: 'get' },   
-        adminRequest: { endPoint: '/api/lessons/admin-request/:lessonId', method: 'get'}
+        adminRequest: { endPoint: '/api/lessons/admin-request/:lessonId', method: 'post'}
     },
     /**tags */
     tagApi: {
@@ -99,6 +102,9 @@ const utils = {
 
         /** page pour afficher les utilisateurs voulant devenir éditeur de lecons */
         updateUserRolePage: { url: '/admin/users-upgrade-request', pathName: 'UsersRoleUpgradeRequest'},
+
+        /** avec lecon a checker par un admin */
+        lessonCheckPage: { url: '/admin/check-lesson', pathName: 'LessonCheckPage'},
 
         /** article static footer - ma presentation */
         abouteMe: { slug: 'about-me' },

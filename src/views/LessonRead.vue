@@ -24,9 +24,10 @@
           <div class="lesson__body">
               <ContentComponent/>
           </div>  
-          <footer>
-              <AdminRequest/>
-           </footer>        
+          <!-- panel admin de la lecon -->
+          <div class="lesson__admin-panel">
+              <AdminPanelComponent/>
+           </div> 
       </div>
   </div>
 </template>
@@ -39,7 +40,7 @@ import TagsComponent from '../components/lessonRead/TagContainer.vue';
 import ContentComponent from '../components/lessonRead/Content.vue';
 import MediaLinkComponent from '../components/lessonRead/MediaLinkContainer.vue';
 import ImageLessonComponent from '../components/lessonRead/ImageLesson.vue';
-import AdminRequest from '../components/lessonRead/RequestAdminCheck.vue';
+import AdminPanelComponent from '../components/lessonRead/adminPanel/ContainerPanel.vue'
 export default {
     name: 'lessonRead',
     data(){
@@ -55,7 +56,7 @@ export default {
         TitleComponent,
         MediaLinkComponent,
         ImageLessonComponent,
-        AdminRequest
+        AdminPanelComponent
     },
     methods: {
         /** récuperation lecon par slug */

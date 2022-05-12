@@ -156,10 +156,23 @@ const routes = [
         path: utils.apiDataUrl.updateUserRolePage.url,
         name: utils.apiDataUrl.updateUserRolePage.pathName,
         meta: {
+            title: 'my lesson | ajout de privilège',
             requiresAdminPrivilege: true
         },
         component: function() {
             return import(/* webpackChunkName: "about" */ '../views/adminPage/userUpgradeRoleRequestPage.vue');
+        }
+    },
+    /** Page pour voirs les contenu des lecon abusif */
+    {
+        path: utils.apiDataUrl.lessonCheckPage.url,
+        name: utils.apiDataUrl.lessonCheckPage.pathName,
+        meta: {
+            title: 'my lesson | vérification des leçons',
+            requiresAdminPrivilege: true
+        },
+        component: function() {
+            return import(/* webpackChunkName: "about" */ '../views/adminPage/LessonCheckPage.vue');
         }
     },
     {

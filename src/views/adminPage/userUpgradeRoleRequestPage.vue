@@ -6,7 +6,7 @@
             </header>            
             <main class="article__main">
                 <section class="article__section" v-if="this.users.length>0">
-                   <UserRequestComponent @updateUserArray=this.updateUserArray v-for="(user, i) in users" :key="i" :data="user"/>
+                   <UserRequestComponent @updateUserArray=this.updateUserArray v-for="(user, i) in users" :key="i" :data="user" :token="token"/>
                 </section>
                 <section class="article__section" v-else>
                    <p> Aucun utilisateur en attente </p>
@@ -28,6 +28,7 @@ export default {
     data() {
         return {
             users: [],
+            token: undefined
         };
     },
     methods: {
@@ -40,11 +41,21 @@ export default {
         /** Mise a jour des données utilisateur */
         updateUserArray(id){
             this.getAllUserRequest();
+        },
+
+        /** recupération d'un token pour la soumission de la demande */
+        async getToken(){
+            const token = await this.$store.dispatch('actionHandler', {action: 'getTokenForm'});     
+            this.token = token.token;                   
         }
     },
 
     created(){
+        /** recupération de la liste des utilisateurs */
         this.getAllUserRequest();
+
+        /** generation d'un token */
+        this.getToken();
     }
 };
 </script>

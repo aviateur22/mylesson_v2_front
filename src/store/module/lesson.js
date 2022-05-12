@@ -372,27 +372,31 @@ const actions = {
         return filterLesson;
     },
 
-    async adminRequest({getters, dispatch, commit}){
+    async adminRequest({getters, dispatch, commit}, data){
         /** id de l'utilisateur */     
         const lessonId = getters.getLessonEditor.id;
 
         if(isNaN(lessonId)){
-            throw new Error('identifiant lecon manquant');
+            throw new Error('identifiant de la leçon manquant');
         }
-
+        
         /** endpoint de la requete*/
-        const endPoint = utils.lessonApi.adminRequest.endPoint.replace(':lessonId', getters.getLessonEditor.id);
+        const endPoint = utils.lessonApi.adminRequest.endPoint.replace(':lessonId', lessonId);
 
         /** methode de la requete */
         const method = utils.lessonApi.adminRequest.method;
 
-        const request = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method}); 
+        const request = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData}); 
         
         if(!request){
             return;
         }
-
-        commit('setFlashMessageMut', { error: false, message: 'demande enregistrée'});
+        
+        if(request.adminRequest){
+            return commit('setFlashMessageMut', { error: false, message: 'le signalement du contenu est enregistré'});
+        } else {
+            return commit('setFlashMessageMut', { error: false, message: 'annulation du signalement pour ce contenu'});
+        }            
     },
 
     /**

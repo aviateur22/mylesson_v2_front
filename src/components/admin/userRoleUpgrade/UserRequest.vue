@@ -11,7 +11,7 @@
                 </p>                
         </header>
         <main class="article__main">        
-            <SubmitButton @click="updateUserRole" :textSubmitButton="'permettre l\'édition de contenu'"/>
+            <SubmitButton @click="updateUserRole" :textSubmitButton="'donner les droits d\'édition'"/>
         </main>
     </article>
   </div>
@@ -25,7 +25,7 @@ export default {
     components: {
         SubmitButton        
     },
-    props: ['data'],
+    props: ['data', 'token'],
     data(){
         return {
             /** affiche de l'image avatar */
@@ -35,7 +35,12 @@ export default {
     methods: {
         /**Mise a jour du role utilisateur */
         async updateUserRole(){
-            await this.$store.dispatch('actionHandler', { action: 'updateUserRole', userId: this.data.id });
+            const formData = new FormData();
+
+            /**ajout du token */
+            formData.append('formToken', this.token);
+
+            await this.$store.dispatch('actionHandler', { action: 'updateUserRole', userId: this.data.id, formData: Object.fromEntries(formData.entries()) });
             /** mise a jour des données */
             this.$emit('updateUserArray', this.data.id);
         }

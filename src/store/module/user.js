@@ -281,6 +281,14 @@ const actions = {
         commit('setFlashMessageMut', { error: false, message: 'votre mot de passe est modifié'});
     },
 
+    /**
+     * demande pour pouvoir éditer du contenu
+     * @property {Object} param.dispatch - action
+     * @property {Object} param.getters - getter
+     * @property {Object} param.commit - mutation
+     * @param {Object} data 
+     * @returns 
+     */
     async requestUserUpgrade({getters, dispatch, commit}, data){
         /** id de l'utilisateur */
         const userId = getters.getUserIdent.id;
@@ -302,7 +310,6 @@ const actions = {
         const method = utils.userApi.requestUpgradeUserRole.method;
 
         /** requete */
-        console.log(data)
         const requestUserUpgrade = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData });
 
         /** echec de la mise a jour */

@@ -1,7 +1,7 @@
 <template>
     <div class="autor__container">    
-         <!-- conteneur image -->
-        <div class="autor__image-container">
+         <!-- conteneur image -->                  
+        <div v-if="user != undefined" class="autor__image-container">
             <img class="autor__image" :src="imageSrc" alt="image du créateur de le leçon">
         </div>
         <!-- conteneur description -->
@@ -41,7 +41,11 @@ export default {
 
         /** image de l'autor */
         imageSrc(){
-            return utils.baseUri + utils.userApi.getAutorAvatarByKey.endPoint.replace(':key', this.user.avatarKey);
+            /** renvoie l'image uniquemenent quand les données sont présente */
+            if(this.user.avatarKey){
+                return utils.baseUri + utils.userApi.getAutorAvatarByKey.endPoint.replace(':key', this.user.avatarKey);
+            } 
+            return null;    
         }
     }
 };
