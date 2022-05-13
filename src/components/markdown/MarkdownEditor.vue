@@ -57,9 +57,9 @@ export default {
     props: ['registerAction', 'submitFormValue'],    
     data(){
         return {           
-            lessonName: null,
+            lessonName: undefined,
             lessonSummary: null,
-            lessonThematic: '',
+            lessonThematic: undefined,
             lessonMarkdown: null,
             markdownHandler: new MarkdownHandler()
         };
@@ -100,36 +100,81 @@ export default {
             //passe le status  de sauvegarde à false
             this.$store.commit('setLessonSaveStatus', false);
         },
+        
+        /** récupération du contenu initilae */
+        initialData(){
+            //titre
+            this.lessonName = this.$store.getters.getLessonEditor.title;
 
-        /**
-         * initilalisation du formulaire pour le chargement d'une leçon 
-         */
-        formLessonLoad(){
-            /**chargement des données si id de present*/
-            if(this.$store.getters.getLessonEditor.id){     
-                this.lessonName = this.$store.getters.getLessonEditor.title;
-                this.lessonMarkdown = this.$store.getters.getLessonEditor.markdownText;           
-                this.$refs.inputTitle.value = this.$store.getters.getLessonEditor.title;
-                this.$refs.textarea.value = this.$store.getters.getLessonEditor.markdownText;
-                this.lessonSummary = this.$store.getters.getLessonEditor.summary;
-                this.lessonThematic = this.$store.getters.getLessonEditor.thematic.id;
+            //résumé
+            this.lessonSummary = this.$store.getters.getLessonEditor.summary;
+
+            //markdown
+            this.lessonMarkdown = this.$store.getters.getLessonEditor.markdownText;
+
+            //thématique
+            if(this.$store.getters.getLessonEditor?.thematic?.id){
+                this.lessonThematic = this.$store.getters.getLessonEditor.thematic.id;    
             }
         }
+
     },
     computed: {
         /**
          * thématiques de disponible
          */
-        thematics(){            
+        thematics(){                 
             return this.$store.getters.getThematics.thematics;
+        },
+
+        /**
+         * nom de le lecon
+         */
+        lessonNameStore(){
+            return this.$store.getters.getLessonEditor.title;
+        },
+
+        /** markdown */
+        lessonMarkdownStore(){            
+            return this.$store.getters.getLessonEditor.markdownText;
+        },
+
+        /** résumé lecon */
+        lessonSummaryStore(){
+            return this.$store.getters.getLessonEditor.summary;
+        },
+
+        /**
+         * thématique
+         */
+        lessonThematicStore(){
+            if(this.$store.getters.getLessonEditor?.thematic?.id){
+                return this.$store.getters.getLessonEditor.thematic.id;    
+            }
+            return null;
+        }
+    },
+    /**mise a jour */
+    watch: {
+        lessonNameStore: function(newValue, oldValue){
+            this.lessonName = newValue;
+        },
+
+        lessonThematicStore: function(newValue, oldValue) {
+            this.lessonThematic = newValue;
+        },
+
+        lessonSummaryStore: function(newValue, oldValue){
+            this.lessonSummary = newValue;
+        },
+
+        lessonMarkdownStore: function(newValue, oldValue){
+            this.lessonMarkdown = newValue
         }
 
     },
     mounted(){
-        /**
-         * initilalisation formulaire pour un update 
-         */
-        this.formLessonLoad();
+        this.initialData();
     }
 };
 </script>

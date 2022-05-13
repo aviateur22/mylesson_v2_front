@@ -98,7 +98,8 @@ const actions = {
             created: getLesson.created,
             updated: getLesson.updated,
             lessonImageUrl: getLesson.lessonImageUrl,
-            adminRequest: getLesson.adminRequest
+            adminRequest: getLesson.adminRequest,
+            slug: getLesson.slug
         });
     },
 
@@ -132,7 +133,7 @@ const actions = {
         
         /** Markdown pour le html */
         const markdownHandler = new MarkdownHandler();
-
+        
         /**Requete ok */
         commit('setLesson', {            
             id: lessonId,
@@ -149,13 +150,14 @@ const actions = {
             created: getLesson.created,
             updated: getLesson.updated,
             lessonImageUrl: getLesson.lessonImageUrl,
-            token: getLesson.token
+            token: getLesson.token,
+            slug: getLesson.slug
         });   
 
         /** update de la liste des tags */        
         const tags = getters.getLessonEditor.tags;
         commit('setSelectionTag', tags);     
-        router.push({name: 'UpdateLesson', params: {slug: getLesson.slug}});  
+        router.push({name: 'UpdateLesson', params: {slug: getLesson.slug}});         
     },
     
     /**
@@ -245,6 +247,8 @@ const actions = {
             created: updateLesson.created,
             updated: updateLesson.updated,
             token: updateLesson.token,
+            summary: updateLesson.summary,
+            thematic: updateLesson.thematic
         });            
 
         commit('setFlashMessageMut', { error: false, message: 'enregistrement ok'});

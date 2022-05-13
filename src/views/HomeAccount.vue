@@ -61,14 +61,17 @@ export default {
                     link: utils.apiDataUrl.updateUserRolePage.url,
                     imgPath: '/',
                     userRole: 3,
-                    imageName: 'magic.png'
+                    imageName: 'magic.png',
+                    checkData: 'upgradeUserPrivilege'
+
                 },
                 {
                     title: 'leçons ayant un contenu abusif',
                     link: utils.apiDataUrl.lessonCheckPage.url,
                     imgPath: '/',
                     userRole: 3,
-                    imageName: 'glasses.png'
+                    imageName: 'glasses.png',
+                    checkData: 'lessonAbusiveContent'
                 },
                 {
                     title: 'Reset base de données',

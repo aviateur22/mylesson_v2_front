@@ -43,8 +43,8 @@ export default {
             data.append('formToken', this.$store.getters.getUserProfilData.token);
 
             const formData = Object.fromEntries(data.entries());  
-            console.log(this.$store.getters.getUserProfilData.token)
-            const request = await this.$store.dispatch('actionHandler', { action: 'requestUserUpgrade', formData });
+            /**demande d'édition */
+            await this.$store.dispatch('actionHandler', { action: 'requestUserUpgrade', formData });
         }
 
     },

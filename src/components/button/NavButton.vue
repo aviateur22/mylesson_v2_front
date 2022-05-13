@@ -1,6 +1,6 @@
 <template>
-  <div  v-if="userRole >= data.userRole" class="navbutton__main-container">
-      <div class="navbutton__container">     
+  <div  v-if="userRole >= data.userRole" class="navbutton__main-container" >
+      <div class="navbutton__container" :class="{flash: actif}">     
             <div class="button__navlink">
                 <router-link class="navbutton__link" :to=data.link>   
                     <div class="navbutton__data-container">                        
@@ -17,9 +17,15 @@
 </template>
 
 <script>
+import utils from '../../helper/utils';
 export default {
     name: 'NavButton',
     props: ['data'],
+    data(){
+        return {
+            actif: false
+        };
+    },
     methods: {
         /** Renvoi l'url de l'image */
         getImg(){
@@ -27,12 +33,50 @@ export default {
                 return require('../../assets/img/' + this.data.imageName);
             }           
             return null;
+        },
+
+        /** récuperation des utilisateurs voulant éditer des lecon */
+        async getAllUserRequest(){
+            /** données de la requete */
+            const endPoint = utils.adminApi.upgradeRequestCount.endPoint;
+            const method = utils.adminApi.upgradeRequestCount.method;
+
+            const data = await this.$store.dispatch('actionHandler', {action: 'countData', endPoint, method});
+           
+            /** mise en action  */
+            if(data > 0){
+                this.actif = true;
+            }
+        },
+
+        /** récuperation des contenu abusif */
+        async getAllAbusiveContent(){
+            /** données de la requete */
+            const endPoint = utils.adminApi.abusiveContentCount.endPoint;
+            const method = utils.adminApi.abusiveContentCount.method;
+
+            const data = await this.$store.dispatch('actionHandler', {action: 'countData', endPoint, method});
+            
+            /** mise en action  */
+            if(data > 0){
+                this.actif = true;
+            }
         }
     },
     computed: {
         userRole(){
             return this.$store.getters.getUserIdent.roleId;
         }
+    },
+    created(){
+        /**vérification contenu des lessons et utilisateur */
+        if(this.data.checkData && this.userRole >= this.data.userRole){
+            switch (this.data.checkData){
+            case 'upgradeUserPrivilege': this.getAllUserRequest(); break;
+            case 'lessonAbusiveContent':this.getAllAbusiveContent(); break;
+            default :break;
+            }
+        }        
     }
 };
 </script>
@@ -81,6 +125,18 @@ export default {
     .navbutton__image{  
         width: 100px;
         object-fit: scale-down;
+    }
+
+    .flash{
+        animation: flashingButton 3s infinite linear;        
+    }
+
+    @keyframes flashingButton {
+        0% { background: #c2c2c2; border: 2px solid #c2c2c2; }
+        25% { background: #eeeeee; border: 2px solid #eeeeee; }
+        50% { background: #f4faf9; border: 2px solid #f4faf9; }
+        75% { background: #dbdbdb; border: 2px solid #dbdbdb; }
+        100% { background: #c2c2c2; border: 2px solid #c2c2c2; }
     }
 
     @media screen and (min-width:560px) {

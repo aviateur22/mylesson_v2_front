@@ -47,9 +47,13 @@ const actions = {
         if(!updateRole){            
             return;
         }
-
-        /**Requete ok - succes de la demande */        
-        return commit('setFlashMessageMut', { error: false, message: 'Profile utilisateur mis a jour'});
+        
+        /**Requete ok - succes de la demande */     
+        if(updateRole.value === 'true'){
+            return commit('setFlashMessageMut', { error: false, message: 'Droits d\'édition accordés'});
+        } else {
+            return commit('setFlashMessageMut', { error: false, message: 'Droits d\'édition refusés'});
+        }          
     },
 
     /**
@@ -163,6 +167,25 @@ const actions = {
         const lessons = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method });
         
         return lessons;
+    },
+
+    /**
+     * renvoie le nombre d'enregistrement
+     * @param {*} param0 
+     * @param {*} data 
+     * @returns 
+     */
+    async countData({dispatch}, data){
+        /** endpoint de la requete*/
+        const endPoint = data.endPoint;
+        
+        /** methode de la requete */
+        const method = data.method;
+
+        /** récupération des lecons abudifs*/
+        const count = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method });
+
+        return count;
     }
 };
 

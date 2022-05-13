@@ -29,6 +29,8 @@ const utils = {
         removeUserPrivilegeByUserLogin: { endPoint: '/api/admin/remove-privilege/:userLogin', method: 'post'},        
         getAbusiveLesson: { endPoint: '/api/admin/abusive-content', method: 'get'},
         deleteUserByLogin: { endPoint: '/api/admin/delete-user/:userLogin', method: 'post'},
+        abusiveContentCount: { endPoint: '/api/admin/count/abusive-content', method: 'get' },
+        upgradeRequestCount: { endPoint: '/api/admin/count/upgrade-request', method: 'get' },
         deleteContent: { endPoint: '', method: ''},
     },
     /** lessons */

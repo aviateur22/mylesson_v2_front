@@ -11,7 +11,8 @@
                 </p>                
         </header>
         <main class="article__main">        
-            <SubmitButton @click="updateUserRole" :textSubmitButton="'donner les droits d\'édition'"/>
+            <SubmitButton @click="updateUserRole(true)" :textSubmitButton="'donner les droits d\'édition'"/>
+            <SubmitButton @click="updateUserRole(false)" :textSubmitButton="'refuser la demande'"/>
         </main>
     </article>
   </div>
@@ -34,11 +35,14 @@ export default {
     },
     methods: {
         /**Mise a jour du role utilisateur */
-        async updateUserRole(){
+        async updateUserRole(value){
             const formData = new FormData();
 
             /**ajout du token */
             formData.append('formToken', this.token);
+
+            console.log(value)
+            formData.append('value', value);
 
             await this.$store.dispatch('actionHandler', { action: 'updateUserRole', userId: this.data.id, formData: Object.fromEntries(formData.entries()) });
             /** mise a jour des données */

@@ -48,6 +48,10 @@ export default {
         width: 100%;
         margin-top: var(--navbar_height);   
         min-height: calc(100vh - var(--navbar_height));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
     }
 
     .article__container{
@@ -71,6 +75,21 @@ export default {
 
     .article__main-lesson{
         width: 100%;
+    }
+
+    @media screen and (min-width: 768px) {
+        .article__container{
+            width: 768px;
+             box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        }
+        
+    }
+
+    @media screen and (min-width: 1024px) {
+        .article__container{
+            width: 1024px;
+        }
+        
     }
 
 </style>
