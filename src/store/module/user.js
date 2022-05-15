@@ -68,6 +68,8 @@ const actions = {
             return;
         }
 
+        dispatch('actionHandler', { action: 'countNotificationUnreadByUserId', userId: loginResult.id})       
+
         /**Requete ok - succes de la demande */
         commit('setUserIdent', { userAuthenticated: true, roleId: loginResult.role, id: loginResult.id, email: loginResult.email});            
         commit('setFlashMessageMut', { error: false, message: `Bienvenue ${loginResult.message}`});

@@ -39,12 +39,16 @@ export default {
             const formData = new FormData();
 
             /**ajout du token */
-            formData.append('formToken', this.token);
+            formData.append('formToken', this.token);            
+             
+            /** ajout des droits utilisateurs */ 
+            if(value === true){
+                await this.$store.dispatch('actionHandler', { action: 'updateUserRole', userId: this.data.id, formData: Object.fromEntries(formData.entries()) });
+            } else {
+                /** demande upgrade refusée */ 
+                await this.$store.dispatch('actionHandler', { action: 'removeUserPrivilegeByUserId', userId: this.data.id, formData: Object.fromEntries(formData.entries()) });
+            }    
 
-            console.log(value)
-            formData.append('value', value);
-
-            await this.$store.dispatch('actionHandler', { action: 'updateUserRole', userId: this.data.id, formData: Object.fromEntries(formData.entries()) });
             /** mise a jour des données */
             this.$emit('updateUserArray', this.data.id);
         }

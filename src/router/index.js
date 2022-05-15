@@ -175,6 +175,19 @@ const routes = [
             return import(/* webpackChunkName: "about" */ '../views/adminPage/LessonCheckPage.vue');
         }
     },
+    /**page de notification */
+    {
+        path: utils.apiDataUrl.notificationPage.url,
+        name: utils.apiDataUrl.notificationPage.pathName,
+        meta: {
+            title: 'my lesson | Notifications',
+            requiresAuth: true
+        },
+        component: function() {
+            return import(/* webpackChunkName: "about" */ '../views/NotificationPage.vue');
+        }
+
+    },
     {
         path: '/:pathMatch(.*)*',
         name: '404',        

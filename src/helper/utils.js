@@ -3,8 +3,8 @@
  * Donnée API
  */
 const utils = {
-    baseUri: 'https://mylessonapp.herokuapp.com',
-    //baseUri: 'http://localhost:3000',
+    //baseUri: 'https://mylessonapp.herokuapp.com',
+    baseUri: 'http://localhost:3000',
 
     /** utilisateurs */
     userApi: {        
@@ -26,9 +26,11 @@ const utils = {
     adminApi: {
         getUsersUpgradeRoleRequest: { endPoint: '/api/admin/upgrade-request', method: 'get'},
         updateUserRole: { endPoint: '/api/admin/upgrade-user/:userId', method: 'patch'},
-        removeUserPrivilegeByUserLogin: { endPoint: '/api/admin/remove-privilege/:userLogin', method: 'post'},        
+        removeUserPrivilegeByUserLogin: { endPoint: '/api/admin/remove-privilege/:userLogin', method: 'post'},   
+        removeUserPrivilegeByUserId: { endPoint: '/api/admin/remove-privilege/:userId', method: 'post'},
         getAbusiveLesson: { endPoint: '/api/admin/abusive-content', method: 'get'},
         deleteUserByLogin: { endPoint: '/api/admin/delete-user/:userLogin', method: 'post'},
+        deleteUserById: { endPoint: '/api/admin/delete-user/:userId', method: 'post'},
         abusiveContentCount: { endPoint: '/api/admin/count/abusive-content', method: 'get' },
         upgradeRequestCount: { endPoint: '/api/admin/count/upgrade-request', method: 'get' },
         deleteContent: { endPoint: '', method: ''},
@@ -60,13 +62,20 @@ const utils = {
         getLinkByName: {endPoint: '/api/links/name/:media', method: 'get'},
         saveLinkByUserId: {endPoint: '/api/links/user/:userId', method: 'post'},
         getAllLink: { endPoint: '/api/links/', method: 'get'},
-        deleteLinkByUserId: { endPoint: '/api/links/user/:userId', method: 'delete'}
+        deleteLinkByUserId: { endPoint: '/api/links/user/:userId', method: 'delete'}        
     },
     /** media thematic */
     thematicApi: {
         getAllThematic: {endPoint: '/api/thematics', method: 'get'}
     },
-
+    /** notifications */
+    notificationApi: {
+        createNotification: { endPoint: '/api/notifications', method: 'post'},
+        deleteNotification: { endPoint: '/api/notifications/:notificationId', method: 'delete'},
+        findNotificationByUserId: {endPoint: 'api/notifications/notification-by-user/:userId', method: 'get'},
+        countNotificationByUserId: {endPoint: '/api/notifications/notification-by-user/count/:userId', method: 'get'},
+        readNotificationById: { endPoint: '/api/notifications/read/:notificationId', method: 'patch'}
+    },
     /**liens des path - url pour l'affichage des pages*/
     apiDataUrl: {
         /** page principal - accueil */
@@ -107,6 +116,9 @@ const utils = {
 
         /** avec lecon a checker par un admin */
         lessonCheckPage: { url: '/admin/check-lesson', pathName: 'LessonCheckPage'},
+
+        /** page de notification */
+        notificationPage: { url: '/users/notification', pathName: 'NotificationPage'},
 
         /** article static footer - ma presentation */
         abouteMe: { slug: 'about-me' },

@@ -23,8 +23,16 @@
                         <router-link class="nav__navlink-item" :to="utils.apiDataUrl.signupPage.url">inscription</router-link>
                     </li>
                     <li v-if="authenticated" class="nav__navlink">
-                        <router-link class="nav__navlink-item" :to="utils.apiDataUrl.homeAccountPage.url">Mon compte</router-link>
+                        <router-link class="nav__navlink-item" :to="utils.apiDataUrl.notificationPage.url">
+                            <div class="nav__link-group">
+                                <p class="navlink__text">Notification</p>
+                                <p v-if="notificationCount>0" class="navlink__round">{{notificationCount}}</p>
+                            </div>                            
+                        </router-link>
                     </li>
+                    <li v-if="authenticated" class="nav__navlink">
+                        <router-link class="nav__navlink-item" :to="utils.apiDataUrl.homeAccountPage.url">Mon compte</router-link>
+                    </li>                    
                 </ul>
             </section>
             <section class="nav__burger" v-if="mobileSize && !navbarMobile" @click="toggleNavbarMobile">
@@ -82,6 +90,11 @@ export default {
     computed: {
         authenticated() {
             return this.$store.getters.getUserIdent.userAuthenticated;
+        },  
+
+        /**nombre de nouvelle notification */
+        notificationCount(){
+            return this.$store.getters.getNewNotification;
         }
     },
     mounted() {
@@ -147,6 +160,33 @@ export default {
     text-decoration: none;
     text-transform: uppercase;
     font-size: 0.8rem;
+    display: flex;
+}
+
+.nav__link-group{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navlink__round{
+    position: absolute;
+    bottom: -1.4em;
+    right: -10px;
+    width: 1.3em;
+    height: 1.3em;
+    border-radius: 50%;
+    background: red;
+    color: white;
+    display: flex;
+    align-items: center;    
+    justify-content: center;
+    font-size: 1.0rem;
+    font-weight: bold;
+    border: 0.2px solid lightblue;
+    box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+
 }
 
 /*#region burger menu*/

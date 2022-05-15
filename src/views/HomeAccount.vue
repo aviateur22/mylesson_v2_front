@@ -115,7 +115,7 @@ export default {
     .nav__title{
         text-transform: uppercase;
         font-weight: 700;
-        font-size:1.2rem ;
+        font-size: var(--form_title_size);
         padding:40px 0px
     }
 

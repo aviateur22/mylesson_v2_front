@@ -19,6 +19,7 @@ import lessonPresentation from './module/footerPage/lessonPresentation';
 import markdownPresentation from './module/footerPage/markdownPresentation';
 import thematic from './module/thematic';
 import admin from './module/admin';
+import notification from './module/notification';
 
 export default new Vuex.Store({
     plugins: [createPersistedState({
@@ -43,6 +44,7 @@ export default new Vuex.Store({
         lessonPresentation,
         markdownPresentation,
         thematic,
-        admin
+        admin,
+        notification
     }
 });

@@ -47,13 +47,8 @@ const actions = {
         if(!updateRole){            
             return;
         }
-        
-        /**Requete ok - succes de la demande */     
-        if(updateRole.value === 'true'){
-            return commit('setFlashMessageMut', { error: false, message: 'Droits d\'édition accordés'});
-        } else {
-            return commit('setFlashMessageMut', { error: false, message: 'Droits d\'édition refusés'});
-        }          
+
+        return commit('setFlashMessageMut', { error: false, message: 'Droits d\'édition accordés'});        
     },
 
     /**
@@ -86,6 +81,33 @@ const actions = {
 
         /**Requete ok - succes de la demande */        
         return commit('setFlashMessageMut', { error: false, message: `Les priviléges de ${userLogin} sont supprimées`});
+    },
+
+    async removeUserPrivilegeByUserId({ dispatch, commit}, data){        
+        /** id utilsateur */
+        const userId = data.userId;
+
+        /**controlle de userID */
+        if(!userId || isNaN(userId)){
+            return;
+        }
+
+        /** endpoint de la requete*/
+        const endPoint = utils.adminApi.removeUserPrivilegeByUserId.endPoint.replace(':userId', userId);
+
+        /** methode de la requete */
+        const method = utils.adminApi.removeUserPrivilegeByUserId.method;
+
+        /**reuête pour récupérer les utilisateur */
+        const updateRole = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData});
+
+        /** echec de la requete */
+        if(!updateRole){            
+            return;
+        }
+
+        /**Requete ok - succes de la demande */        
+        return commit('setFlashMessageMut', { error: false, message: 'Droits d\'édition refusés'});
     },
 
     /**
