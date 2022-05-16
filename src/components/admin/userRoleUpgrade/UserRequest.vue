@@ -26,7 +26,7 @@ export default {
     components: {
         SubmitButton        
     },
-    props: ['data', 'token'],
+    props: ['data', 'token', 'index'],
     data(){
         return {
             /** affiche de l'image avatar */
@@ -49,8 +49,8 @@ export default {
                 await this.$store.dispatch('actionHandler', { action: 'removeUserPrivilegeByUserId', userId: this.data.id, formData: Object.fromEntries(formData.entries()) });
             }    
 
-            /** mise a jour des données */
-            this.$emit('updateUserArray', this.data.id);
+            /** mise a jour de la liste utilisateurs en attente  */
+            this.$emit('updateUserArray', this.index);
         }
     }
 };

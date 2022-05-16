@@ -15,12 +15,13 @@ const actions = {
     /**
      * récupération des notifications par id utilisateur
      */
-    async getNotificationByUserId({getters, dispatch}){
+    async getNotificationByUserId({getters, dispatch}, data){
         const userId = getters.getUserIdent.id;
 
         if(!userId || isNaN(userId)){
             return;
-        }
+        }        
+
         /** endpoint de la requete*/
         const endPoint = utils.notificationApi.findNotificationByUserId.endPoint.replace(':userId', userId);
 
@@ -28,7 +29,7 @@ const actions = {
         const method = utils.notificationApi.findNotificationByUserId.method;
 
         /**reuête pour récupérer les notifications */
-        const getNotification = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method });  
+        const getNotification = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData });  
 
         return getNotification;
     },
@@ -50,18 +51,20 @@ const actions = {
         const method = utils.notificationApi.deleteNotification.method;
 
         /**suppression de la notification  */
-        await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: Object.fromEntries(data.formData.entries()) });                  
-        
+        const deleteNotification = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: Object.fromEntries(data.formData.entries()) });                  
+
         /** mise a jour du nombre de notification non lu*/
-        dispatch('actionHandler', { action: 'countNotificationUnreadByUserId', userId: getters.getUserIdent.id});
+        dispatch('actionHandler', { action: 'countNotificationUnreadByUserId', userId: getters.getUserIdent.id, formData: Object.fromEntries(data.formData.entries()) });
         
         commit('setFlashMessageMut', { error: false, message: 'notification supprimée'});
+
+        return deleteNotification;
     },
 
     /**
      * lecture notification
      */
-    async readNotificationById({getters, dispatch, commit}, data){
+    async readNotificationById({getters, dispatch}, data){
         /** notifcation id */
         const notificationId = data.notificationId;
 
@@ -75,29 +78,41 @@ const actions = {
         const method = utils.notificationApi.readNotificationById.method;
 
         /**reuête  */
-        await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: Object.fromEntries(data.formData.entries()) });                  
+        const readNotification = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: Object.fromEntries(data.formData.entries()) });   
         
-        /** mise a jour du nombre de notification non lu*/
-        dispatch('actionHandler', { action: 'countNotificationUnreadByUserId', userId: getters.getUserIdent.id});
+        if(!readNotification){
+            return null;
+        }
+        
+        /** mise a jour du nombre de notification non lu*/        
+        dispatch('actionHandler', { action: 'countNotificationUnreadByUserId', userId: getters.getUserIdent.id, formData: Object.fromEntries(data.formData.entries())});
+
+        return readNotification;
     },
 
     /**
      * compte les notification non lu 
      */
-    async countNotificationUnreadByUserId({dispatch, commit}, data){
-        const userId = data.userId;
+    async countNotificationUnreadByUserId({getters, dispatch, commit}, data){
+        /** récupération userId */    
+        const userId = getters.getUserIdent.id ? getters.getUserIdent.id : data.userId;
 
         if(!userId || isNaN(userId)){
             return;
         }
+        
         /** endpoint de la requete*/
         const endPoint = utils.notificationApi.countNotificationByUserId.endPoint.replace(':userId', userId);
 
         /** methode de la requete */
         const method = utils.notificationApi.countNotificationByUserId.method;
 
-        /**reuête pour récupérer les notifications */
-        const getNotificationCount = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method });          
+        /**reuête pour récupérer le nombre de notifications non lu*/
+        const getNotificationCount = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData});          
+
+        if(!getNotificationCount){
+            return;
+        }
         
         commit('setNewNotification', getNotificationCount.notificationCount);
     }

@@ -6,7 +6,9 @@
             </header>            
             <main class="article__main">
                 <section class="article__section" v-if="this.users.length>0">
-                   <UserRequestComponent @updateUserArray=this.updateUserArray v-for="(user, i) in users" :key="i" :data="user" :token="token"/>
+                    <transition-group name="list">
+                        <UserRequestComponent @updateUserArray=this.updateUserArray v-for="(user, i) in users" :key="user" :index="i" :data="user" :token="token"/>
+                    </transition-group>
                 </section>
                 <section class="article__section" v-else>
                    <p> Aucun utilisateur en attente </p>
@@ -38,9 +40,11 @@ export default {
             this.users = userRequest.users;
         },
         
-        /** Mise a jour des données utilisateur */
-        updateUserArray(id){
-            this.getAllUserRequest();
+        /** 
+         * Mise à jour de la liste utilisateur
+         */
+        updateUserArray(index){
+            this.users.splice(index, 1);
         },
 
         /** recupération d'un token pour la soumission de la demande */
@@ -104,6 +108,22 @@ export default {
 
     .article__section{
         width: 100%;
+    }
+
+    .list-move,
+    .list-enter-active,
+    .list-leave-active {
+        transition: all 1s;        
+    }
+    .list-enter,
+    .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    .list-leave-active {
+        position: absolute;
+
     }
 
     @media screen and (min-width:768px) {

@@ -72,8 +72,8 @@ const utils = {
     notificationApi: {
         createNotification: { endPoint: '/api/notifications', method: 'post'},
         deleteNotification: { endPoint: '/api/notifications/:notificationId', method: 'delete'},
-        findNotificationByUserId: {endPoint: 'api/notifications/notification-by-user/:userId', method: 'get'},
-        countNotificationByUserId: {endPoint: '/api/notifications/notification-by-user/count/:userId', method: 'get'},
+        findNotificationByUserId: {endPoint: 'api/notifications/notification-by-user/:userId', method: 'post'},
+        countNotificationByUserId: {endPoint: '/api/notifications/notification-by-user/count/:userId', method: 'post'},
         readNotificationById: { endPoint: '/api/notifications/read/:notificationId', method: 'patch'}
     },
     /**liens des path - url pour l'affichage des pages*/

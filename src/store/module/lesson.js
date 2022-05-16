@@ -1,6 +1,7 @@
 import utils from '../../helper/utils';
 import router from '../../router';
 import MarkdownHandler from '../../helper/markdown/markdownConverter';
+import user from './user';
 
 const state = {
     /** données completes d'une lecon en ecriture ou en lecture */
@@ -40,7 +41,17 @@ const actions = {
      */
     async getTokenForm({dispatch, getters, commit}, data){
         /** id de l'utilisateur */     
-        const userId = getters.getUserIdent.id;
+        let userId = getters.getUserIdent.id;
+
+        /** vérification de userId */
+        if(!userId){
+            userId = data.userId;
+        }   
+
+        /**Vérification de userId */
+        if(!userId || isNaN(userId)){
+            return;
+        }
 
         /** endpoint de la requete*/
         const endPoint = utils.lessonApi.getTokenByUserId.endPoint.replace(':userId', userId);

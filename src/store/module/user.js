@@ -67,8 +67,17 @@ const actions = {
         if(!loginResult){
             return;
         }
+        
+        /**génération token  */
+        const token = await dispatch('actionHandler', {action: 'getTokenForm', userId: loginResult.id});                 
 
-        dispatch('actionHandler', { action: 'countNotificationUnreadByUserId', userId: loginResult.id})       
+        const formData = new FormData();        
+
+        /**token pour soumission */
+        formData.append('formToken', token.token);
+
+        /**mise a jour des notification */
+        await dispatch('actionHandler', { action: 'countNotificationUnreadByUserId', userId: loginResult.id, formData: Object.fromEntries(formData.entries()) });     
 
         /**Requete ok - succes de la demande */
         commit('setUserIdent', { userAuthenticated: true, roleId: loginResult.role, id: loginResult.id, email: loginResult.email});            
@@ -368,7 +377,8 @@ const actions = {
                 isError = false;
             }
             //Reset de tous les states
-            commit('setUserIdent', {});           
+            commit('setUserIdent', {});
+            commit('setNewNotification', 0);           
             commit('setLesson', {});
             commit('setUserProfilData', {});
             commit('setFlashMessageMut', { visibility: true, error: isError, message: message});           

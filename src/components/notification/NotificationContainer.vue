@@ -7,7 +7,7 @@
         </section>
         <!-- menu -->
         <section class="notification__menu">
-            <MenuComponent :data="data" @updateNotificationList="updateNotificationList" @notificationRead="notificationRead"/>
+            <MenuComponent :token="token" :data="data" @updateNotificationList="updateNotificationList" @notificationRead="notificationRead"/>
         </section>
     </div>   
   </div>
@@ -23,20 +23,24 @@ export default {
             notificationData: undefined,
         };
     },
-    props: ['data'],
+    props: ['data', 'index', 'token'],
     components: {
         NotificationComponent,
         MenuComponent
     },
     methods: {
-        /**lecture de la notification */
+        /**
+         * lecture de la notification
+         */
         notificationRead(){
             this.notificationData.new = false;
         },
         
-        /**mise a jour des notifications */
+        /**
+         * mise a jour de la liste des notifications
+         */
         updateNotificationList(){            
-            this.$emit('updateNotificationList');
+            this.$emit('updateNotificationList', this.index);
         }
 
     },

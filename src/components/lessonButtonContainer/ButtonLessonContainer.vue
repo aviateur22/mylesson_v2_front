@@ -3,10 +3,10 @@
     <section v-if="lessons?.length > 0" class="lesson__section">
         <div class="lesson__main-container">                    
             <div class="lesson__container">
-                <LessonButton class="lesson" v-for="(lesson, i) in lessons" :key="i" :data="lesson" :deleteLessonButton="deleteLesson" :editLesson="editLesson">
+                <LessonButton class="lesson" v-for="(lesson, i) in lessons" :key="lesson" :index="i" :data="lesson" :deleteLessonButton="deleteLesson" :editLesson="editLesson">
                     <!-- modal de confirmation de suppression -->
                     <ModalComponent/>
-                </LessonButton>                        
+                </LessonButton>                  
             </div>                    
         </div>
     </section>
@@ -27,6 +27,18 @@ export default {
     components: {
         LessonButton,
         ModalComponent
+    },
+    data(){
+        return {            
+        };
+    },
+    methods: {
+        /**
+         * mise à jour de la liste des lecons apres suppressions
+         */
+        updateLessonList(index){
+            this.lessonList.splice(index, 1);
+        }
     }
 };
 </script>

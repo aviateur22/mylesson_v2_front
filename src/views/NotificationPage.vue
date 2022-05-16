@@ -10,8 +10,10 @@
               <section v-if="notifications.length <= 0">
                   <p> Pas de notification</p>
               </section>
-              <section class="notification__list" v-else>
-                  <NotificationComponent @updateNotificationList="updateNotificationList" v-for="(notification, i) in notifications" :key="i" :data="notification"/>
+              <section class="notification__section"  v-else>
+                  <transition-group name="list">
+                    <NotificationComponent @updateNotificationList="updateNotificationList" v-for="(notification, i) in notifications" :token="token" :key="notification" :data="notification" :index="i"/>
+                  </transition-group>
               </section>
           </main>
       </article>      
@@ -24,32 +26,73 @@ import NotificationComponent from '../components/notification/NotificationContai
 export default {
     data(){
         return {
-            notifications: []
+            /** liste des notifications */            
+            notifications: [],
+
+            /**token */
+            token: undefined
         };
     },
     components: {
         NotificationComponent
     },
     methods: {
-        /**récupération des notifiaction */
+        /**
+         * récupération des notifiaction
+         */
         async getAllNotification(){
-            const notifications = await this.$store.dispatch('actionHandler', {action: 'getNotificationByUserId'});
-            this.notifications = notifications.notifications;
+            /**formdata por token */
+            const formData = new FormData();
+
+            /**token pour soumission */
+            formData.append('formToken', this.token);
+
+            const notifications = await this.$store.dispatch('actionHandler', {action: 'getNotificationByUserId', formData: Object.fromEntries(formData.entries())});
+
+            if(notifications){
+                /** mise a jour de la liste des notifications */
+                this.notifications = notifications.notifications;
+            }            
         },
 
-        /**mise a jour des notificatrion */
-        updateNotificationList(){
-            this.notifications = [];
-            this.getAllNotification();
+        /**
+         * mise a jour de la liste des notification aprés suppression
+         */
+        updateNotificationList(index){
+            this.notifications.splice(index, 1);
+        },
+
+        /** récupération d'un token */
+        async getToken(){
+            /**génération token  */
+            const token = await this.$store.dispatch('actionHandler', {action: 'getTokenForm'});
+
+            if(!token){
+                return;
+            }
+
+            /** token */
+            this.token = token.token;
         }
     },
-    created(){
+    async created(){
+        /** génération token */
+        await this.getToken();
+
+        /** récupération des notifications */
         this.getAllNotification();
     }
 };
 </script>
 
-<style scoped>
+<style scoped>    
+    .item {
+        width: 100%;
+        height: 30px;
+        background-color: #f3f3f3;
+        border: 1px solid #666;
+        box-sizing: border-box;
+    }
     .notification__main-container{
         margin-top:var(--navbar_height) ;
         min-height: calc( 100vh - var(--navbar_height));
@@ -84,12 +127,31 @@ export default {
         padding: 10px;
     }
 
+    .notification__section{
+        width: 100%;
+
+    }
     .notification__list{
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+
+    }
+    .list-move,
+    .list-enter-active,
+    .list-leave-active {
+        transition: all 1s;        
+    }
+    .list-enter,
+    .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    .list-leave-active {
+        position: absolute;
 
     }
 

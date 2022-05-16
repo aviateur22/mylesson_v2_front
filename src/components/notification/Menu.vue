@@ -26,7 +26,7 @@
 <script>
 export default {
     name: 'markdownAction',
-    props: ['data', 'key'],
+    props: ['data', 'token'],
     data(){
         return {
             /** visibilité du menu */
@@ -48,17 +48,25 @@ export default {
             /** id de la notification */
             const notificationId = this.data.id;
 
-            const formData = new FormData();            
+            const formData = new FormData(); 
+
             formData.append('userId', userId);
 
+            /** token de soumission */
+            formData.append('formToken', this.token);
+
             /** requête lecture notification */
-            await this.$store.dispatch('actionHandler', {action: 'readNotificationById', formData, notificationId});
+            const readNotification = await this.$store.dispatch('actionHandler', {action: 'readNotificationById', formData, notificationId});
+
+            /**masque le menu */            
+            this.toggleMenuVisibility();
+
+            if(!readNotification){
+                return;
+            }
             
             /** suppression couleur bleu de la notification*/
-            this.$emit('notificationRead', true);
-
-            /**masque le menu */
-            this.toggleMenuVisibility();
+            this.$emit('notificationRead', true);            
         },
 
         /** suppression notification */
@@ -69,8 +77,12 @@ export default {
             /** id de la notification */
             const notificationId = this.data.id;
 
-            const formData = new FormData();            
+            const formData = new FormData();     
+
             formData.append('userId', userId);
+
+            /** token de soumission */
+            formData.append('formToken', this.token);
 
             /** requête suppression notification */
             await this.$store.dispatch('actionHandler', {action: 'deleteNotificationById', formData, notificationId});            
@@ -82,7 +94,6 @@ export default {
             this.toggleMenuVisibility();
         }
     }
-
 };
 </script>
 
