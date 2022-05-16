@@ -186,7 +186,17 @@ const routes = [
         component: function() {
             return import(/* webpackChunkName: "about" */ '../views/NotificationPage.vue');
         }
-
+    },
+    /** page reset mot de passe perdu */
+    {
+        path: utils.apiDataUrl.resetLostPasswordPage.url,
+        name: utils.apiDataUrl.resetLostPasswordPage.pathName,
+        meta: {
+            title: 'my lesson | mot de passe perdu',
+        },
+        component: function() {
+            return import(/* webpackChunkName: "about" */ '../views/ResetLostPassword.vue');
+        }
     },
     {
         path: '/:pathMatch(.*)*',

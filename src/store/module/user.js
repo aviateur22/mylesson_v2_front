@@ -335,6 +335,58 @@ const actions = {
         commit('setFlashMessageMut', { error: false, message: 'vote demande est prise en compte'});
     },
 
+    /**
+     * envoie d'un email pour mot de passe perdu
+     * @param {*} param0 
+     */
+    async sendEmailPasswordLost({dispatch, commit}, data){
+        /** email de l'utilisateur */
+        const email = data.email;
+
+        /** id utilisateur manuqant */
+        if(!email || !isNaN(email)){
+            /**emaul obligatoire */        
+            return commit('setFlashMessageMut', { error: true, message: 'votre email est obligatoire'});
+        }  
+
+        /** endpoint de la requete*/
+        const endPoint = utils.userApi.sendEmailPasswordLost.endPoint.replace(':email', email);
+
+        /** methode de la requete */
+        const method = utils.userApi.sendEmailPasswordLost.method;
+
+        const sendEmail = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData });
+
+        if(!sendEmail){
+            return null;
+        }
+        /**Requete ok - succes de la demande */        
+        commit('setFlashMessageMut', { error: false, message: 'un email vous a été envoyé'});
+    },
+
+    /**
+     * reset du mot de passe 
+     */
+    async resetPasswordByUserId({dispatch, commit}, data){
+        /** endpoint de la requete*/
+        const endPoint = utils.userApi.resetPasswordByUserId.endPoint.replace(':userId', data.userId);
+
+        /** methode de la requete */
+        const method = utils.userApi.resetPasswordByUserId.method;
+
+        /** requête */
+        const resetPassword = await dispatch('actionHandler', { action: 'axiosFetchAction', endPoint, method, formData: data.formData });
+
+        if(!resetPassword){
+            return null;
+        }
+
+        /**Requete ok - succes de la demande */        
+        commit('setFlashMessageMut', { error: false, message: 'mot de passe changé avec succés'});
+
+        router.push({name: 'Login'});
+    },
+
     /*
      * Deconnexion
      */

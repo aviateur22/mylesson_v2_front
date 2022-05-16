@@ -6,7 +6,7 @@
                     <h2 class="form__title">Mot de passe perdu</h2>
                 </div>
                 <div class="form__comment-container">
-                    <h3 class="form__comment">Un lien te sera envoyé par mail pour renouveller ton mot de passe </h3>
+                    <h3 class="form__comment">Un lien sera envoyé par mail pour renouveller le mot de passe </h3>
                 </div>
             </div>
             <div class="form__container-control">          
@@ -14,11 +14,10 @@
                     <div class="form__group">
                         <label for="email" class="form__label">ton email</label>
                         <div class="form__control">
-                            <input class="form__input" type="text" placeholder="email" name="email">
+                            <input class="form__input" v-model="email" type="text" placeholder="toto@hotmail.fr" name="email">
                         </div>
                     </div>
-                    <input class="button button--primary" type="submit" value="Confirmer">
-                    
+                    <SubmitButton @click.prevent="sendMail" :disableLoginButton='disableLoginButton' :textSubmitButton='"réinitialiser le mot de passe"'/>                   
                 </form> 
             </div>      
     </div> 
@@ -26,8 +25,50 @@
 </template>
 
 <script>
+import SubmitButton from '../components/button/SubmitButton.vue';
 export default {
+    components: {
+        SubmitButton
+    },
+    data(){
+        return {
+            /**email de l'utilisateur */
+            email: undefined,
 
+            /**bloque le bouton */
+            disableLoginButton: false,
+
+            token: undefined
+        };
+    },
+    methods: {
+        async sendMail(){
+            this.disableLoginButton = true;
+            console.log(window.location.origin);
+
+            const formData = new FormData();
+
+            /** token */
+            formData.append('formToken', this.token);
+
+            const sendMail = await this.$store.dispatch('actionHandler', { action: 'sendEmailPasswordLost', email: this.email, formData: Object.fromEntries(formData.entries())});
+            this.disableLoginButton = false;
+        },
+
+        /** récupération d'un token */
+        async getToken(){
+            /**génération token  */
+            const token = await this.$store.dispatch('actionHandler', {action: 'getTokenForm'});
+
+            if(!token){
+                return;
+            }
+
+            /** token */
+            this.token = token.token;
+        }
+
+    }
 };
 </script>
 
@@ -58,7 +99,6 @@ export default {
         padding: 10px;
         font-size: var(--form_title_size);
         text-transform: uppercase;
-        color:var(--secondary_color)
     }
 
     .form__comment{
@@ -106,34 +146,6 @@ export default {
         border:0.5px solid var(--main_color); 
         border-radius: 10px;
         padding-left: 5px;
-    }
-
-    .button{
-        border:.5px solid var(--main_color); 
-        border-radius: 10px;
-        color: white;
-        text-transform: uppercase;
-        background: transparent;
-        margin: 20px 0px;
-        padding: 20px 0px;
-        font-weight: 800;
-    }
-
-    .nav__navlink{
-        text-align: left;
-        padding: 10px;
-    }
-
-    .nav__navlink-item{    
-        color: var(--main_color) ;    
-        text-decoration: none;
-        text-transform: uppercase;
-        font-size: 0.7rem;
-        font-weight: 600;
-    }
-
-    .button--primary{
-        background: var(--main_color);    
     }
     @media screen and (min-width:768px) {
 
