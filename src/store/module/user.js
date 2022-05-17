@@ -344,7 +344,7 @@ const actions = {
         const email = data.email;
 
         /** id utilisateur manuqant */
-        if(!email || !isNaN(email)){
+        if(!email){
             /**emaul obligatoire */        
             return commit('setFlashMessageMut', { error: true, message: 'votre email est obligatoire'});
         }  
@@ -367,7 +367,7 @@ const actions = {
     /**
      * reset du mot de passe 
      */
-    async resetPasswordByUserId({dispatch, commit}, data){
+    async resetPasswordByUserId({dispatch, commit}, data){        
         /** endpoint de la requete*/
         const endPoint = utils.userApi.resetPasswordByUserId.endPoint.replace(':userId', data.userId);
 

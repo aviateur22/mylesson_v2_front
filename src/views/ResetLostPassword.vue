@@ -5,14 +5,15 @@
                 <h2 class="form__title">réinitialisation du mot de passe</h2>
             </div>
             <div class="form__container-control">          
-                <form @submit.prevent="loginAction"  class="form">
+                <form @submit.prevent="resetPassword"  class="form">
                     <!-- mot de passe -->
                     <InputToggleButton :title="'nouveau mot de passe'" :placeHolder="'mot de passe'" :inputName="'password'"/>
 
                     <!-- confirmation du mot de passe -->
-                    <InputToggleButton :title="'confirmation du mot de passe'" :placeHolder="'mot de passe'" :inputName="'password'"/>
+                    <InputToggleButton :title="'confirmation du mot de passe'" :placeHolder="'mot de passe'" :inputName="'confirmPassword'"/>
 
-                    <SubmitButton @click.prevent="resetPassword" :disableLoginButton='disableLoginButton' :textSubmitButton="'modifier mot de passe'"/>                    
+                    <!-- reste mot de passe -->
+                    <SubmitButton :disableLoginButton='disableLoginButton' :textSubmitButton="'modifier mot de passe'"/>                    
             </form> 
       </div>      
     </div> 
@@ -22,7 +23,6 @@
 <script>
 import SubmitButton from '../components/button/SubmitButton.vue';
 import InputToggleButton from '../components/input/InputTextTogglrVisibility.vue';
-import utils from '../helper/utils';
 export default {
     components: {
         SubmitButton,
@@ -31,33 +31,39 @@ export default {
     data() {
         return {
             disableLoginButton: false,
-            token: undefined,
-            userId: undefined
+            
+            /**token requte */
+            formToken: undefined
         };
     },
-    methods: { 
-        /**
-         * récupération des donné"es de URL */ 
-        getUrldata(){
-           
-        },
+    methods: {        
+        async resetPassword(e){
+            this.disableLoginButton = true;
 
-        async resetPassword(){
-            /**token  */
+            /**token DE L'url */
             const token = this.$route.params.token;
 
-            /**id utilisateur */
+            /**id utilisateur chiffré*/
             const userId = this.$route.params.userId;
 
-            const formData = new FormData();
-            formData.append('token', token);
+            /**code reset */
+            const reset = this.$route.params.reset;
+
+            const formData = new FormData(e.target);
+
+            formData.append('token', token); 
+            
+            formData.append('midToken', reset); 
+
+            formData.append('userId', userId);
             
             /**reset mot de passe */
-            const reset = await this.$store.dispatch('actionHandler', { action: 'resetPasswordByUserId', userId: userId, formData: Object.fromEntries(formData.entries())});
-        }
+            const resetPassword = await this.$store.dispatch('actionHandler', { action: 'resetPasswordByUserId', formData: Object.fromEntries(formData.entries())});
 
+            this.disableLoginButton = false;
+        }
     },
-    created(){
+    async created(){
         /**masque le loader */
         this.$store.commit('setLoaderState', false);
     }

@@ -44,7 +44,6 @@ export default {
     methods: {
         async sendMail(){
             this.disableLoginButton = true;
-            console.log(window.location.origin);
 
             const formData = new FormData();
 

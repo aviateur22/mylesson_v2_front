@@ -21,7 +21,7 @@ const utils = {
         updateImageByUserId: {endPoint: '/api/users/image/:userId', method: 'patch'},
         requestUpgradeUserRole: {endPoint: 'api/users/request-upgrade-privilege/:userId', method: 'post'},
         sendEmailPasswordLost: {endPoint: '/api/users/lost-password/:email', method: 'post'},
-        resetPasswordByUserId: { endPoint: '/api/users/reset-password/:userId', method: 'post'}
+        resetPasswordByUserId: { endPoint: '/api/users/reset-password', method: 'post'}
 
     },
     /**admin */
@@ -123,7 +123,7 @@ const utils = {
         notificationPage: { url: '/users/notification', pathName: 'NotificationPage'},
 
         /** page réinitialisation mot de passe perdu */
-        resetLostPasswordPage: { url: '/users/:userId/lost-password/token/:token', pathName: 'ResetLostPasswordPage'},
+        resetLostPasswordPage: { url: '/users/:userId/reset/:reset/lost-password/token/:token', pathName: 'ResetLostPasswordPage'},
 
         /** article static footer - ma presentation */
         abouteMe: { slug: 'about-me' },
