@@ -80,7 +80,7 @@ const actions = {
         await dispatch('actionHandler', { action: 'countNotificationUnreadByUserId', userId: loginResult.id, formData: Object.fromEntries(formData.entries()) });     
 
         /**Requete ok - succes de la demande */
-        commit('setUserIdent', { userAuthenticated: true, roleId: loginResult.role, id: loginResult.id, email: loginResult.email});            
+        commit('setUserIdent', { userAuthenticated: true, roleId: loginResult.role, id: loginResult.id, login: loginResult.user });            
         commit('setFlashMessageMut', { error: false, message: `Bienvenue ${loginResult.message}`});
         
         return router.push({name: 'UserHomeAccount'});           

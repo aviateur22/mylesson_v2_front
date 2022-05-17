@@ -1,6 +1,6 @@
 <template>
 <!-- contient les module d'administration de la lecon -->
-  <div v-if="this.$store.getters.getUserIdent.userAuthenticated" class="admin__main-container"> 
+  <div v-if="this.$store.getters.getUserIdent.userAuthenticated && this.$store.getters.getUserIdent.login != this.$store.getters.getLessonEditor.autor" class="admin__main-container"> 
         <div class="admin__container">
             <!--demande l'admin  -->
             <section v-if="this.$store.getters.getUserIdent.roleId >= userLevel" class="admin__section">

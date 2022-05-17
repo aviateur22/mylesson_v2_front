@@ -290,13 +290,7 @@ const actions = {
         /** methode de la requete */
         const method = utils.lessonApi.deleteLessonById.method;
 
-        const deleteLesson = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData});
-        
-        /** Si pas d'erreur lors de la requête*/
-        if(!deleteLesson){ 
-            commit('setDeleteLesson', {});   
-            return null;
-        }  
+        await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData});       
 
         commit('setDeleteLesson', {});
         commit('setFlashMessageMut', { error: false, message: 'la lecon est bien supprimée'});
@@ -406,8 +400,8 @@ const actions = {
         if(!request){
             return;
         }
-        
-        if(request.adminRequest){
+
+        if(request.request === true){
             return commit('setFlashMessageMut', { error: false, message: 'le signalement du contenu est enregistré'});
         } else {
             return commit('setFlashMessageMut', { error: false, message: 'annulation du signalement pour ce contenu'});

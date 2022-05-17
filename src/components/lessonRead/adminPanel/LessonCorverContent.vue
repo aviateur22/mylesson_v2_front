@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import { computed } from '@vue/reactivity';
 import SubmitButton from '../../button/SubmitButton.vue';
 export default {
     name: 'corverLesson',

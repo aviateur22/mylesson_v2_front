@@ -156,17 +156,12 @@ const actions = {
         }
 
         /** endpoint de la requete*/
-        const endPoint = utils.lessonApi.deleteLessonById.endPoint.replace(':id', lessonId);
+        const endPoint = utils.adminApi.deleteLessonById.endPoint.replace(':lessonId', lessonId);
         
         /** methode de la requete */
-        const method = utils.lessonApi.deleteLessonById.method;
+        const method = utils.adminApi.deleteLessonById.method;
 
-        const deleteLesson = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData});
-        
-        /** Si pas d'erreur lors de la requête*/
-        if(!deleteLesson){            
-            return null;
-        }
+        await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData});
 
         commit('setFlashMessageMut', { error: false, message: 'la leçon est bien supprimée'});        
 
