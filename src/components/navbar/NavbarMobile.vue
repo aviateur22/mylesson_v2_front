@@ -26,15 +26,15 @@
                             <li class="nav__navlink">
                                 <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.homeAccountPage.url>mon compte</router-link>
                             </li>
-                            <li class="nav__navlink">
-                                <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.infoPage.url>mes informations</router-link>
-                            </li>
-                            <!-- role writer  -->
+                            
+                            <!-- notification -->
                             <li v-if="userRole >= 2" class="nav__navlink">
-                                <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.userLessonPage.url>mes leçons</router-link>
-                            </li>
-                            <li v-if="userRole >= 2" class="nav__navlink">
-                                <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.addLessonTypePage.url>nouvelle leçon</router-link>
+                                <router-link @click="toggleNavbarMobile" class="nav__navlink-item" :to=this.baseUrl.notificationPage.url>
+                                    <div class="nav__link-group">
+                                        <p class="navlink__text">Notification</p>
+                                        <p v-if="notificationCount>0" class="navlink__round">{{notificationCount}}</p>
+                                    </div>                            
+                                </router-link>
                             </li>
                             <!-- role admin et super admin -->
                             <li v-if="userRole >= 3" class="nav__navlink">
@@ -85,6 +85,11 @@ export default {
 
         userRole(){
             return this.$store.getters.getUserIdent.roleId;
+        },
+
+        /**nombre de nouvelle notification */
+        notificationCount(){
+            return this.$store.getters.getNewNotification;
         }
     }
 };
@@ -110,10 +115,6 @@ export default {
     .nav__title-container{
         width: 100%;
         margin-top: 25px;
-    }
-
-    .nav__title{
-        
     }
 
     .title--size{
@@ -154,6 +155,28 @@ export default {
     .nav__disconnect{
         width: 100%;
     }
+
+    .nav__link-group{        
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .navlink__round{
+        margin-left: 5px;
+        width: 1.3em;
+        height: 1.3em;
+        border-radius: 50%;
+        background: red;
+        color: white;
+        display: flex;
+        align-items: center;    
+        justify-content: center;
+        font-size: 1.0rem;
+        font-weight: bold;
+        border: 0.2px solid lightblue;
+        box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+}
    /*#region button close*/
    
     .nav__close-button-container{

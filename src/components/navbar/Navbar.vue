@@ -2,9 +2,12 @@
 <div class="main__container">    
     <div class="nav__container">       
         <!-- navbar mobile -->
-        <aside  class="nav__mobile"  v-if="navbarMobile">
-            <NavbarMobile @toggleNavbarMobile="toggleNavbarMobile"/>        
-        </aside>
+        <transition name="slide-fade">
+            <aside  class="nav__mobile"  v-if="navbarMobile">
+                <NavbarMobile @toggleNavbarMobile="toggleNavbarMobile"/>        
+            </aside>
+        </transition>
+        
         <nav class="nav">
             <section class="nav__title">
                 <div class="nav__title-container">
@@ -186,7 +189,16 @@ export default {
     font-weight: bold;
     border: 0.2px solid lightblue;
     box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+}
 
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to {  
+  opacity: 0;
 }
 
 /*#region burger menu*/

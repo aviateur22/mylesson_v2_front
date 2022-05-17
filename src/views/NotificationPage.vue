@@ -73,6 +73,17 @@ export default {
 
             /** token */
             this.token = token.token;
+        },
+
+        /**mise a jour du nombre de notification */
+        async notificationCount(){
+            const formData = new FormData();        
+
+            /**token pour soumission */
+            formData.append('formToken', this.token);
+
+            /**mise a jour des notification */
+            await this.$store.dispatch('actionHandler', { action: 'countNotificationUnreadByUserId', formData: Object.fromEntries(formData.entries()) });
         }
     },
     async created(){
@@ -81,6 +92,9 @@ export default {
 
         /** récupération des notifications */
         this.getAllNotification();
+
+        /**mise a jour du nombre de notification */
+        this.notificationCount();
     }
 };
 </script>
