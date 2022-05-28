@@ -33,39 +33,66 @@ export default {
             disableLoginButton: false,
             
             /**token requte */
-            formToken: undefined
+            token: undefined
         };
     },
     methods: {        
         async resetPassword(e){
             this.disableLoginButton = true;
 
-            /**token DE L'url */
-            const token = this.$route.params.token;
+            /**param de l'url */
+            const param = this.$route.params.param;
 
             /**id utilisateur chiffré*/
             const userId = this.$route.params.userId;
 
             /**code reset */
-            const reset = this.$route.params.reset;
+            const data = this.$route.params.data;
 
             const formData = new FormData(e.target);
 
-            formData.append('token', token); 
-            
-            formData.append('midToken', reset); 
-
+            /**utilisateur */    
             formData.append('userId', userId);
+
+            /** data  */
+            formData.append('data', data); 
+
+            /** param */
+            formData.append('param', param); 
+
+            /** ajout du token */
+            if(!this.token){
+                this.disableLoginButton = false;
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+            
+            formData.append('token', this.token);
             
             /**reset mot de passe */
             const resetPassword = await this.$store.dispatch('actionHandler', { action: 'resetPasswordByUserId', formData: Object.fromEntries(formData.entries())});
 
             this.disableLoginButton = false;
-        }
+        },
+
+        /** récupération d'un token */
+        async getVisitorToken(){
+            /**génération token  */
+            const token = await this.$store.dispatch('actionHandler', {action: 'createTokenVisitor'});
+            
+            if(!token?.dataToken){
+                return;
+            }
+            
+            /** token */   
+            this.token = token.dataToken.token;
+        },
     },
     async created(){
         /**masque le loader */
         this.$store.commit('setLoaderState', false);
+
+        /** récupération d'un token */
+        await this.getVisitorToken();
     }
 };
 </script>

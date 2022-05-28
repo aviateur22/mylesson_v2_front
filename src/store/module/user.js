@@ -69,12 +69,18 @@ const actions = {
         }
         
         /**génération token  */
-        const token = await dispatch('actionHandler', {action: 'getTokenForm', userId: loginResult.id});                 
+        const token = await dispatch('actionHandler', {action: 'createToken', userId: loginResult.id});        
 
-        const formData = new FormData();        
+        /**pas de génération de token */
+        if(!token.dataToken){
+            return null;
+        }
+
+        const formData = new FormData();     
 
         /**token pour soumission */
-        formData.append('formToken', token.token);
+        formData.append('token', token.dataToken.token);
+        formData.append('secret', token.dataToken.secret);
 
         /**mise a jour des notification */
         await dispatch('actionHandler', { action: 'countNotificationUnreadByUserId', userId: loginResult.id, formData: Object.fromEntries(formData.entries()) });     

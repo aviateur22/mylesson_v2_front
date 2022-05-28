@@ -52,8 +52,9 @@ export default {
 
             formData.append('userId', userId);
 
-            /** token de soumission */
-            formData.append('formToken', this.token);
+            /**token pour soumission */
+            formData.append('token', this.token.token);
+            formData.append('secret', this.token.secret);
 
             /** requête lecture notification */
             const readNotification = await this.$store.dispatch('actionHandler', {action: 'readNotificationById', formData, notificationId});
@@ -81,8 +82,9 @@ export default {
 
             formData.append('userId', userId);
 
-            /** token de soumission */
-            formData.append('formToken', this.token);
+            /**token pour soumission */
+            formData.append('token', this.token.token);
+            formData.append('secret', this.token.secret);
 
             /** requête suppression notification */
             await this.$store.dispatch('actionHandler', {action: 'deleteNotificationById', formData, notificationId});            

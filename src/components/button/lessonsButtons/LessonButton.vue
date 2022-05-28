@@ -68,14 +68,14 @@ export default {
             this.$store.commit('setDeleteLessonId', this.data.id);
 
             /**géneration d'un token pour la suppression d'une lecon*/
-            const deleteToken = await this.$store.dispatch('actionHandler', {action: 'getTokenForm'});
+            const token = await this.$store.dispatch('actionHandler', {action: 'createToken'});            
 
-            /** si pas de token  */
-            if(!deleteToken){
+            if(!token?.dataToken){
                 return;
             }
 
-            this.$store.commit('setDeleteLessonToken', deleteToken.token);
+            /** enregistre le token */
+            this.$store.commit('setDeleteLessonToken', token.dataToken);
 
             /** recuperation formdata */
             const formData = new FormData();
@@ -89,7 +89,8 @@ export default {
             /** ajout du token */
             const deleteLessonToken = this.$store.getters.getDeleteLesson.token;
             
-            formData.append('formToken', deleteLessonToken);
+            formData.append('token', token.dataToken.token);
+            formData.append('secret', token.dataToken.secret);
 
             /**données permettant d'effectuer l'action  */
             const data = {

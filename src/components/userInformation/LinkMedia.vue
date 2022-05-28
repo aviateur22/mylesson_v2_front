@@ -99,7 +99,11 @@ export default {
             formData.append('mediaId', this.data.id);
 
             /** ajout du token */
-            formData.append('formToken', this.$store.getters.getUserProfilData.token);
+            if(!this.$store.getters.getUserProfilData?.token){
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+            formData.append('token', this.$store.getters.getUserProfilData.token.token);
+            formData.append('secret', this.$store.getters.getUserProfilData.token.secret);
 
             formData = Object.fromEntries(formData.entries());
             
@@ -125,7 +129,11 @@ export default {
             }
 
             /** ajout du token */
-            formData.append('formToken', this.$store.getters.getUserProfilData.token);
+            if(!this.$store.getters.getUserProfilData?.token){
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+            formData.append('token', this.$store.getters.getUserProfilData.token.token);
+            formData.append('secret', this.$store.getters.getUserProfilData.token.secret);
 
             /** ajout du medialinkId */
             formData.append('mediaLinkId', mediaLinkId);

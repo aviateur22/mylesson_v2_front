@@ -40,7 +40,12 @@ export default {
             const data = new FormData();
 
             /** ajout du token */
-            data.append('formToken', this.$store.getters.getUserProfilData.token);
+            if(!this.$store.getters.getUserProfilData?.token){
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+            
+            data.append('token', this.$store.getters.getUserProfilData.token.token);
+            data.append('secret', this.$store.getters.getUserProfilData.token.secret);
 
             const formData = Object.fromEntries(data.entries());  
             /**demande d'édition */
@@ -70,7 +75,7 @@ export default {
          * status demande upgrade privilge utilisateur
          */
         requestUpgradeRole() {
-            return this.$store.getters.getUserProfilData.requestRoleUpgrade
+            return this.$store.getters.getUserProfilData.requestRoleUpgrade;
         }
     }
 };

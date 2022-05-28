@@ -38,16 +38,28 @@ export default {
         async updateUserRole(value){
             const formData = new FormData();
 
-            /**ajout du token */
-            formData.append('formToken', this.token);            
+            /** ajout du token */
+            if(!this.token){
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+            
+            formData.append('token', this.token.token);
+            formData.append('secret', this.token.secret);
+
+            /**résulate de la requete */
+            let resultRequest;
              
             /** ajout des droits utilisateurs */ 
             if(value === true){
-                await this.$store.dispatch('actionHandler', { action: 'updateUserRole', userId: this.data.id, formData: Object.fromEntries(formData.entries()) });
+                resultRequest = await this.$store.dispatch('actionHandler', { action: 'updateUserRole', userId: this.data.id, formData: Object.fromEntries(formData.entries()) });
             } else {
                 /** demande upgrade refusée */ 
-                await this.$store.dispatch('actionHandler', { action: 'removeUserPrivilegeByUserId', userId: this.data.id, formData: Object.fromEntries(formData.entries()) });
+                resultRequest = await this.$store.dispatch('actionHandler', { action: 'removeUserPrivilegeByUserId', userId: this.data.id, formData: Object.fromEntries(formData.entries()) });
             }    
+           
+            if(!resultRequest){
+                return null;
+            }
 
             /** mise a jour de la liste utilisateurs en attente  */
             this.$emit('updateUserArray', this.index);

@@ -7,7 +7,7 @@
                     <div class="form__group">
                         <label for="thematicId" class="form__label">sélectionner votre thématique</label>                       
                         <select class="form__input" name="thematicId" v-model="lessonThematic">
-                            <option selected disabled value="">Choisissez votre thème</option>
+                            <option selected disabled>Choisissez votre thème</option>
                             <option  class="select-option" v-for="(thematic, i) in thematics" :key="i" :value="thematic.id" name="thematicId"> {{ thematic.name.toUpperCase()}}</option>                            
                         </select>
                     </div>
@@ -59,7 +59,7 @@ export default {
         return {           
             lessonName: undefined,
             lessonSummary: null,
-            lessonThematic: undefined,
+            lessonThematic: 'Choisissez votre thème',
             lessonMarkdown: null,
             markdownHandler: new MarkdownHandler()
         };

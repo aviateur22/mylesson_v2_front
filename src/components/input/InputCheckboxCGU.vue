@@ -7,7 +7,7 @@
             <SubmitButton class="button__cgu" @click.prevent="displayCGU" :textSubmitButton="'voir les CGU'"/> 
             <!-- checkbox et label -->
             <div class="input__label">
-                <input class="input" type="checkbox" value="" id="checkbox" v-model="checked">
+                <input @click="checked = !checked; this.$emit('cguStatus', checked)" class="input" type="checkbox" value="" id="checkbox" v-model="checked">
                 <label class="label" for="checkbox"> je reconnais avoir lu et accepter les CGU</label>
             </div>
                       

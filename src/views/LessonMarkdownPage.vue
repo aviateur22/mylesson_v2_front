@@ -68,11 +68,15 @@ export default {
          * récuperation d'un token pour le formulaire
          */
         async getTokenForm(){
-            /** generation d'un nouveau de token */
-            const getToken = await this.$store.dispatch('actionHandler', {action: 'getTokenForm'});
+            /**génération token  */
+            const token = await this.$store.dispatch('actionHandler', {action: 'createToken'});            
+
+            if(!token?.dataToken){
+                return;
+            }
 
             /** enregistre le token */
-            this.$store.commit('setTokenLesson', getToken.token);
+            this.$store.commit('setTokenLesson', token.dataToken);
         },
 
         /**
@@ -98,7 +102,12 @@ export default {
             formData.append('userId', userId);
 
             /** ajout du token */
-            formData.append('formToken', this.$store.getters.getLessonEditor.token);       
+            if(!this.$store.getters.getLessonEditor.token){
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+            
+            formData.append('token', this.$store.getters.getLessonEditor.token.token);
+            formData.append('secret', this.$store.getters.getLessonEditor.token.secret); 
            
             /** requete  */
             let saveLesson;
@@ -114,9 +123,6 @@ export default {
                  */               
                 saveLesson = await this.$store.dispatch('actionHandler', {action: 'updateLessonById', formData: Object.fromEntries(formData.entries()) });
             }
-
-            /** mise a jour du token */
-            await this.getTokenForm();
 
             //reactivation du boutton
             this.disableLoginButton = !this.disableLoginButton; 
@@ -143,7 +149,8 @@ export default {
             formData.append('userId', userId);
 
             /** ajout du token */
-            formData.append('formToken', this.$store.getters.getLessonEditor.token);
+            formData.append('token', this.$store.getters.getLessonEditor.token.token);
+            formData.append('secret', this.$store.getters.getLessonEditor.token.secret); 
 
             /**données permettant d'effectuer l'action  */
             const data = {

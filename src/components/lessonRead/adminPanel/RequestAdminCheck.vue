@@ -26,7 +26,13 @@ export default {
             const formData = new FormData();
 
             /** ajout du token */
-            formData.append('formToken', this.token);
+            if(!this.token){
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+            
+            formData.append('token', this.token.token);
+            formData.append('secret', this.token.secret);
+
             await this.$store.dispatch('actionHandler', {action: 'adminRequest', formData: Object.fromEntries(formData.entries())});            
         }
     },

@@ -290,10 +290,15 @@ const actions = {
         /** methode de la requete */
         const method = utils.lessonApi.deleteLessonById.method;
 
-        await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData});       
-
+        const deleteLesson = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData});       
+      
+        if(!deleteLesson){
+            return null;           
+        } 
         commit('setDeleteLesson', {});
-        commit('setFlashMessageMut', { error: false, message: 'la lecon est bien supprimée'});
+        commit('setFlashMessageMut', { error: false, message: 'la leçon est bien supprimée'});
+
+        /**mise a jour des lecon */
         return await dispatch('actionHandler', {action: 'getLessonByUserId'});
     },
 

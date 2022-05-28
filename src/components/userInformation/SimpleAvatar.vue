@@ -59,8 +59,13 @@ export default {
             /** creation d'un formData - middlware multer dans le back cause upload file*/
             const formData = new FormData(e.target);       
 
-            /** ajout du token du formulaire */
-            formData.append('formToken', this.$store.getters.getUserProfilData.token);
+            /** ajout du token */
+            if(!this.$store.getters.getUserProfilData?.token){
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+            
+            formData.append('token', this.$store.getters.getUserProfilData.token.token);
+            formData.append('secret', this.$store.getters.getUserProfilData.token.secret);
 
             const updateProfilImage = await this.$store.dispatch('actionHandler', {action: 'updateImageByUserId', formData});
 

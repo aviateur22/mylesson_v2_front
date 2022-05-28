@@ -45,10 +45,12 @@ const actions = {
 
         /** echec de la requete */
         if(!updateRole){            
-            return;
+            return null;
         }
 
-        return commit('setFlashMessageMut', { error: false, message: 'Droits d\'édition accordés'});        
+        /**Requete ok - succes de la demande */ 
+        commit('setFlashMessageMut', { error: false, message: 'Droits d\'édition accordés'}); 
+        return updateRole;
     },
 
     /**
@@ -79,8 +81,10 @@ const actions = {
             return;
         }
 
-        /**Requete ok - succes de la demande */        
-        return commit('setFlashMessageMut', { error: false, message: `Les priviléges de ${userLogin} sont supprimées`});
+        /**Requete ok - succes de la demande */ 
+        commit('setFlashMessageMut', { error: false, message: `Les priviléges de ${userLogin} sont supprimées`});
+
+        return updateRole;
     },
 
     async removeUserPrivilegeByUserId({ dispatch, commit}, data){        
@@ -106,8 +110,10 @@ const actions = {
             return;
         }
 
-        /**Requete ok - succes de la demande */        
-        return commit('setFlashMessageMut', { error: false, message: 'Droits d\'édition refusés'});
+        /**Requete ok - succes de la demande */   
+        commit('setFlashMessageMut', { error: false, message: 'Droits d\'édition refusés'});   
+          
+        return updateRole;
     },
 
     /**
@@ -163,7 +169,7 @@ const actions = {
 
         await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData});
 
-        commit('setFlashMessageMut', { error: false, message: 'la leçon est bien supprimée'});        
+        //commit('setFlashMessageMut', { error: false, message: 'la leçon est bien supprimée'});        
 
         return router.push({name: 'HomePage'}); 
     },

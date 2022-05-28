@@ -49,8 +49,15 @@ export default {
 
         /** recupération d'un token pour la soumission de la demande */
         async getToken(){
-            const token = await this.$store.dispatch('actionHandler', {action: 'getTokenForm'});     
-            this.token = token.token;                   
+            /**génération token  */
+            const token = await this.$store.dispatch('actionHandler', {action: 'createToken'});            
+
+            if(!token?.dataToken){
+                return;
+            }
+                       
+            /** token */
+            this.token = token.dataToken;                   
         }
     },
 

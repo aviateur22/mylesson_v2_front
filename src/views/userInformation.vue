@@ -43,7 +43,7 @@ export default {
             user: {},
 
             /**links */
-            mediaLinks: [],
+            mediaLinks: []
         };
     },
     methods: {
@@ -90,8 +90,7 @@ export default {
          */
         async getImageUser(){
             this.$refs.imageComponent.getAvatarImage(this.user.avatarKey);
-        },
-        
+        }        
     },
     async created(){
         /** recuperation des infos utilsateur */

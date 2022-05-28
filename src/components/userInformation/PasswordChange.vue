@@ -71,7 +71,11 @@ export default {
             const data = new FormData(e.target);
 
             /** ajout du token */
-            data.append('formToken', this.$store.getters.getUserProfilData.token);
+            if(!this.$store.getters.getUserProfilData?.token){
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+            data.append('token', this.$store.getters.getUserProfilData.token.token);
+            data.append('secret', this.$store.getters.getUserProfilData.token.secret);
 
             /** creation d'un formData */                
             const formData = Object.fromEntries(data.entries());  
