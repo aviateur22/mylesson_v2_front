@@ -67,7 +67,7 @@ export default {
         /**
          * récuperation d'un token pour le formulaire
          */
-        async getTokenForm(){
+        async getToken(){
             /**génération token  */
             const token = await this.$store.dispatch('actionHandler', {action: 'createToken'});            
 
@@ -211,7 +211,7 @@ export default {
         /** 
          * generation d'un token pour soumisson du formulaire
          */
-        await this.getTokenForm();   
+        await this.getToken();   
         
         /**
          * récupérarion des thématics
