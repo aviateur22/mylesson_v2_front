@@ -40,7 +40,7 @@ import TagsComponent from '../components/lessonRead/TagContainer.vue';
 import ContentComponent from '../components/lessonRead/Content.vue';
 import MediaLinkComponent from '../components/lessonRead/MediaLinkContainer.vue';
 import ImageLessonComponent from '../components/lessonRead/ImageLesson.vue';
-import AdminPanelComponent from '../components/lessonRead/adminPanel/ContainerPanel.vue'
+import AdminPanelComponent from '../components/lessonRead/adminPanel/ContainerPanel.vue';
 export default {
     name: 'lessonRead',
     data(){

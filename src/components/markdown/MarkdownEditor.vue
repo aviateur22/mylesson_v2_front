@@ -169,7 +169,7 @@ export default {
         },
 
         lessonMarkdownStore: function(newValue, oldValue){
-            this.lessonMarkdown = newValue
+            this.lessonMarkdown = newValue;
         }
 
     },

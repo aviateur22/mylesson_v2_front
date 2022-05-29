@@ -82,6 +82,7 @@ const utils = {
     tokenApi: {
         createTokenForm: { endPoint: 'api/tokens/:userId', method: 'post'},
         createTokenVisitor: { endPoint: 'api/tokens/visitor', method: 'get'},
+        createTokenLessonEditor: { endPoint: 'api/tokens/lesson-editor/:userId', method: 'post' }
     },
     /**liens des path - url pour l'affichage des pages*/
     apiDataUrl: {

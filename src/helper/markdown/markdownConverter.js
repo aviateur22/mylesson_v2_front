@@ -26,11 +26,11 @@ class MarkdownHandler{
      */
     #setBinding(){
         return Object.keys(this.classMap)
-        .map(key => ({
-            type: 'output',
-            regex: new RegExp(`<${key}(.*)>`, 'g'),
-            replace: `<${key} class="${this.classMap[key]}" $1>`
-        }));
+            .map(key => ({
+                type: 'output',
+                regex: new RegExp(`<${key}(.*)>`, 'g'),
+                replace: `<${key} class="${this.classMap[key]}" $1>`
+            }));
     };
 
     getHtml(text){

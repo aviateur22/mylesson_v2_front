@@ -53,7 +53,7 @@ export default {
             profilSubmitButtonText: 'enregistrer', 
 
             /** desactivation du bouton valider */
-            profilSubmitButtonDisable: false
+            profilSubmitButtonDisable: false,
         };
     },
     methods: {
@@ -79,14 +79,6 @@ export default {
             await this.$store.dispatch('actionHandler', {action: 'updateUserInformation', formData});
 
             this.disableSubmitButton = false;
-        },
-
-        /**
-         * Vérification du sex
-         * si sex === null, l'affichage sur la selectBox sera inactif
-         */
-        checkSexdata(){            
-            this.inputUserData.sex = this.inputUserData.sex ? this.inputUserData.sex : '';
         }
     },
     computed: {
@@ -94,10 +86,12 @@ export default {
         inputUserData(){
             return this.$store.getters.getUserProfilData;
         }
-    },    
-    created(){
-        /** vérification du sex */
-        this.checkSexdata();        
+    },
+    watch: {
+        /**vérification du sex de l'utilisateur */
+        inputUserData: function(newValue, oldValue){            
+            this.inputUserData.sex = this.inputUserData.sex ? this.inputUserData.sex : '';
+        }
     }
 };
 </script>

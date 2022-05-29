@@ -69,7 +69,7 @@ export default {
          */
         async getToken(){
             /**génération token  */
-            const token = await this.$store.dispatch('actionHandler', {action: 'createToken'});            
+            const token = await this.$store.dispatch('actionHandler', {action: 'createTokenLessonEditor'});            
 
             if(!token?.dataToken){
                 return;
@@ -103,6 +103,8 @@ export default {
 
             /** ajout du token */
             if(!this.$store.getters.getLessonEditor.token){
+                //reactivation du boutton
+                this.disableLoginButton = !this.disableLoginButton;
                 return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
             }
             

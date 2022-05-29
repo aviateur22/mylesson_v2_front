@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import LessonButtonContainer from '../components/lessonButtonContainer/ButtonLessonContainer.vue'
+import LessonButtonContainer from '../components/lessonButtonContainer/ButtonLessonContainer.vue';
 export default {
     components: {
         LessonButtonContainer

@@ -169,7 +169,7 @@ const actions = {
 
         await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData});
 
-        //commit('setFlashMessageMut', { error: false, message: 'la leçon est bien supprimée'});        
+        commit('setFlashMessageMut', { error: false, message: 'la leçon est bien supprimée'});        
 
         return router.push({name: 'HomePage'}); 
     },

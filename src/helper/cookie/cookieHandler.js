@@ -16,7 +16,6 @@
 //         })
 //         return res
 //     };
-
    
 //     /**
 //      * creation cookie
@@ -39,7 +38,6 @@
 
 //         }
 //     };
-
 
 //     /**
 //      * Suppression du cookie
