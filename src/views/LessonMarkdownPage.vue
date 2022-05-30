@@ -60,19 +60,25 @@ export default {
             sizeHideMarkdownButton: 1270,
 
             //thematiques des lecons
-            thematics: []
+            thematics: [],
+
+            token: undefined
         };
     },
     methods: {
         /**
          * récuperation d'un token pour le formulaire
          */
-        async getTokenForm(){
-            /** generation d'un nouveau de token */
-            const getToken = await this.$store.dispatch('actionHandler', {action: 'getTokenForm'});
+        async getToken(){
+            /**génération token  */
+            const token = await this.$store.dispatch('actionHandler', {action: 'createToken'});            
+
+            if(!token?.dataToken){
+                return;
+            }
 
             /** enregistre le token */
-            this.$store.commit('setTokenLesson', getToken.token);
+            this.token = token.dataToken;
         },
 
         /**
@@ -94,11 +100,19 @@ export default {
             /** recuperation formdata */
             const formData = new FormData(formLesson);
            
-            /**ajout de id utilisateur  */
+            /** ajout de id utilisateur  */
             formData.append('userId', userId);
 
-            /** ajout du token */
-            formData.append('formToken', this.$store.getters.getLessonEditor.token);       
+            /** ajout des tokens */
+            if(!this.token?.token){
+                //reactivation du boutton
+                this.disableLoginButton = !this.disableLoginButton;
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+            /** ajout de id utilisateur  */
+            formData.append('token', this.token.token);
+
+            /** */
            
             /** requete  */
             let saveLesson;
@@ -114,9 +128,6 @@ export default {
                  */               
                 saveLesson = await this.$store.dispatch('actionHandler', {action: 'updateLessonById', formData: Object.fromEntries(formData.entries()) });
             }
-
-            /** mise a jour du token */
-            await this.getTokenForm();
 
             //reactivation du boutton
             this.disableLoginButton = !this.disableLoginButton; 
@@ -139,11 +150,18 @@ export default {
             /** recuperation formdata */
             const formData = new FormData(formLesson);
 
-            /**ajout de id utilisateur  */
+            /** ajout de id utilisateur  */
             formData.append('userId', userId);
 
+            /** ajout des tokens */
+            if(!this.token?.token){
+                //reactivation du boutton
+                this.disableLoginButton = !this.disableLoginButton;
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+
             /** ajout du token */
-            formData.append('formToken', this.$store.getters.getLessonEditor.token);
+            formData.append('token', this.token.token); 
 
             /**données permettant d'effectuer l'action  */
             const data = {
@@ -193,7 +211,7 @@ export default {
          */
         async getAllthematics(){
             const thematics = await this.$store.dispatch('actionHandler', {action: 'getAllThematic'});            
-        },
+        },       
 
         displayHtmlRender(){
             this.displayHtml = !this.displayHtml;
@@ -204,7 +222,7 @@ export default {
         /** 
          * generation d'un token pour soumisson du formulaire
          */
-        await this.getTokenForm();   
+        await this.getToken();   
         
         /**
          * récupérarion des thématics
@@ -215,10 +233,10 @@ export default {
         window.addEventListener('resize', this.resizeAction);
         this.resizeAction();
     },
-    async beforeRouteLeave(to, from, next) {        
+    async beforeRouteLeave(to, from, next) { 
         try {            
             /**si la leçon pas enregistrée */
-            if(!this.$store.getters.getLessonEditor.isSave){
+            if(this.$store.getters.getUserIdent.id && !this.$store.getters.getLessonEditor.isSave){
                 /** chemin prevu de sortie demandé */
                 await this.confirmationRequestParameter(to.name);
                 /** message d'avertissement */

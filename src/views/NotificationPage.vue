@@ -45,7 +45,7 @@ export default {
             const formData = new FormData();
 
             /**token pour soumission */
-            formData.append('formToken', this.token);
+            formData.append('token', this.token.token);
 
             const notifications = await this.$store.dispatch('actionHandler', {action: 'getNotificationByUserId', formData: Object.fromEntries(formData.entries())});
 
@@ -65,22 +65,22 @@ export default {
         /** récupération d'un token */
         async getToken(){
             /**génération token  */
-            const token = await this.$store.dispatch('actionHandler', {action: 'getTokenForm'});
+            const token = await this.$store.dispatch('actionHandler', {action: 'createToken'});            
 
-            if(!token){
+            if(!token?.dataToken){
                 return;
             }
-
+                       
             /** token */
-            this.token = token.token;
+            this.token = token.dataToken;
         },
 
         /**mise a jour du nombre de notification */
         async notificationCount(){
-            const formData = new FormData();        
+            const formData = new FormData();       
 
             /**token pour soumission */
-            formData.append('formToken', this.token);
+            formData.append('token', this.token.token);
 
             /**mise a jour des notification */
             await this.$store.dispatch('actionHandler', { action: 'countNotificationUnreadByUserId', formData: Object.fromEntries(formData.entries()) });

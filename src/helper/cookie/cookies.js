@@ -1,9 +1,9 @@
-const cookieType = require('./cookieType');
+import cookieType from './cookieType';
 
 module.exports = [
 
-    {cookieTypeName:cookieType.navigation , cookieName:'_previousPage' ,cookieTime : ''},
-    {cookieTypeName:cookieType.auth , cookieName:'ident' ,cookieTime : ''},
-    {cookieTypeName:cookieType.test , cookieName:'nom' ,cookieTime : ''},
+    {cookieTypeName: cookieType.navigation, cookieName: '_previousPage', cookieTime: ''},
+    {cookieTypeName: cookieType.auth, cookieName: 'ident', cookieTime: ''},
+    {cookieTypeName: cookieType.test, cookieName: 'nom', cookieTime: ''},
 
 ];

@@ -35,6 +35,7 @@ const actions = {
 
         /** masque la fenetre de chargement */
         commit('setLoaderState', false);
+        
         return request.data;       
     }
 };

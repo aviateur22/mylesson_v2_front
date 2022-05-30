@@ -10,7 +10,7 @@ const routes = [
         name: utils.apiDataUrl.homePage.pathName,
         component: () => import(/* webpackChunkName: "about" */ '../views/HomePage.vue'),
         meta: {
-            title: 'my lesson | accueille',
+            title: 'my dev lesson | accueille',
             metaTags: []
         }
     },
@@ -27,7 +27,7 @@ const routes = [
         path: utils.apiDataUrl.loginPage.url,
         name: utils.apiDataUrl.loginPage.pathName,
         meta: {
-            title: 'my lesson | connexion',
+            title: 'my dev lesson | connexion',
             requiresUnauthenticated: true
         },
         component: function() {
@@ -39,7 +39,7 @@ const routes = [
         path: utils.apiDataUrl.signupPage.url,
         name: utils.apiDataUrl.signupPage.pathName,
         meta: {
-            title: 'my lesson | inscription',
+            title: 'my dev lesson | inscription',
             requiresUnauthenticated: true
         },
         component: function() {
@@ -51,7 +51,7 @@ const routes = [
         path: utils.apiDataUrl.homeAccountPage.url,
         name: utils.apiDataUrl.homeAccountPage.pathName,
         meta: {
-            title: 'my lesson | mon compte',
+            title: 'my dev lesson | mon compte',
             requiresAuth: true
         },
         component: function() {
@@ -71,9 +71,10 @@ const routes = [
 
     },
     {
-        path: utils.apiDataUrl.resetPasswordPage,
-        name: 'LostPassword',
+        path: utils.apiDataUrl.passwordLostPage.url,
+        name: utils.apiDataUrl.passwordLostPage.pathName,
         meta: {
+            title: 'my dev lesson | mot de passe perdu',
             requiresUnauthenticated: true
         },
         component: function() {
@@ -156,7 +157,7 @@ const routes = [
         path: utils.apiDataUrl.updateUserRolePage.url,
         name: utils.apiDataUrl.updateUserRolePage.pathName,
         meta: {
-            title: 'my lesson | ajout de privilège',
+            title: 'my dev lesson | ajout de privilège',
             requiresAdminPrivilege: true
         },
         component: function() {
@@ -168,7 +169,7 @@ const routes = [
         path: utils.apiDataUrl.lessonCheckPage.url,
         name: utils.apiDataUrl.lessonCheckPage.pathName,
         meta: {
-            title: 'my lesson | vérification des leçons',
+            title: 'my dev lesson | vérification des leçons',
             requiresAdminPrivilege: true
         },
         component: function() {
@@ -180,7 +181,7 @@ const routes = [
         path: utils.apiDataUrl.notificationPage.url,
         name: utils.apiDataUrl.notificationPage.pathName,
         meta: {
-            title: 'my lesson | Notifications',
+            title: 'my dev lesson | Notifications',
             requiresAuth: true
         },
         component: function() {
@@ -192,10 +193,11 @@ const routes = [
         path: utils.apiDataUrl.resetLostPasswordPage.url,
         name: utils.apiDataUrl.resetLostPasswordPage.pathName,
         meta: {
-            title: 'my lesson | mot de passe perdu',
+            title: 'my dev lesson | mot de passe perdu',
+            requiresUnauthenticated: true
         },
         component: function() {
-            return import(/* webpackChunkName: "about" */ '../views/ResetLostPassword.vue');
+            return import(/* webpackChunkName: "about" */ '../views/ResetLostPasswordPage.vue');
         }
     },
     {
@@ -214,7 +216,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     /** vérification  Page Title */
-    const DEFAULT_PAGE_TITLE = 'my lesson';
+    const DEFAULT_PAGE_TITLE = 'my dev lesson';
     document.title = to.matched.some(record => record.meta.title) ? to.meta.title : DEFAULT_PAGE_TITLE;
         
     if(to.matched.some(record => record.meta.requiresAuth)) {             

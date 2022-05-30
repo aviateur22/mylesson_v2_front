@@ -17,16 +17,18 @@ export default {
         async removeUserPrivilege(){
             /** formdata */
             const formData = new FormData();
+
+            /** ajout du token */
+            if(!this.token){
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
             
-            /**token */
-            formData.append('formToken', this.token);
+            formData.append('token', this.token.token);
             
-            await this.$store.dispatch('actionHandler', {action: 'removeUserPrivilegeByUserLogin', formData: Object.fromEntries(formData.entries())});
+            await this.$store.dispatch('actionHandler', {action: 'removeUserPrivilegeByUserLogin', formData: Object.fromEntries(formData.entries()) });
         }
-
     }
-
-}
+};
 </script>
 
 <style>

@@ -26,7 +26,7 @@
                     <InputToggleButton :title="'confirmation du mot de passe'" :placeHolder="'confirmation mot de passe'" :inputName="'confirmPassword'"/>                    
 
                     <!-- CGU -->
-                    <InputCheckboxCGU>
+                    <InputCheckboxCGU @cguStatus="cguStatus">
                         <!-- modal avec affichage de text  -->
                         <ModalComponent/>
                     </InputCheckboxCGU>
@@ -53,7 +53,13 @@ export default {
     data() {
         return {
             textSubmitButton: "s'inscrire",
-            disableLoginButton: false,            
+            disableLoginButton: false,
+
+            /**token */
+            token: undefined,
+
+            /**CGU */
+            checkboxCgu: false
         };
     },
     methods: {
@@ -66,15 +72,47 @@ export default {
             /** récuperation du formulaire */
             const data = new FormData(this.$refs.register);
 
+            /** ajout du token */
+            if(!this.token){
+                this.disableLoginButton = false;
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+            
+            data.append('token', this.token);
+
+            /** ajout du CGU */
+            data.append('checkboxCgu', this.checkboxCgu);
+
             /** creation d'un formData */                
             const formData = Object.fromEntries(data.entries());
 
             await this.$store.dispatch('actionHandler', { action: 'signupAction', formData });
 
             this.disableLoginButton = false;         
-        }
+        },
+
+        /** récupération d'un token */
+        async getVisitorToken(){
+            /**génération token  */
+            const token = await this.$store.dispatch('actionHandler', {action: 'createTokenVisitor'});
+            
+            if(!token?.dataToken){
+                return;
+            }
+            
+            /** token */   
+            this.token = token.dataToken.token;
+        },
         
-    } 
+        /** été de la checkbox du CGU */
+        cguStatus(checked){
+            this.checkboxCgu = checked;
+        }
+    },
+    async created() {
+        /**recuperation token visitor */
+        await this.getVisitorToken();
+    }
 
 };
 </script>

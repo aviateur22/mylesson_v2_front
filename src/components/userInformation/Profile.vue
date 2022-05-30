@@ -47,27 +47,31 @@ export default {
     components: {
         SubmitButton
     },
+    props: ['token'],
     data() {
         return {
             /** text bouton valider */
             profilSubmitButtonText: 'enregistrer', 
 
             /** desactivation du bouton valider */
-            profilSubmitButtonDisable: false
+            profilSubmitButtonDisable: false,
         };
     },
     methods: {
         /**
          * update du profil
          */
-        async updateUserProfil(e) {            
+        async updateUserProfil(e) {      
             this.disableSubmitButton = true;  
 
             /** formdata pour le formulaire */
             const data = new FormData(e.target);
 
             /** ajout du token */
-            data.append('formToken', this.$store.getters.getUserProfilData.token);
+            if(!this.token){
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+            data.append('token', this.token.token);
 
             /** creation d'un formData - middlware multer dans le back cause upload file*/
             const formData = Object.fromEntries(data.entries()); 
@@ -75,14 +79,6 @@ export default {
             await this.$store.dispatch('actionHandler', {action: 'updateUserInformation', formData});
 
             this.disableSubmitButton = false;
-        },
-
-        /**
-         * Vérification du sex
-         * si sex === null, l'affichage sur la selectBox sera inactif
-         */
-        checkSexdata(){            
-            this.inputUserData.sex = this.inputUserData.sex ? this.inputUserData.sex : '';
         }
     },
     computed: {
@@ -90,10 +86,12 @@ export default {
         inputUserData(){
             return this.$store.getters.getUserProfilData;
         }
-    },    
-    created(){
-        /** vérification du sex */
-        this.checkSexdata();        
+    },
+    watch: {
+        /**vérification du sex de l'utilisateur */
+        inputUserData: function(newValue, oldValue){            
+            this.inputUserData.sex = this.inputUserData.sex ? this.inputUserData.sex : '';
+        }
     }
 };
 </script>

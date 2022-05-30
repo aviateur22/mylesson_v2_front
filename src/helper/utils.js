@@ -28,8 +28,8 @@ const utils = {
     adminApi: {
         getUsersUpgradeRoleRequest: { endPoint: '/api/admin/upgrade-request', method: 'get'},
         updateUserRole: { endPoint: '/api/admin/upgrade-user/:userId', method: 'patch'},
-        removeUserPrivilegeByUserLogin: { endPoint: '/api/admin/remove-privilege/:userLogin', method: 'post'},   
-        removeUserPrivilegeByUserId: { endPoint: '/api/admin/remove-privilege/:userId', method: 'post'},
+        removeUserPrivilegeByUserLogin: { endPoint: '/api/admin/remove-privilege/by-user-login/:userLogin', method: 'post'},   
+        removeUserPrivilegeByUserId: { endPoint: '/api/admin/remove-privilege/by-user-id/:userId', method: 'post'},
         getAbusiveLesson: { endPoint: '/api/admin/abusive-content', method: 'get'},
         deleteUserByLogin: { endPoint: '/api/admin/delete-user/:userLogin', method: 'post'},
         deleteUserById: { endPoint: '/api/admin/delete-user/:userId', method: 'post'},
@@ -78,6 +78,12 @@ const utils = {
         countNotificationByUserId: {endPoint: '/api/notifications/notification-by-user/count/:userId', method: 'post'},
         readNotificationById: { endPoint: '/api/notifications/read/:notificationId', method: 'patch'}
     },
+    /**token  */
+    tokenApi: {
+        createTokenForm: { endPoint: 'api/tokens/:userId', method: 'post'},
+        createTokenVisitor: { endPoint: 'api/tokens/visitor', method: 'get'},
+        createTokenLessonEditor: { endPoint: 'api/tokens/lesson-editor/:userId', method: 'post' }
+    },
     /**liens des path - url pour l'affichage des pages*/
     apiDataUrl: {
         /** page principal - accueil */
@@ -122,8 +128,11 @@ const utils = {
         /** page de notification */
         notificationPage: { url: '/users/notification', pathName: 'NotificationPage'},
 
+        /** page pour envoyer un eamil de réinitialisation de mot de passe */
+        passwordLostPage: { url: '/lost-password', pathName: 'passwordLostPage' },
+
         /** page réinitialisation mot de passe perdu */
-        resetLostPasswordPage: { url: '/users/:userId/reset/:reset/lost-password/token/:token', pathName: 'ResetLostPasswordPage'},
+        resetLostPasswordPage: { url: '/users/reset-password/user/:userId/data/:data/param/:param', pathName: 'ResetLostPasswordPage'},
 
         /** article static footer - ma presentation */
         abouteMe: { slug: 'about-me' },
@@ -153,7 +162,7 @@ const utils = {
         
         resetDatabasePage: '/users/super-admin/reset-database',
         deleteAccountPage: '/users/delete-account',
-        resetPasswordPage: '/reset-password',
+        
     }
 };
 export default utils;

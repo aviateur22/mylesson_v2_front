@@ -1,6 +1,6 @@
 <template>
 <!-- contient les module d'administration de la lecon -->
-  <div v-if="this.$store.getters.getUserIdent.userAuthenticated && this.$store.getters.getUserIdent.login != this.$store.getters.getLessonEditor.autor" class="admin__main-container"> 
+  <div v-if="(this.$store.getters.getUserIdent.userAuthenticated && this.$store.getters.getUserIdent.login != this.$store.getters.getLessonEditor.autor) || this.$store.getters.getUserIdent.roleId >= adminLevel" class="admin__main-container"> 
         <div class="admin__container">
             <!--demande l'admin  -->
             <section v-if="this.$store.getters.getUserIdent.roleId >= userLevel" class="admin__section">
@@ -47,7 +47,7 @@ export default {
         CorverLessonComponent,
         DeleteLessonComponent,
         DeleteUserComponent,
-        RemoveUserPrivilegeComponent
+        RemoveUserPrivilegeComponent    
     },
     data(){
         return {
@@ -62,8 +62,15 @@ export default {
         async getToken(){
             /** genération token si utilisateur authentifié */
             if(this.$store.getters.getUserIdent.userAuthenticated){
-                const token = await this.$store.dispatch('actionHandler', {action: 'getTokenForm'});     
-                this.token = token.token;                   
+                /**génération token  */
+                const token = await this.$store.dispatch('actionHandler', {action: 'createToken'});            
+
+                if(!token?.dataToken){
+                    return;
+                }
+                        
+                /** token */
+                this.token = token.dataToken;                   
             }            
         }
     },

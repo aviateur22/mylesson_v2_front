@@ -36,38 +36,6 @@ const getters = {
 
 const actions = {
 
-    /**
-     * genration d'un token pour une nouvelle lecon
-     */
-    async getTokenForm({dispatch, getters, commit}, data){
-        /** id de l'utilisateur */     
-        let userId = getters.getUserIdent.id;
-
-        /** vérification de userId */
-        if(!userId){
-            userId = data.userId;
-        }   
-
-        /**Vérification de userId */
-        if(!userId || isNaN(userId)){
-            return;
-        }
-
-        /** endpoint de la requete*/
-        const endPoint = utils.lessonApi.getTokenByUserId.endPoint.replace(':userId', userId);
-
-        /** methode de la requete */
-        const method = utils.lessonApi.getTokenByUserId.method;
-
-        const token = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method });
-
-        if(!token){
-            return null;
-        }
-        
-        return token;
-    },
-
     /** recuperation par slug d'un lecon
      * @property {Objec} param.dispatch - action
      * @property {Objec} param.commit - mutation
@@ -290,10 +258,15 @@ const actions = {
         /** methode de la requete */
         const method = utils.lessonApi.deleteLessonById.method;
 
-        await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData});       
-
+        const deleteLesson = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData});       
+      
+        if(!deleteLesson){
+            return null;           
+        } 
         commit('setDeleteLesson', {});
-        commit('setFlashMessageMut', { error: false, message: 'la lecon est bien supprimée'});
+        commit('setFlashMessageMut', { error: false, message: 'la leçon est bien supprimée'});
+
+        /**mise a jour des lecon */
         return await dispatch('actionHandler', {action: 'getLessonByUserId'});
     },
 

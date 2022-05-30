@@ -20,6 +20,7 @@ import markdownPresentation from './module/footerPage/markdownPresentation';
 import thematic from './module/thematic';
 import admin from './module/admin';
 import notification from './module/notification';
+import token from './module/token';
 
 export default new Vuex.Store({
     plugins: [createPersistedState({
@@ -45,6 +46,7 @@ export default new Vuex.Store({
         markdownPresentation,
         thematic,
         admin,
-        notification
+        notification,
+        token
     }
 });

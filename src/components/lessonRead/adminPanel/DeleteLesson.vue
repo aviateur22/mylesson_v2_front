@@ -27,7 +27,12 @@ export default {
             /**ajout de id utilisateur  */
             formData.append('userId', userId);
 
-            formData.append('formToken', this.token);
+            /** ajout du token */
+            if(!this.token){
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+            
+            formData.append('token', this.token.token);
 
             await this.$store.dispatch('actionHandler', {action: 'adminDeleteLessonById', formData: Object.fromEntries(formData.entries())});
         },        

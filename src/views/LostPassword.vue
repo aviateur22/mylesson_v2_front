@@ -38,35 +38,52 @@ export default {
             /**bloque le bouton */
             disableLoginButton: false,
 
+            /**token pour soumission formulaire */
             token: undefined
         };
     },
     methods: {
+        /**
+         * envoie de l'email pour réinitialisation du ot de passe
+         */
         async sendMail(){
             this.disableLoginButton = true;
 
             const formData = new FormData();
 
-            /** token */
-            formData.append('formToken', this.token);
+            /** ajout du token */
+            if(!this.token){
+                this.disableLoginButton = false;
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+            
+            formData.append('token', this.token);
+            
+            const sendMail = await this.$store.dispatch('actionHandler',
+                {
+                    action: 'sendEmailPasswordLost',
+                    email: this.email,
+                    formData: Object.fromEntries(formData.entries())
+                });
 
-            const sendMail = await this.$store.dispatch('actionHandler', { action: 'sendEmailPasswordLost', email: this.email, formData: Object.fromEntries(formData.entries())});
             this.disableLoginButton = false;
         },
 
-        /** récupération d'un token */
-        async getToken(){
+        /** récupération d'un token visiteur */
+        async getVisitorToken(){
             /**génération token  */
-            const token = await this.$store.dispatch('actionHandler', {action: 'getTokenForm'});
-
-            if(!token){
+            const token = await this.$store.dispatch('actionHandler', {action: 'createTokenVisitor'});
+            
+            if(!token?.dataToken){
                 return;
             }
-
-            /** token */
-            this.token = token.token;
+            
+            /** token */   
+            this.token = token.dataToken.token;
         }
-
+    },
+    async created(){
+        await this.getVisitorToken();
     }
 };
 </script>

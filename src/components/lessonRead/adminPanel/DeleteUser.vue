@@ -18,8 +18,12 @@ export default {
             /** formdata */
             const formData = new FormData();
             
-            /**token */
-            formData.append('formToken', this.token);
+            /** ajout du token */
+            if(!this.token){
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+            
+            formData.append('token', this.token.token);
 
             /**suppression user */
             await this.$store.dispatch('actionHandler', {action: 'deleteUserByLogin', formData: Object.fromEntries(formData.entries())});

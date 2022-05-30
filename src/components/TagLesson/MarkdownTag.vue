@@ -7,7 +7,7 @@
                   <!-- input pour marquer son tag -->
                   <div class="tag__input-container">     
                       <transition-group name="tag-selection">
-                          <MarkdownTagSelection class="tag-selection" :tag="tag" @click="removeSelectedTag(tag)" v-for="(tag, id) in selectedTags" :key="id"/>
+                          <MarkdownTagSelection class="tag-selection" :tag="tag" @click="removeSelectedTag(tag)" v-for="(tag) in selectedTags" :key="tag"/>
                       </transition-group>                        
                         <input placeholder="tag(s)" class="form__input" v-model="tag"  @keyup="findTagByName" type="text" name="tag" id="tag">
 
@@ -29,7 +29,7 @@
                       </button>
                       <div class="tag__proposal">
                             <!-- tag -->
-                            <MarkdownTagProposal ref="tag" :tag="tag" @click="addSelectedTag(tag)" v-for="(tag, id) in tags" :key="id"/>
+                            <MarkdownTagProposal ref="tag" :tag="tag" @click="addSelectedTag(tag)" v-for="(tag) in tags" :key="tag"/>
                       </div>                      
                   </div>
                 </section>

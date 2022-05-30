@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import LessonButtonContainer from '../components/lessonButtonContainer/ButtonLessonContainer.vue'
+import LessonButtonContainer from '../components/lessonButtonContainer/ButtonLessonContainer.vue';
 export default {
     components: {
         LessonButtonContainer
@@ -34,6 +34,11 @@ export default {
     },
     created(){
         this.getLessonByUserId();
+    },
+    beforeRouteLeave(to, from, next){
+        /**reset du state deletelesson */
+        this.$store.commit('setDeleteLessonToken', {});
+        next();
     }
 };
 </script>

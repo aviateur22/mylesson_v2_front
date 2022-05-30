@@ -99,7 +99,7 @@ export default {
         text-align: justify;       
     }
 
-    .article__content::v-deep .article__strong{
+    .article__content::v-deep(.article__strong){
         font-weight: bolder !important;
     }
-</style>
+</style>    

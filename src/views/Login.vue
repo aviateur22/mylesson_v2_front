@@ -37,9 +37,10 @@ export default {
     },
     data() {
         return {
-            resetPasswordPageUrL: utils.apiDataUrl.resetPasswordPage,
+            resetPasswordPageUrL: utils.apiDataUrl.passwordLostPage.url,
             textSubmitButton: 'se connecter',
-            disableLoginButton: false
+            disableLoginButton: false,
+            token: undefined
         };
     },
     methods: {
@@ -51,17 +52,41 @@ export default {
                 //désactivation du bouton
                 this.disableLoginButton = true;
 
-                /** creation d'un formData */                
-                const formData = Object.fromEntries(new FormData(e.target).entries());            
+                const formData = new FormData(e.target);
 
-                await this.$store.dispatch('actionHandler', { action: 'loginAction', formData });
+                /** ajout du token */
+                if(!this.token){
+                    this.disableLoginButton = false;
+                    return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+                }
+                
+                formData.append('token', this.token);                  
+
+                await this.$store.dispatch('actionHandler', { action: 'loginAction', formData: Object.fromEntries(formData.entries()) });
                 //réactivation du bouton
                 this.disableLoginButton = false;
             } catch (error) {
                 console.log(error);
                 this.disableLoginButton = false;
             }
+        },
+
+        /** récupération d'un token visiteur */
+        async getVisitorToken(){
+            /**génération token  */
+            const token = await this.$store.dispatch('actionHandler', {action: 'createTokenVisitor'});
+            
+            if(!token?.dataToken){
+                return;
+            }
+            
+            /** token */   
+            this.token = token.dataToken.token;
         }
+    },
+    async created(){
+        /**génération d'un token */
+        await this.getVisitorToken();
     }
 };
 </script>
