@@ -75,7 +75,7 @@ export default {
             }
 
             /** enregistre le token */
-            this.$store.commit('setDeleteLessonToken', token.dataToken);
+            //this.$store.commit('setDeleteLessonToken', token.dataToken);
 
             /** recuperation formdata */
             const formData = new FormData();
@@ -87,8 +87,7 @@ export default {
             formData.append('userId', userId);
 
             /** ajout du token */
-            const deleteLessonToken = this.$store.getters.getDeleteLesson.token;
-            
+            //const deleteLessonToken = this.$store.getters.getDeleteLesson.token;            
             formData.append('token', token.dataToken.token);
 
             /**données permettant d'effectuer l'action  */

@@ -34,6 +34,11 @@ export default {
     },
     created(){
         this.getLessonByUserId();
+    },
+    beforeRouteLeave(to, from, next){
+        /**reset du state deletelesson */
+        this.$store.commit('setDeleteLessonToken', {});
+        next();
     }
 };
 </script>
