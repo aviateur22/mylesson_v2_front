@@ -31,7 +31,6 @@ export default {
             }
             
             formData.append('token', this.token.token);
-            formData.append('secret', this.token.secret);
 
             await this.$store.dispatch('actionHandler', {action: 'adminRequest', formData: Object.fromEntries(formData.entries())});            
         }

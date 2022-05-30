@@ -90,7 +90,6 @@ export default {
             const deleteLessonToken = this.$store.getters.getDeleteLesson.token;
             
             formData.append('token', token.dataToken.token);
-            formData.append('secret', token.dataToken.secret);
 
             /**données permettant d'effectuer l'action  */
             const data = {

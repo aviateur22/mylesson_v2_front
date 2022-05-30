@@ -36,7 +36,7 @@ export default {
         SubmitButton,
         MediaIconeComponent
     },
-    props: ['data'],
+    props: ['data', 'token'],
     data(){
         return {
             /** image media reseau sicaiux */
@@ -99,11 +99,10 @@ export default {
             formData.append('mediaId', this.data.id);
 
             /** ajout du token */
-            if(!this.$store.getters.getUserProfilData?.token){
+            if(!this.token){
                 return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
             }
-            formData.append('token', this.$store.getters.getUserProfilData.token.token);
-            formData.append('secret', this.$store.getters.getUserProfilData.token.secret);
+            formData.append('token', this.token.token);
 
             formData = Object.fromEntries(formData.entries());
             
@@ -129,11 +128,10 @@ export default {
             }
 
             /** ajout du token */
-            if(!this.$store.getters.getUserProfilData?.token){
+            if(!this.token){
                 return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
             }
-            formData.append('token', this.$store.getters.getUserProfilData.token.token);
-            formData.append('secret', this.$store.getters.getUserProfilData.token.secret);
+            formData.append('token', this.token.token);
 
             /** ajout du medialinkId */
             formData.append('mediaLinkId', mediaLinkId);

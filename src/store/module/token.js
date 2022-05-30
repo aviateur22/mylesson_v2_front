@@ -88,7 +88,7 @@ const actions = {
         }
 
         return token;
-    }
+    }    
 };
 
 const mutations = {

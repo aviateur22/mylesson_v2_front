@@ -11,7 +11,7 @@
         <!-- upgrade du status -->
         <div v-if="this.getUserRole <= 1" class="upgrade__container">
             <div class="form__button-container">
-                <SubmitButton :disableLoginButton="this.requestUpgradeRole" @click="requestUpgrade" textSubmitButton="devenir éditeur de leçons"/>
+                <SubmitButton :disableLoginButton="this.requestUpgradeRole" @click.prevent="requestUpgrade" textSubmitButton="devenir éditeur de leçons"/>
             </div>
             <div v-if="this.requestUpgradeRole === true">
                 <p class="role__upgrade-text"> votre demande est prise en compte </p>
@@ -33,19 +33,19 @@ export default {
           
         };
     },
+    props: ['token'],
     methods: {
         /**demande pour éditer des lecons */
-        async requestUpgrade(){
+        async requestUpgrade(){            
             /** formdata pour le formulaire */
             const data = new FormData();
 
             /** ajout du token */
-            if(!this.$store.getters.getUserProfilData?.token){
+            if(!this.token){
                 return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
             }
             
-            data.append('token', this.$store.getters.getUserProfilData.token.token);
-            data.append('secret', this.$store.getters.getUserProfilData.token.secret);
+            data.append('token', this.token.token);
 
             const formData = Object.fromEntries(data.entries());  
             /**demande d'édition */

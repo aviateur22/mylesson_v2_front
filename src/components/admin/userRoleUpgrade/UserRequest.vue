@@ -44,7 +44,6 @@ export default {
             }
             
             formData.append('token', this.token.token);
-            formData.append('secret', this.token.secret);
 
             /**résulate de la requete */
             let resultRequest;

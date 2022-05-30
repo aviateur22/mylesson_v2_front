@@ -4,19 +4,19 @@
             <!-- boutons de navigation -->
             <section class="information__form-container">                 
                 <!-- form profile utilisateur-->
-                <ProfileComponent/>
+                <ProfileComponent :token="token"/>
 
                 <!-- Role utilisateur -->
-                <UserRoleComponent/>
+                <UserRoleComponent :token="token"/>
 
                 <!-- form pour modification avatar -->
-                <AvatarComponent ref="imageComponent"/>            
+                <AvatarComponent ref="imageComponent" :token="token"/>            
 
                 <!-- from pour changement du mot de passe -->
-                <PasswordComponent/>
+                <PasswordComponent :token="token"/>
 
                 <!-- form pour link media -->                
-                <LinkMediaComponent v-for="(link, i) in mediaLinks" :data="link" :key="i"/>
+                <LinkMediaComponent v-for="(link, i) in mediaLinks" :data="link" :key="i" :token="token"/>
             </section>
         </div> 
     </div>  
@@ -42,11 +42,29 @@ export default {
             /** info utilisateur */
             user: {},
 
-            /**links */
-            mediaLinks: []
+            /** links */
+            mediaLinks: [],
+
+            /**token */
+            token: undefined
         };
     },
     methods: {
+        /**
+         * récuperation d'un token pour le formulaire
+         */
+        async getToken(){
+            /**génération token  */
+            const token = await this.$store.dispatch('actionHandler', {action: 'createToken'});            
+
+            if(!token?.dataToken){
+                return;
+            }
+
+            /** enregistre le token */
+            this.token = token.dataToken;
+        },
+
         /**
         * récupération des infos utilisateur
         */
@@ -60,6 +78,8 @@ export default {
             }
             /** parametre user */
             this.user = userInformation;
+
+            console.log(userInformation)
 
             this.getImageUser();
         },
@@ -93,6 +113,9 @@ export default {
         }
     },
     async created(){
+        /**token pour formulaire */
+        await this.getToken();
+
         /** recuperation des infos utilsateur */
         await this.getUserInformation();
        

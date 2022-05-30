@@ -47,6 +47,7 @@ export default {
     components: {
         SubmitButton
     },
+    props: ['token'],
     data() {
         return {
             /** text bouton valider */
@@ -60,18 +61,18 @@ export default {
         /**
          * update du profil
          */
-        async updateUserProfil(e) {            
+        async updateUserProfil(e) {    
+            console.log(this.token)        
             this.disableSubmitButton = true;  
 
             /** formdata pour le formulaire */
             const data = new FormData(e.target);
 
             /** ajout du token */
-            if(!this.$store.getters.getUserProfilData?.token){
+            if(!this.token){
                 return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
             }
-            data.append('token', this.$store.getters.getUserProfilData.token.token);
-            data.append('secret', this.$store.getters.getUserProfilData.token.secret);
+            data.append('token', this.token.token);
 
             /** creation d'un formData - middlware multer dans le back cause upload file*/
             const formData = Object.fromEntries(data.entries()); 

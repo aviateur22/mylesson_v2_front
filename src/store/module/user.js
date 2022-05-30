@@ -80,7 +80,6 @@ const actions = {
 
         /**token pour soumission */
         formData.append('token', token.dataToken.token);
-        formData.append('secret', token.dataToken.secret);
 
         /**mise a jour des notification */
         await dispatch('actionHandler', { action: 'countNotificationUnreadByUserId', userId: loginResult.id, formData: Object.fromEntries(formData.entries()) });     

@@ -33,7 +33,6 @@ export default {
             }
             
             formData.append('token', this.token.token);
-            formData.append('secret', this.token.secret);
 
             await this.$store.dispatch('actionHandler', {action: 'adminDeleteLessonById', formData: Object.fromEntries(formData.entries())});
         },        

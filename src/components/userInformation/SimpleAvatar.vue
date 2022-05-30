@@ -34,6 +34,7 @@ export default {
     components: {
         SubmitButton
     },
+    props: ['token'],
     data() {
         return {
             /** text boutton enregistrement avatar */
@@ -60,12 +61,11 @@ export default {
             const formData = new FormData(e.target);       
 
             /** ajout du token */
-            if(!this.$store.getters.getUserProfilData?.token){
+            if(!this.token){
                 return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
             }
             
-            formData.append('token', this.$store.getters.getUserProfilData.token.token);
-            formData.append('secret', this.$store.getters.getUserProfilData.token.secret);
+            formData.append('token', this.token.token);
 
             const updateProfilImage = await this.$store.dispatch('actionHandler', {action: 'updateImageByUserId', formData});
 

@@ -24,7 +24,6 @@ export default {
             }
             
             formData.append('token', this.token.token);
-            formData.append('secret', this.token.secret);
 
             /**suppression user */
             await this.$store.dispatch('actionHandler', {action: 'deleteUserByLogin', formData: Object.fromEntries(formData.entries())});

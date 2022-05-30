@@ -60,7 +60,9 @@ export default {
             sizeHideMarkdownButton: 1270,
 
             //thematiques des lecons
-            thematics: []
+            thematics: [],
+
+            token: undefined
         };
     },
     methods: {
@@ -69,14 +71,14 @@ export default {
          */
         async getToken(){
             /**génération token  */
-            const token = await this.$store.dispatch('actionHandler', {action: 'createTokenLessonEditor'});            
+            const token = await this.$store.dispatch('actionHandler', {action: 'createToken'});            
 
             if(!token?.dataToken){
                 return;
             }
 
             /** enregistre le token */
-            this.$store.commit('setTokenLesson', token.dataToken);
+            this.token = token.dataToken;
         },
 
         /**
@@ -98,18 +100,19 @@ export default {
             /** recuperation formdata */
             const formData = new FormData(formLesson);
            
-            /**ajout de id utilisateur  */
+            /** ajout de id utilisateur  */
             formData.append('userId', userId);
 
-            /** ajout du token */
-            if(!this.$store.getters.getLessonEditor.token){
+            /** ajout des tokens */
+            if(!this.token?.token){
                 //reactivation du boutton
                 this.disableLoginButton = !this.disableLoginButton;
                 return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
             }
-            
-            formData.append('token', this.$store.getters.getLessonEditor.token.token);
-            formData.append('secret', this.$store.getters.getLessonEditor.token.secret); 
+            /** ajout de id utilisateur  */
+            formData.append('token', this.token.token);
+
+            /** */
            
             /** requete  */
             let saveLesson;
@@ -147,12 +150,18 @@ export default {
             /** recuperation formdata */
             const formData = new FormData(formLesson);
 
-            /**ajout de id utilisateur  */
+            /** ajout de id utilisateur  */
             formData.append('userId', userId);
 
+            /** ajout des tokens */
+            if(!this.token?.token){
+                //reactivation du boutton
+                this.disableLoginButton = !this.disableLoginButton;
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
+            }
+
             /** ajout du token */
-            formData.append('token', this.$store.getters.getLessonEditor.token.token);
-            formData.append('secret', this.$store.getters.getLessonEditor.token.secret); 
+            formData.append('token', this.token.token); 
 
             /**données permettant d'effectuer l'action  */
             const data = {
@@ -202,7 +211,7 @@ export default {
          */
         async getAllthematics(){
             const thematics = await this.$store.dispatch('actionHandler', {action: 'getAllThematic'});            
-        },
+        },       
 
         displayHtmlRender(){
             this.displayHtml = !this.displayHtml;
@@ -224,10 +233,11 @@ export default {
         window.addEventListener('resize', this.resizeAction);
         this.resizeAction();
     },
-    async beforeRouteLeave(to, from, next) {        
+    async beforeRouteLeave(to, from, next) { 
+        console.log('ici');    
         try {            
             /**si la leçon pas enregistrée */
-            if(!this.$store.getters.getLessonEditor.isSave){
+            if(this.$store.getters.getUserIdent.id && !this.$store.getters.getLessonEditor.isSave){
                 /** chemin prevu de sortie demandé */
                 await this.confirmationRequestParameter(to.name);
                 /** message d'avertissement */

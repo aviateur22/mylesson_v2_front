@@ -46,7 +46,6 @@ export default {
 
             /**token pour soumission */
             formData.append('token', this.token.token);
-            formData.append('secret', this.token.secret);
 
             const notifications = await this.$store.dispatch('actionHandler', {action: 'getNotificationByUserId', formData: Object.fromEntries(formData.entries())});
 
@@ -82,7 +81,6 @@ export default {
 
             /**token pour soumission */
             formData.append('token', this.token.token);
-            formData.append('secret', this.token.secret);
 
             /**mise a jour des notification */
             await this.$store.dispatch('actionHandler', { action: 'countNotificationUnreadByUserId', formData: Object.fromEntries(formData.entries()) });
