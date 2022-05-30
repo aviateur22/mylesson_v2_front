@@ -12,7 +12,7 @@
             <section class="nav__title">
                 <div class="nav__title-container">
                     <h1 class="nav__title">                        
-                        <router-link class="nav__navlink-item nav--title" to="/">My Lesson</router-link>
+                        <router-link class="nav__navlink-item nav--title" to="/">My Dev Lesson</router-link>
                     </h1>
                 </div>
             </section>
