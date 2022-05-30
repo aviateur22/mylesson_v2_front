@@ -77,9 +77,7 @@ export default {
                 return;
             }
             /** parametre user */
-            this.user = userInformation;
-
-            console.log(userInformation)
+            this.user = userInformation;            
 
             this.getImageUser();
         },

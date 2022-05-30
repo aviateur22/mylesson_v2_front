@@ -234,7 +234,6 @@ export default {
         this.resizeAction();
     },
     async beforeRouteLeave(to, from, next) { 
-        console.log('ici');    
         try {            
             /**si la leçon pas enregistrée */
             if(this.$store.getters.getUserIdent.id && !this.$store.getters.getLessonEditor.isSave){

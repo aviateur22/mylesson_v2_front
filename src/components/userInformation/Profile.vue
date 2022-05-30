@@ -61,8 +61,7 @@ export default {
         /**
          * update du profil
          */
-        async updateUserProfil(e) {    
-            console.log(this.token)        
+        async updateUserProfil(e) {      
             this.disableSubmitButton = true;  
 
             /** formdata pour le formulaire */
