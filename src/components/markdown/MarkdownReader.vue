@@ -15,11 +15,36 @@
 <script>
 
 export default {
-    name: 'MarkdownReader',    
-    computed: {
-        lessonHtml(){
-            return this.$store.getters.getLessonEditor.htmlOutput;
+    name: 'MarkdownReader', 
+    data(){
+        return {
+            /**lesson au format html */
+            lessonHtml: undefined
+        };
+    },
+    methods: {
+        /**transformation markdown en html */
+        async getHtmlFromMarkdown(){
+            /**text markdown */
+            const markdownText = this.$store.getters.getLessonEditor.markdownText;
+            
+            const formData = new FormData();
+            formData.append('markdownText', markdownText);
+
+            /**requete pour convertir le markdwon */
+            const html = await this.$store.dispatch('actionHandler', { action: 'lessonHtmlFromMarkdown', formData: Object.fromEntries(formData.entries())});
+            
+            /**text au format html */
+            this.lessonHtml = html.content;
         }
+    },  
+    computed: {
+        // lessonHtml(){
+        //     return this.$store.getters.getLessonEditor.htmlOutput;
+        // }
+    },
+    created(){
+        this.getHtmlFromMarkdown();
     }
 };
 </script>

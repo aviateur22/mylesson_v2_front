@@ -3,8 +3,8 @@
  * Donnée API
  */
 const utils = {
-    baseUri: 'https://mylessonapp.herokuapp.com',
-    //baseUri: 'http://localhost:3000',
+    //baseUri: 'https://mylessonapp.herokuapp.com',
+    baseUri: 'http://localhost:3000',
 
     /** utilisateurs */
     userApi: {        
@@ -48,6 +48,7 @@ const utils = {
         getAllLesson: { endPoint: '/api/lessons', method: 'get' },
         getLessonByTag: { endPoint: '/api/lessons/filter/tags', method: 'post' },   
         getLessonBySlug: { endPoint: '/api/lessons/slug/:slug', method: 'get' },   
+        getlessonHtmlFromMarkdown: { endPoint: '/api/lessons/converter/get-html', method: 'post' },  
         adminRequest: { endPoint: '/api/lessons/admin-request/:lessonId', method: 'post'}
     },
     /**tags */

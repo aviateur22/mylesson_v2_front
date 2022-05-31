@@ -59,16 +59,12 @@ const actions = {
         if(!getLesson){
             return router.push({name: '404'});
         }
-
-        /** Markdown pour le html */
-        const markdownHandler = new MarkdownHandler();
-
+             
         /**Requete ok */
         commit('setLesson', { 
             id: getLesson.id,
             title: getLesson.title,
-            markdownText: getLesson.content,
-            htmlOutput: markdownHandler.getHtml(getLesson.content),
+            htmlOutput: getLesson.html,            
             isSave: true,
             tags: getLesson.tags,
             autor: getLesson.autor,
@@ -379,6 +375,22 @@ const actions = {
         } else {
             return commit('setFlashMessageMut', { error: false, message: 'annulation du signalement pour ce contenu'});
         }            
+    },
+
+    /**
+     * Transforme du markdown en html
+     * @param {*} param0 
+     */
+    async lessonHtmlFromMarkdown({dispatch}, data){
+        /** endpoint de la requete*/
+        const endPoint = utils.lessonApi.getlessonHtmlFromMarkdown.endPoint;
+
+        /** methode de la requete */
+        const method = utils.lessonApi.getlessonHtmlFromMarkdown.method;
+
+        const html = await dispatch('actionHandler', {action: 'axiosFetchAction', endPoint, method, formData: data.formData}); 
+        
+        return html;
     },
 
     /**

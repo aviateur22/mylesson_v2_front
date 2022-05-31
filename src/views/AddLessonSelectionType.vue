@@ -9,7 +9,7 @@
                 <div class="lesson__button-container">
                     <SubmitButton @click="createLessonClick" :disableLoginButton='disableLoginButton' :textSubmitButton='textSubmitButton'/>
                 </div>              
-                <div class="lesson__button-container">
+                <div v-if="displayAddFile" class="lesson__button-container">
                     <router-link class="button button--primary" :to="utils.apiDataUrl.uploadFilePage">enregistrer une leçon</router-link>
                 </div>
           </section>
@@ -27,6 +27,8 @@ export default {
     },
     data() {
         return {
+            /**masque le bouton add file */
+            displayAddFile: false,
             utils: utils,
             disableLoginButton: false,
             textSubmitButton: 'Créer une leçon en Markdown'

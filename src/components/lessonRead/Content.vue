@@ -15,14 +15,8 @@ export default {
     name: 'content',
     computed: {
         /** données de la lecon */
-        lesson(){
-            return this.$store.getters.getLessonEditor;
-        },
-        /** contenu */
         content(){
-            /** Markdown pour le html */
-            const markdownHandler = new MarkdownHandler();
-            return markdownHandler.getHtml(this.lesson.markdownText);  
+            return this.$store.getters.getLessonEditor.htmlOutput;
         }
     }
 };
