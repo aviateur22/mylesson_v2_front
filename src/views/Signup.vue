@@ -5,7 +5,7 @@
                 <h2 class="form__title">S'inscrire</h2>
             </div>
             <div class="form__container-control">          
-                <form ref="register" class="form">            
+                <form @submit.prevent="signupAction" ref="register" class="form">            
                     <div class="form__group">
                         <label for="login" class="form__label">login</label>
                         <div class="form__control">
@@ -15,7 +15,7 @@
                     <div class="form__group">
                         <label for="email" class="form__label">email</label>
                         <div class="form__control">
-                            <input class="form__input" type="text" placeholder="email" name="email">
+                            <input class="form__input" type="email" placeholder="toto@hotmail.fr" name="email">
                         </div>
                     </div>                   
                    
@@ -30,7 +30,7 @@
                         <!-- modal avec affichage de text  -->
                         <ModalComponent/>
                     </InputCheckboxCGU>
-                <SubmitButton @click.prevent="signupAction" :disableLoginButton='disableLoginButton' :textSubmitButton='textSubmitButton'/>
+                <SubmitButton :disableLoginButton='disableLoginButton' :textSubmitButton='textSubmitButton'/>
             </form> 
       </div>
     </div> 
