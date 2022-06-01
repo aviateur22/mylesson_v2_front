@@ -9,7 +9,7 @@
                     <div class="form__group">
                         <label for="email" class="form__label">email</label>
                         <div class="form__control">
-                            <input class="form__input" type="text" placeholder="toto@hotmail.fr" name="email">
+                            <input class="form__input" type="email" placeholder="toto@hotmail.fr" name="email">
                         </div>
                     </div>
                     
@@ -48,27 +48,23 @@ export default {
          * Recuperation données du Formulaire et Login Action du client
          */
         async loginAction(e) {    
-            try {
-                //désactivation du bouton
-                this.disableLoginButton = true;
+            //désactivation du bouton
+            this.disableLoginButton = true;
 
-                const formData = new FormData(e.target);
+            const formData = new FormData(e.target);
 
-                /** ajout du token */
-                if(!this.token){
-                    this.disableLoginButton = false;
-                    return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
-                }
-                
-                formData.append('token', this.token);                  
-
-                await this.$store.dispatch('actionHandler', { action: 'loginAction', formData: Object.fromEntries(formData.entries()) });
-                //réactivation du bouton
+            /** ajout du token */
+            if(!this.token){
                 this.disableLoginButton = false;
-            } catch (error) {
-                console.log(error);
-                this.disableLoginButton = false;
+                return this.$store.commit('setFlashMessageMut', { error: true, message: 'impossible d\'accéder au token'});
             }
+            
+            formData.append('token', this.token);                  
+
+            await this.$store.dispatch('actionHandler', { action: 'loginAction', formData: Object.fromEntries(formData.entries()) });
+            
+            //réactivation du bouton
+            this.disableLoginButton = false;
         },
 
         /** récupération d'un token visiteur */

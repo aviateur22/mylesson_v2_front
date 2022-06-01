@@ -10,14 +10,14 @@
                 </div>
             </div>
             <div class="form__container-control">          
-                <form class="form">            
+                <form @submit.prevent="sendMail" class="form">            
                     <div class="form__group">
                         <label for="email" class="form__label">ton email</label>
                         <div class="form__control">
-                            <input class="form__input" v-model="email" type="text" placeholder="toto@hotmail.fr" name="email">
+                            <input class="form__input" v-model="email" type="email" placeholder="toto@hotmail.fr" name="email">
                         </div>
                     </div>
-                    <SubmitButton @click.prevent="sendMail" :disableLoginButton='disableLoginButton' :textSubmitButton='"réinitialiser le mot de passe"'/>                   
+                    <SubmitButton :disableLoginButton='disableLoginButton' :textSubmitButton='"réinitialiser le mot de passe"'/>                   
                 </form> 
             </div>      
     </div> 
